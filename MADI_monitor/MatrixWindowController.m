@@ -1820,7 +1820,7 @@ int ctr = 0;
 
 -(void)setMotionZoneByte:(unsigned char)motionZoneByte{
     
-    // 09/11/24 no removed debounce timer (Evan says it is sluggish)
+    // 09/11/24 removed debounce timer (Evan says it is sluggish)
     
     if(((motionZoneByte ^ self.motionZoneByte) & 0x18)){ // PLAY/STOP changed
         
