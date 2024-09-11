@@ -1199,7 +1199,7 @@
                             </subviews>
                         </view>
                     </box>
-                    <box hidden="YES" autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Test items" translatesAutoresizingMaskIntoConstraints="NO" id="SjR-fc-Zhk">
+                    <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Test items" translatesAutoresizingMaskIntoConstraints="NO" id="SjR-fc-Zhk">
                         <rect key="frame" x="17" y="16" width="268" height="164"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="fm9-P2-hyH">

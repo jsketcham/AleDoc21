@@ -1766,62 +1766,86 @@ int ctr = 0;
 
 #pragma mark
 #pragma mark ------------- setters/getters ---------------------
-NSTimer *motionZoneTimer;
--(void)motionZoneTimerService{
-    /*
-     09/04/24 watching the timing for REC->REH, PLAY->STOP transition at end of cycle
-     delay is ~0.42 seconds
-     Evan uses these status values, needed to know the delay
-     
-     rehRecPb 1
-     Timestamp: 2024-09-04 08:23:04.875718-07:00
-     playStop 1
-     Timestamp: 2024-09-04 08:23:09.696856-07:00
-     rehRecPb 0
-     Timestamp: 2024-09-04 08:23:15.736282-07:00
-     playStop 0
-     Timestamp: 2024-09-04 08:23:16.159194-07:00
-     */
-    
-    NSLog(@"_motionZoneByte %02x",_motionZoneByte);
-    // 12/07/23 observer for snoopAuto
-    [[NSUserDefaults standardUserDefaults]setInteger:(NSInteger)_motionZoneByte forKey:@"motionZoneByte"];
-    
-    [_midiRecordAnnunciator setState: (_motionZoneByte & 0x20) == 0x20];
-    
-    // further debouncing to ignore changes in _midiRecordAnnunciator
-    if((_motionZoneByte & 0x18) == 0x08 && _midiStopAnnunciator.state == false){
-        [_aleDelegate txOsc:[NSString stringWithFormat:@"playStop 0"]];
-        [_midiStopAnnunciator setState:true];
-        [_midiPlayAnnunciator setState:false];
+//NSTimer *motionZoneTimer;
+//-(void)motionZoneTimerService{
+//    /*
+//     09/04/24 watching the timing for REC->REH, PLAY->STOP transition at end of cycle
+//     delay is ~0.42 seconds
+//     Evan uses these status values, needed to know the delay
+//     
+//     rehRecPb 1
+//     Timestamp: 2024-09-04 08:23:04.875718-07:00
+//     playStop 1
+//     Timestamp: 2024-09-04 08:23:09.696856-07:00
+//     rehRecPb 0
+//     Timestamp: 2024-09-04 08:23:15.736282-07:00
+//     playStop 0
+//     Timestamp: 2024-09-04 08:23:16.159194-07:00
+//     */
+//    
+//    NSLog(@"_motionZoneByte %02x",_motionZoneByte);
+//    // 12/07/23 observer for snoopAuto
+//    [[NSUserDefaults standardUserDefaults]setInteger:(NSInteger)_motionZoneByte forKey:@"motionZoneByte"];
+//    
+//    [_midiRecordAnnunciator setState: (_motionZoneByte & 0x20) == 0x20];
+//    
+//    // further debouncing to ignore changes in _midiRecordAnnunciator
+//    if((_motionZoneByte & 0x18) == 0x08 && _midiStopAnnunciator.state == false){
+//        [_aleDelegate txOsc:[NSString stringWithFormat:@"playStop 0"]];
+//        [_midiStopAnnunciator setState:true];
+//        [_midiPlayAnnunciator setState:false];
+//
+//    }else if((_motionZoneByte & 0x18) == 0x10 && _midiPlayAnnunciator.state == false){
+//        [_aleDelegate txOsc:[NSString stringWithFormat:@"playStop 1"]];
+//        [_midiStopAnnunciator setState:false];
+//        [_midiPlayAnnunciator setState:true];
+//
+//    }
+//}
+//-(void)setMotionZoneByte:(unsigned char)motionZoneByte{
+//    
+////    NSLog(@"raw motionZoneByte %02x",motionZoneByte);
+//    
+//    if(motionZoneByte && _motionZoneByte != motionZoneByte){ // only non-zero values, changes only
+//        _motionZoneByte = motionZoneByte;
+////        NSLog(@"raw motionZoneByte %02x",motionZoneByte);
+//        // timeout for debouncing
+//        if(motionZoneTimer.valid){
+//            [motionZoneTimer invalidate];
+//        }
+//        motionZoneTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(motionZoneTimerService) userInfo:nil repeats:false];
+//    }
+//    
+//}
 
-    }else if((_motionZoneByte & 0x18) == 0x10 && _midiPlayAnnunciator.state == false){
-        [_aleDelegate txOsc:[NSString stringWithFormat:@"playStop 1"]];
-        [_midiStopAnnunciator setState:false];
-        [_midiPlayAnnunciator setState:true];
-
-    }
-}
 -(void)setMotionZoneByte:(unsigned char)motionZoneByte{
     
-//    NSLog(@"raw motionZoneByte %02x",motionZoneByte);
+    // 09/11/24 no removed debounce timer (Evan says it is sluggish)
     
-    if(motionZoneByte && _motionZoneByte != motionZoneByte){ // only non-zero values, changes only
-        _motionZoneByte = motionZoneByte;
-//        NSLog(@"raw motionZoneByte %02x",motionZoneByte);
-        // timeout for debouncing
-        if(motionZoneTimer.valid){
-            [motionZoneTimer invalidate];
+    if(((motionZoneByte ^ _motionZoneByte) & 0x18)){ // PLAY/STOP changed
+        
+        // 2.10.02 set companion variable 'playStop'
+        if((motionZoneByte & 0x18) == 0x10){
+            
+            [_aleDelegate txOsc:[NSString stringWithFormat:@"playStop 1"]];
+            
+        }else if((motionZoneByte & 0x18) == 0x08){
+            
+            [_aleDelegate txOsc:[NSString stringWithFormat:@"playStop 0"]];
         }
-        motionZoneTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(motionZoneTimerService) userInfo:nil repeats:false];
-    }
-    
-}
+        
+//        [_aleDelegate txOsc:[NSString stringWithFormat:@"playStop %@",(motionZoneByte & 0x18) == 0x10 ? @"1" : @"0"]];
 
--(void)setMotionZoneBytex:(unsigned char)motionZoneByte{
+    }
     _motionZoneByte = motionZoneByte;
     // 12/07/23 observer for snoopAuto
     [[NSUserDefaults standardUserDefaults]setInteger:(NSInteger)motionZoneByte forKey:@"motionZoneByte"];
+    
+    [_midiStopAnnunciator setState: (_motionZoneByte & 0x18) == 0x8];   // stop only
+    [_midiPlayAnnunciator setState: (_motionZoneByte & 0x18) == 0x10];  // play only
+    [_midiRecordAnnunciator setState: (_motionZoneByte & 0x20) == 0x20];    // show indicators immediately
+   
+
 }
 -(unsigned char)motionZoneByte{
     NSInteger i = [[NSUserDefaults standardUserDefaults] integerForKey:@"motionZoneByte"];

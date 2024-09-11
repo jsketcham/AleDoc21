@@ -5645,12 +5645,12 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
 -(void)txOsc:(NSString *)str{
     
     // looking for lpmini
-    if([str containsString:@"lpMini"]){
-        if([str containsString:@"-"]){
-            NSLog(@"bad lpMini index");
-            
-        }
-    }
+//    if([str containsString:@"lpMini"]){
+//        if([str containsString:@"-"]){
+//            NSLog(@"bad lpMini index");
+//            
+//        }
+//    }
     
     // remove trailing whitespace
     NSString *msg = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
