@@ -203,7 +203,7 @@ NSArray *sampleRateKeys = @[@"48K",@"96K",@"192K"];
 @synthesize boomRecorderMIDI =  _boomRecorderMIDI;
 
 @synthesize actorDirectMic = _actorDirectMic;
-@synthesize motionZoneByte = _motionZoneByte;
+//@synthesize motionZoneByte = _motionZoneByte;
 
 //@synthesize muteControlRoom = _muteControlRoom;
 //@synthesize muteStage = _muteStage;
@@ -740,37 +740,37 @@ NSTimer *annunciatorOffTimer;
     }
     
 }
--(void)decodeMotionZoneByte:(unsigned char)zoneByte{
-    
-    // filter play/stop bouncing
-    // ADR 1 we are on IAC driver and get here when going in to PLAY
-    /*
-     2022-11-07 12:15:02.407297-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
-     2022-11-07 12:15:02.407443-0800 AleDoc[10156:84786] decodeMotionZoneByte 0
-     2022-11-07 12:15:02.408281-0800 AleDoc[10156:84786] decodeMotionZoneByte 10
-     2022-11-07 12:15:02.409307-0800 AleDoc[10156:84786] decodeMotionZoneByte 18
-     2022-11-07 12:15:02.410440-0800 AleDoc[10156:84786] decodeMotionZoneByte 18
-     2022-11-07 12:15:02.457583-0800 AleDoc[10156:84786] decodeMotionZoneByte 18
-     2022-11-07 12:15:02.497507-0800 AleDoc[10156:84786] decodeMotionZoneByte 18
-     2022-11-07 12:15:02.677582-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
-     2022-11-07 12:15:02.677635-0800 AleDoc[10156:84786] decodeMotionZoneByte 0
-     2022-11-07 12:15:02.677990-0800 AleDoc[10156:84786] decodeMotionZoneByte 10
-     2022-11-07 12:15:02.678121-0800 AleDoc[10156:84786] decodeMotionZoneByte 10
-     forceBlack 0
-     2022-11-07 12:15:06.167556-0800 AleDoc[10156:84786] decodeMotionZoneByte 0
-     2022-11-07 12:15:06.168572-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
-     2022-11-07 12:15:06.169119-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
-     2022-11-07 12:15:06.447241-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
-     2022-11-07 12:15:06.447519-0800 AleDoc[10156:84786] decodeMotionZoneByte 0
-     2022-11-07 12:15:06.447963-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
-     2022-11-07 12:15:06.448183-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
-     
-     ...add a oneshot that retriggers, when it times out evaluate motion
-     */
-    
-    self.motionZoneByte = zoneByte; // wait for flopping to stop
-    
-}
+//-(void)decodeMotionZoneByte:(unsigned char)zoneByte{
+//    
+//    // filter play/stop bouncing
+//    // ADR 1 we are on IAC driver and get here when going in to PLAY
+//    /*
+//     2022-11-07 12:15:02.407297-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
+//     2022-11-07 12:15:02.407443-0800 AleDoc[10156:84786] decodeMotionZoneByte 0
+//     2022-11-07 12:15:02.408281-0800 AleDoc[10156:84786] decodeMotionZoneByte 10
+//     2022-11-07 12:15:02.409307-0800 AleDoc[10156:84786] decodeMotionZoneByte 18
+//     2022-11-07 12:15:02.410440-0800 AleDoc[10156:84786] decodeMotionZoneByte 18
+//     2022-11-07 12:15:02.457583-0800 AleDoc[10156:84786] decodeMotionZoneByte 18
+//     2022-11-07 12:15:02.497507-0800 AleDoc[10156:84786] decodeMotionZoneByte 18
+//     2022-11-07 12:15:02.677582-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
+//     2022-11-07 12:15:02.677635-0800 AleDoc[10156:84786] decodeMotionZoneByte 0
+//     2022-11-07 12:15:02.677990-0800 AleDoc[10156:84786] decodeMotionZoneByte 10
+//     2022-11-07 12:15:02.678121-0800 AleDoc[10156:84786] decodeMotionZoneByte 10
+//     forceBlack 0
+//     2022-11-07 12:15:06.167556-0800 AleDoc[10156:84786] decodeMotionZoneByte 0
+//     2022-11-07 12:15:06.168572-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
+//     2022-11-07 12:15:06.169119-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
+//     2022-11-07 12:15:06.447241-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
+//     2022-11-07 12:15:06.447519-0800 AleDoc[10156:84786] decodeMotionZoneByte 0
+//     2022-11-07 12:15:06.447963-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
+//     2022-11-07 12:15:06.448183-0800 AleDoc[10156:84786] decodeMotionZoneByte 8
+//     
+//     ...add a oneshot that retriggers, when it times out evaluate motion
+//     */
+//    
+//    self.motionZoneByte = zoneByte; // wait for flopping to stop
+//    
+//}
 
 -(void)recallUserDefaults:(id)sender{
     // v2.10.02
@@ -1822,7 +1822,7 @@ int ctr = 0;
     
     // 09/11/24 no removed debounce timer (Evan says it is sluggish)
     
-    if(((motionZoneByte ^ _motionZoneByte) & 0x18)){ // PLAY/STOP changed
+    if(((motionZoneByte ^ self.motionZoneByte) & 0x18)){ // PLAY/STOP changed
         
         // 2.10.02 set companion variable 'playStop'
         if((motionZoneByte & 0x18) == 0x10){
@@ -1837,13 +1837,13 @@ int ctr = 0;
 //        [_aleDelegate txOsc:[NSString stringWithFormat:@"playStop %@",(motionZoneByte & 0x18) == 0x10 ? @"1" : @"0"]];
 
     }
-    _motionZoneByte = motionZoneByte;
+//    _motionZoneByte = motionZoneByte;
     // 12/07/23 observer for snoopAuto
     [[NSUserDefaults standardUserDefaults]setInteger:(NSInteger)motionZoneByte forKey:@"motionZoneByte"];
     
-    [_midiStopAnnunciator setState: (_motionZoneByte & 0x18) == 0x8];   // stop only
-    [_midiPlayAnnunciator setState: (_motionZoneByte & 0x18) == 0x10];  // play only
-    [_midiRecordAnnunciator setState: (_motionZoneByte & 0x20) == 0x20];    // show indicators immediately
+    [_midiStopAnnunciator setState: (motionZoneByte & 0x18) == 0x8];   // stop only
+    [_midiPlayAnnunciator setState: (motionZoneByte & 0x18) == 0x10];  // play only
+    [_midiRecordAnnunciator setState: (motionZoneByte & 0x20) == 0x20];    // show indicators immediately
    
 
 }

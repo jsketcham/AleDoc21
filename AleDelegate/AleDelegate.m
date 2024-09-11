@@ -5465,7 +5465,8 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
 -(void)showMotionStatus:(NSData*)motionData{
     
     unsigned char * theBytes = (unsigned char *)[motionData bytes];
-    [self.matrixWindowController decodeMotionZoneByte:theBytes[0]];
+//    [self.matrixWindowController decodeMotionZoneByte:theBytes[0]];
+    self.matrixWindowController.motionZoneByte = theBytes[0];
     
     // 3/4/16 first streamer has beeps
 //    if([_ptHui isStop]){

@@ -186,7 +186,7 @@ enum{
 
 - (IBAction)onClearAll:(id)sender;
 
--(void)decodeMotionZoneByte:(unsigned char)zoneByte;
+//-(void)decodeMotionZoneByte:(unsigned char)zoneByte;
 -(bool)midiAnnunciatorState;
 
 -(void)aheadInPastFromTc:(NSString*)tc;
