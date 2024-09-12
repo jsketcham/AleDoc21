@@ -1201,6 +1201,15 @@ bool bInitializePtCtr = false;
     
     delegate.cycleMode = CYCLE_MODE_RECORD;
     [delegate.ptHui onRecord];
+//    [delegate.ptHui onPlay];
+    recPlayTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(recPlayTimerService) userInfo:nil repeats:false];
+
+}
+NSTimer *recPlayTimer;
+
+-(void)recPlayTimerService{
+    
+    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
     [delegate.ptHui onPlay];
 
 }
