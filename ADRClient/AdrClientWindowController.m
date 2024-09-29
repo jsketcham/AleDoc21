@@ -1202,6 +1202,7 @@ bool bInitializePtCtr = false;
     delegate.cycleMode = CYCLE_MODE_RECORD;
     [delegate.ptHui onRecord];
 //    [delegate.ptHui onPlay];
+    // 09/12/24 Evan sees a rare problem with 1st take not going into RECORD
     recPlayTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(recPlayTimerService) userInfo:nil repeats:false];
 
 }

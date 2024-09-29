@@ -284,7 +284,7 @@
                 matrix[x_index][y_index] = 0;   // talkback, snoop can't be programmed
             }
             else{
-                matrix[x_index][y_index] ^= 0x80;   // 0X80 is cross point connected, 0x00 not connected
+                matrix[x_index][y_index] ^= 0x80;   // 0x80 is cross point connected, 0x00 not connected
                 // 2.10.02 when linkCompAndPbRouting is set, tie comp and pb
                 NSString *key = @"linkCompAndPbRouting";
                 NSInteger linkCompAndPb = [[NSUserDefaults standardUserDefaults] integerForKey:key];
@@ -332,25 +332,28 @@
     NSString *tooltip = [NSString stringWithFormat:@"row: %d column: %d",y_index,x_index];
     [self setToolTip:tooltip];  // TODO timeout
 }
--(void)clearCrosspoints{
-    
-    for(int x = 0; x < _colTitles.count; x++){
-        for(int y = 0; y < _rowTitles.count; y++){
-            
-            [self setCrosspoint:x :y :MAX_FADER_ATTENUATION :true];
-        }
-    }    
-}
--(void)setCrosspoints:(NSInteger) gain{
-    
-    for(int x = 0; x < _colTitles.count; x++){
-        for(int y = 0; y < _rowTitles.count; y++){
-            
-            [self setCrosspoint:x :y :gain :true];
-        }
-    }
-    
-}
+//-(void)clearCrosspoints{
+//    
+//    for(int x = 0; x < _colTitles.count; x++){
+//        for(int y = 0; y < _rowTitles.count; y++){
+//            
+//            matrix[x][y] = matrix[x][y] & 0x80; // reset the change detector
+//            
+////            [self setCrosspoint:x :y :MAX_FADER_ATTENUATION :true];
+//        }
+//    }    
+//    [self sendCrosspoints:CLEAR_CROSSPOINTS];
+//}
+//-(void)setCrosspoints:(NSInteger) gain{
+//    
+//    for(int x = 0; x < _colTitles.count; x++){
+//        for(int y = 0; y < _rowTitles.count; y++){
+//            
+//            [self setCrosspoint:x :y :gain :true];
+//        }
+//    }
+//    
+//}
 -(void)crossPointsOff{
     
     for(int x = 0; x < _colTitles.count; x++){
@@ -365,6 +368,7 @@
     rect.size = _backImage.size;
     
     [self setNeedsDisplayInRect:rect];  // might as well redraw the whole thing, drawing speed is not critical
+    [self sendCrosspoints:CLEAR_CROSSPOINTS];
 }
 -(void)setCrosspoint:(NSArray<NSDictionary*>*)crosspointArray :(NSInteger) gain :(bool)force{
     
@@ -386,6 +390,122 @@
     }
     
 }
+bool toggle = false;
+//-(void)toggleCrosspoints{
+//    
+//    NSLog(@"matrix[0][0] %02x",matrix[0][0]);
+//    return;
+//    
+////    toggle = !toggle;
+////    
+////    for(int x = 0; x < _colTitles.count; x++){
+////        for(int y = 0; y < _rowTitles.count; y++){
+////            
+////            matrix[x][y] = (matrix[x][y] & 0x80) + (toggle ? 1 : 0);
+////        }
+////    }
+////    
+////    [self sendCrosspoints:false];
+//
+//}
+-(void)sendCrosspoints:(SEND_CROSSPOINTS) sendType{
+    
+    // send crosspoint columns
+
+    NSMutableData *data = [[NSMutableData alloc] init];
+    bool sendCol = false;
+    
+    for(int x = 0; x < _colTitles.count; x++){
+        
+        NSDictionary *colDict = _colTitles[x];
+        NSInteger outputFeedbackMask = ((NSString*)colDict[FEEDBACK_KEY]).integerValue;  // mask
+
+        UInt8 colBytes[] = {(UInt8)[colDict[@"SelectChannel"] intValue]
+                        ,(UInt8)[colDict[@"SelectControlChange"] intValue],
+                        0};
+        
+        sendCol = true; // send column bytes once per column
+        
+        for(int y = 0; y < _rowTitles.count; y++){
+            
+            NSDictionary *rowDict = _rowTitles[y];
+            NSInteger inputFeedbackMask = ((NSString*)rowDict[FEEDBACK_KEY]).integerValue;   // mask
+
+            UInt8 rowBytes[] = {(UInt8)[rowDict[@"Channel"] intValue]
+                                ,(UInt8)[rowDict[@"ControlChange"] intValue],
+                                matrix[x][y] & 0x7f};
+            
+            switch(sendType){
+                case CLEAR_CROSSPOINTS: rowBytes[2] = 0; break;
+                case TEST_CROSSPOINTS:  rowBytes[2] = 1; break;
+                case ON_CROSSPOINTS:
+                    if(inputFeedbackMask & outputFeedbackMask){
+                        rowBytes[2] = 0;
+                    }
+                    break;
+                default: break;
+            }
+
+            
+            if(matrix[x][y] & 0x80
+               || sendType == CLEAR_CROSSPOINTS
+               || sendType == TEST_CROSSPOINTS){
+                // crosspoint set, or allCrosspoints
+                if(sendCol){
+                    // send column bytes once per column
+                    sendCol = false;
+                    [data appendBytes:colBytes length:3];
+                }
+                [data appendBytes:rowBytes length:3];   // send row bytes
+            }
+        }
+
+    }
+    AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
+    [delegate.ufxClient midiTx:data];
+}
+//-(void)sendCrosspoints:(Boolean) allCrosspoints{
+//    
+//    // send crosspoint columns
+//
+//    NSMutableData *data = [[NSMutableData alloc] init];
+//    bool sendCol = false;
+//    
+//    for(int x = 0; x < _colTitles.count; x++){
+//        
+//        NSDictionary *colDict = _colTitles[x];
+//        NSInteger outputFeedbackMask = ((NSString*)colDict[FEEDBACK_KEY]).integerValue;  // mask
+//
+//        UInt8 colBytes[] = {(UInt8)[colDict[@"SelectChannel"] intValue]
+//                        ,(UInt8)[colDict[@"SelectControlChange"] intValue],
+//                        0};
+//        
+//        sendCol = true; // send column bytes once per column
+//        
+//        for(int y = 0; y < _rowTitles.count; y++){
+//            
+//            NSDictionary *rowDict = _rowTitles[y];
+//            NSInteger inputFeedbackMask = ((NSString*)rowDict[FEEDBACK_KEY]).integerValue;   // mask
+//
+//            UInt8 rowBytes[] = {(UInt8)[rowDict[@"Channel"] intValue]
+//                                ,(UInt8)[rowDict[@"ControlChange"] intValue],
+//                                (inputFeedbackMask & outputFeedbackMask) == 0 && (matrix[x][y] & 0x80) == 0x80 ? matrix[x][y] & 0x7f : 0};
+//            
+//            if((matrix[x][y] & 0x80) || allCrosspoints){
+//                // crosspoint set, or allCrosspoints
+//                if(sendCol){
+//                    // send column bytes once per column
+//                    sendCol = false;
+//                    [data appendBytes:colBytes length:3];
+//                }
+//                [data appendBytes:rowBytes length:3];   // send row bytes
+//            }
+//        }
+//
+//    }    
+//    AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
+//    [delegate.ufxClient midiTx:data];
+//}
 
 -(void)setCrosspoint:(int)x :(int)y :(NSInteger) gain :(bool)force{
     
@@ -437,10 +557,13 @@
             gain = 0;
         }
         
-        NSString *str = [NSString stringWithFormat:@"%@ %@ 0 %@ %@ %ld",channel,controlChange,inputChannel,inputControlChange,(long)gain];
-        
-        AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
-        [delegate sendUfxString:str];
+        //
+        //if(force){
+            NSString *str = [NSString stringWithFormat:@"%@ %@ 0 %@ %@ %ld",channel,controlChange,inputChannel,inputControlChange,(long)gain];
+            
+            AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
+            [delegate sendUfxString:str];
+        //}
     }
 }
 -(NSData*)getByteMatrix{
@@ -458,7 +581,8 @@
     
     [self setNeedsDisplayInRect:rect];  // might as well redraw the whole thing, drawing speed is not critical
     
-    [self clearCrosspoints];        // 2.00.00
+//    [self clearCrosspoints];        // 2.00.00
+    [self sendCrosspoints:CLEAR_CROSSPOINTS];   // crosspoints have changed, must clear UFX values
     [_delegate refreshCrosspoints]; // 2.00.00
 }
 -(void)invalidateRect{

@@ -482,10 +482,13 @@ bool matrixWasCleared = false;
         
     }
 }
-
+SEND_CROSSPOINTS lastSendCrosspoint;
 - (IBAction)onIncrProgress:(id)sender {
     
-    [self toggleCrosspoints];
+    lastSendCrosspoint++;
+    lastSendCrosspoint %= SEND_CROSSPOINTS_COUNT;
+    [_matrixView sendCrosspoints:CLEAR_CROSSPOINTS];    // clear the crosspoints
+    [_matrixView sendCrosspoints:lastSendCrosspoint];   // test pattern
     
     // test button mashing
     //
@@ -524,9 +527,9 @@ bool matrixWasCleared = false;
 }
 - (IBAction)onClearProgress:(id)sender {
     
-    lastCrosspoint = 0; // so that toggle starts in a known state
-    [_matrixView clearCrosspoints]; // resets change detector, have to do this the first time
-    [self refreshCrosspoints];
+////    lastCrosspoint = 0; // so that toggle starts in a known state
+//    [_matrixView clearCrosspoints]; // resets change detector, have to do this the first time
+//    [self refreshCrosspoints];
     
 }
 
@@ -1144,73 +1147,102 @@ int lastAheadInPast;    // change detector
     self.matrixArray = matrixArray;
 
 }
--(void)muteCrosspoints{
-    [self setPatchedCrosspoints:0];
-    lastCrosspoint = 0; // so that toggle starts in a known state
-}
-int lastCrosspoint = 0;
--(void)toggleCrosspoints{
-    
-    // 192K time to set all crosspoints 0.07603
-    // 48K time to set all crosspoints 0.09241
-    // we see uncleared 192K->48K crosspoints
-    //
-    /*
-     Evan, 09/08/24
-     Aaron on adr5 was having an issue the other day where aledoc wasn’t shifting the sources properly when switching between working in 88.2k and 48k. It was leaving some of those inbetween channels we try to stay off of assigned to the outputs. Can you take a look at that when you have a chance?  Thanks.
-     */
-    
-    lastCrosspoint = lastCrosspoint ? 0 : 1;
-    [self setPatchedCrosspoints:lastCrosspoint ? 1 : 0];
-}
--(void)setAllCrosspoints:(int)gain{
-    // mute the crosspoints for the new matrix MIDI assigments
-
-    for(NSDictionary *colDict in self.ufxOutputDictionaryArray){
-        
-        NSString *selectChannel = colDict[@"SelectChannel"];
-        NSString *selectControlChange = colDict[@"SelectControlChange"];
-        
-        for(NSDictionary *rowDict in self.ufxInputDictionaryArray){
-            
-            NSString *channel = rowDict[@"Channel"];
-            NSString *controlChange = rowDict[@"ControlChange"];
-            
-            NSString *str = [NSString stringWithFormat:@"%@ %@ 0 %@ %@ %d",selectChannel,selectControlChange,channel,controlChange,gain];
-                        
-            [_aleDelegate sendUfxStringThrottled:str];
-//            NSLog(@"%@",str);
-        }
-    }
-}
--(void)setPatchedCrosspoints:(int)gain{
-    
-    // set all patched crosspoints to gain
-    // setPatchedCrosspoints 0.04369
-    // setPatchedCrosspoints 0.02237
-    
-//    NSDate *now = [[NSDate alloc]init];
-    
-    for(NSDictionary *colDict in _matrixView.colTitles){
-        
-        NSString *selectChannel = colDict[@"SelectChannel"];
-        NSString *selectControlChange = colDict[@"SelectControlChange"];
-        
-        for(NSDictionary *rowDict in _matrixView.rowTitles){
-            
-            NSString *channel = rowDict[@"Channel"];
-            NSString *controlChange = rowDict[@"ControlChange"];
-            
-            NSString *str = [NSString stringWithFormat:@"%@ %@ 0 %@ %@ %d",selectChannel,selectControlChange,channel,controlChange,gain];
-                        
-            [_aleDelegate sendUfxString:str];
-//            NSLog(@"%@",str);
-        }
-    }
-//    NSTimeInterval ti = [[[NSDate alloc]init] timeIntervalSinceDate:now];
-//    NSLog(@"setPatchedCrosspoints %2.5f",ti);
-
-}
+//int lastCrosspoint = 0;
+//-(void)toggleCrosspoints{
+//    
+//    // 192K time to set all crosspoints 0.07603
+//    // 48K time to set all crosspoints 0.09241
+//    // we see uncleared 192K->48K crosspoints
+//    //
+//    /*
+//     Evan, 09/08/24
+//     Aaron on adr5 was having an issue the other day where aledoc wasn’t shifting the sources properly when switching between working in 88.2k and 48k. It was leaving some of those inbetween channels we try to stay off of assigned to the outputs. Can you take a look at that when you have a chance?  Thanks.
+//     */
+//    
+//    lastCrosspoint = lastCrosspoint ? 0 : 1;
+//    
+//    NSMutableData *data = [[NSMutableData alloc] init];
+//    bool sendCol = false;
+//    
+//    for(int x = 0; x < _matrixView.colTitles.count; x++){
+//        
+//        NSDictionary *colDict = _matrixView.colTitles[x];
+//
+//        UInt8 colBytes[] = {(UInt8)[colDict[@"SelectChannel"] intValue]
+//                        ,(UInt8)[colDict[@"SelectControlChange"] intValue],
+//                        0};
+//        
+//        sendCol = true; // send column bytes once per column
+//        
+//        for(int y = 0; y < _matrixView.rowTitles.count; y++){
+//            
+//            NSDictionary *rowDict = _matrixView.rowTitles[y];
+//
+//            UInt8 rowBytes[] = {(UInt8)[rowDict[@"Channel"] intValue]
+//                                ,(UInt8)[rowDict[@"ControlChange"] intValue],
+//                                (UInt8)lastCrosspoint};
+//            
+//            // crosspoint set, or allCrosspoints
+//            if(sendCol){
+//                // send column bytes once per column
+//                sendCol = false;
+//                [data appendBytes:colBytes length:3];
+//            }
+//            [data appendBytes:rowBytes length:3];   // send row bytes
+//        }
+//
+//    }
+//    AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
+//    [delegate.ufxClient midiTx:data];
+//}
+//-(void)setAllCrosspoints:(int)gain{
+//    // mute the crosspoints for the new matrix MIDI assigments
+//
+//    for(NSDictionary *colDict in self.ufxOutputDictionaryArray){
+//        
+//        NSString *selectChannel = colDict[@"SelectChannel"];
+//        NSString *selectControlChange = colDict[@"SelectControlChange"];
+//        
+//        for(NSDictionary *rowDict in self.ufxInputDictionaryArray){
+//            
+//            NSString *channel = rowDict[@"Channel"];
+//            NSString *controlChange = rowDict[@"ControlChange"];
+//            
+//            NSString *str = [NSString stringWithFormat:@"%@ %@ 0 %@ %@ %d",selectChannel,selectControlChange,channel,controlChange,gain];
+//                        
+//            [_aleDelegate sendUfxStringThrottled:str];
+////            NSLog(@"%@",str);
+//        }
+//    }
+//}
+//-(void)setPatchedCrosspoints:(int)gain{
+//    
+//    // set all patched crosspoints to gain
+//    // setPatchedCrosspoints 0.04369
+//    // setPatchedCrosspoints 0.02237
+//    
+////    NSDate *now = [[NSDate alloc]init];
+//    
+//    for(NSDictionary *colDict in _matrixView.colTitles){
+//        
+//        NSString *selectChannel = colDict[@"SelectChannel"];
+//        NSString *selectControlChange = colDict[@"SelectControlChange"];
+//        
+//        for(NSDictionary *rowDict in _matrixView.rowTitles){
+//            
+//            NSString *channel = rowDict[@"Channel"];
+//            NSString *controlChange = rowDict[@"ControlChange"];
+//            
+//            NSString *str = [NSString stringWithFormat:@"%@ %@ 0 %@ %@ %d",selectChannel,selectControlChange,channel,controlChange,gain];
+//                        
+//            [_aleDelegate sendUfxString:str];
+////            NSLog(@"%@",str);
+//        }
+//    }
+////    NSTimeInterval ti = [[[NSDate alloc]init] timeIntervalSinceDate:now];
+////    NSLog(@"setPatchedCrosspoints %2.5f",ti);
+//
+//}
 
 -(void)makeRowColTitles{
     
@@ -1362,7 +1394,8 @@ int lastCrosspoint = 0;
             [matrix.crosspointArrays addObject:crosspointArray];    // crosspoints for fader[j]
         }
     }
-    [_matrixView clearCrosspoints]; // resets change detector, have to do this the first time
+//    [_matrixView clearCrosspoints]; // resets change detector, have to do this the first time
+    [_matrixView sendCrosspoints:CLEAR_CROSSPOINTS];
     [self refreshCrosspoints];  // crosspoint gains may have changed
     [self setAdatCrosspoints];  // 2.10.02 Evan wants fixed routing programmed after change to 48K
     
@@ -1517,8 +1550,10 @@ int lastCrosspoint = 0;
     // 2.10.02 Link Actor Remote, Link Editor Remote
     // we also need to have individual button presses work
     
-//    NSLog(@"refreshCrosspoints rehRecPb %d cycleMode %ld",_rehRecPb,(long)_aleDelegate.cycleMode);
-
+    // we want to send the matrix with sendCrosspoints
+    // so inhibit sendUfxString
+    _aleDelegate.sendUfxStringInhibit = true;   // 09/28/24 temp kludge
+    
     for(Matrix *matrix in _displayedMatrixArray){
 
 //        if([matrix.boxTitle isEqualToString: @"Actor"]){
@@ -1526,6 +1561,9 @@ int lastCrosspoint = 0;
 //        }
         [matrix refreshCrosspoints];    // mixer ahead/in/past buttons gate audio
     }
+    _aleDelegate.sendUfxStringInhibit = false;
+
+    [_matrixView sendCrosspoints:ON_CROSSPOINTS];    // ON crosspoints only
     // other items
 //    [_matrixView autoSlate];
     
@@ -2235,9 +2273,13 @@ NSTimer *dimTimer;
 //    NSLog(@"rehRecPbOneshot");
 
     // set the matrix buttons when rehRecPb changes
+    _aleDelegate.sendUfxStringInhibit = true;   // 09/29/24 want to send from _matrixView sendCrosspoints
+    
     for(Matrix *matrix in _matrixArray){
         [matrix stateFromStates];   // sets buttons, faders, refreshes crosspoints
     }
+    _aleDelegate.sendUfxStringInhibit = false;
+    [_matrixView sendCrosspoints:ON_CROSSPOINTS];
 //    [self refreshCrosspoints];  // 2.10.02
  
 }
@@ -2524,8 +2566,10 @@ bool isFirstNumRecTracksTag = true;
     
     // 09/08/24 clear old sample rate crosspoints, Evan reports Aaron problem
     // switching from 88.2 to 48
-    [_matrixView clearCrosspoints];
-    
+//    [_matrixView clearCrosspoints];
+    // clear the old sample rate crosspoints
+    [_matrixView sendCrosspoints:CLEAR_CROSSPOINTS];
+
     [NSUserDefaults.standardUserDefaults setInteger:sampleRateTag forKey:@"sampleRateTag"];
     [_aleDelegate txOsc:[NSString stringWithFormat:@"sampleRate %ld",sampleRateTag]];
     

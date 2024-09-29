@@ -586,46 +586,119 @@ struct WordBytes{
         
         return NSData(bytes: buffer78, length: buffer78.count)
     }
-    @objc func midiTx(_ data : NSData){
-        
-//        if self.title == "Remote"{
+//    @objc func midiTx(_ data : NSData){
+//        
+////        if self.title == "Remote"{
+////            
+////            print("Remote")
+////        }
+//        
+//        // there may be multiple outputs
+//        for dest in destArray{
 //            
-//            print("Remote")
+//            if dest == 0{
+//                continue  // no output
+//            }
+//                    
+//            var txBytes = [UInt8](repeating: 0, count: data.count)
+//            data.getBytes(&txBytes[0], length: data.count)
+//                    
+//            if outPort == PORT_NOT_OPEN{
+//                print("PORT_NOT_OPEN")
+//                return
+//            }
+//            
+//            var packet = MIDIPacketListInit (&packet_list);
+//            
+//            packet = MIDIPacketListAdd (&packet_list,
+//                                        MemoryLayout.size(ofValue:packet_list),
+//                                        packet,
+//                                        0,  // timestamp
+//                                        txBytes.count,
+//                                        txBytes);
+//            
+//            MIDIFlushOutput(dest);
+//            
+//            MIDISend (
+//                      outPort,
+//                      dest,
+//                      &packet_list
+//                      );
 //        }
+//
+//        
+//    }
+    @objc func midiTx(_ data : NSData){
+                
+        guard data.length > 0 && outPort != PORT_NOT_OPEN else{
+            return
+        }
         
+        //var packet_list = MIDIPacketList()
+
         // there may be multiple outputs
         for dest in destArray{
             
-            if dest == 0{
-                continue  // no output
-            }
-                    
-            var txBytes = [UInt8](repeating: 0, count: data.count)
-            data.getBytes(&txBytes[0], length: data.count)
-                    
-            if outPort == PORT_NOT_OPEN{
-                print("PORT_NOT_OPEN")
-                return
-            }
+            midiTx(data, dest)
             
-            var packet = MIDIPacketListInit (&packet_list);
+        }
+    }
+    
+    func midiTx(_ data : NSData, _ dest : MIDIEndpointRef){
+        
+        guard dest != 0 else{
+            return
+        }
+        
+        // Cancels sending packets that were previously scheduled for future delivery
+        MIDIFlushOutput(dest);
+
+        // send <256 byte packets, then remainder
+
+        var packet_list = MIDIPacketList()
+        var packet = MIDIPacketListInit (&packet_list)
+        
+        var txBytes = [UInt8](repeating: 0, count: data.count)
+        data.getBytes(&txBytes[0], length: data.count)
+
+        for i in 0..<txBytes.count{
+            
+            var txByte = txBytes[i]
+            
+            // packet.data is a 256 byte tuple
+            // break packets on message boundaries (like MIDIEventPacket)
+            // sysex, here, sends remainder so we have an empty buffer for sysex
+            if txByte & 0x80 == 0x80 && packet.pointee.length > 250
+                || txByte == SYSTEM_EXCLUSIVE && packet.pointee.length > 0{
+                
+                MIDISend (
+                          outPort,
+                          dest,
+                          &packet_list
+                          );
+                
+                packet = MIDIPacketListInit (&packet_list)
+           }
             
             packet = MIDIPacketListAdd (&packet_list,
-                                        MemoryLayout.size(ofValue:packet_list),
+                                        MemoryLayout<MIDIPacketList>.size,
                                         packet,
                                         0,  // timestamp
-                                        txBytes.count,
-                                        txBytes);
+                                        1,
+                                        &txByte);
             
-            MIDIFlushOutput(dest);
-            
-            MIDISend (
-                      outPort,
-                      dest,
-                      &packet_list
-                      );
+            // end-of-message or MIDI_EOX sends what is in the buffer
+            if i == txBytes.count - 1 || txByte == MIDI_EOX{
+                
+                MIDISend (
+                          outPort,
+                          dest,
+                          &packet_list
+                          );
+                
+                packet = MIDIPacketListInit (&packet_list)
+            }
         }
-
-        
     }
+
 }

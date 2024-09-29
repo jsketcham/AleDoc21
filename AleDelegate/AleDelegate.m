@@ -169,6 +169,7 @@ enum{
 @synthesize control2Client = _control2Client;
 @synthesize screenRecorder = _screenRecorder;
 @synthesize editorWindowController = _editorWindowController;
+@synthesize sendUfxStringInhibit = _sendUfxStringInhibit;
 
 -(void)xKeyEdge:(NSNotification *)aNotification{
     
@@ -502,7 +503,7 @@ NSDictionary *setLEDForUnitIDDictionary;    // checkbox items, send state of che
         bool snoopAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"snoopAuto"];
         NSInteger motionZoneByte = [[NSUserDefaults standardUserDefaults] integerForKey:@"motionZoneByte"];
         
-        if(snoopAuto && (motionZoneByte & 0x30) == 0x30){
+        if(snoopAuto && (motionZoneByte & 0x30) == 0x30){   // play+record
             self.snoopState = SNOOP_STATE_OFF;
         }else{
             self.snoopState = SNOOP_STATE_ON;
@@ -1403,7 +1404,7 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
                                          }
                                  ,@"99" : @{@"Text" : @"Snoop"
                                             ,@"Taper" : @"ufx"
-                                            ,@"Routine" : @"dialSnoopService:"
+                                            ,@"Routine" : @"dialMuteDim:"//@"dialSnoopService:"
                                          }
                                  ,@"100" : @{DIAL_CLIENT_KEY : @"remoteClient"
                                             ,@"Taper" : @"ufx"
@@ -1744,7 +1745,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
         [self dialMuteDim:key];
     }
     
-    self.snoopState = self.snoopState;  // 2.10.02 dim snoop
+    //self.snoopState = self.snoopState;  // 2.10.02 dim snoop
 }
 
 // MARK: ------------ extra routines for dial MIDI service -------------
@@ -1916,8 +1917,12 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 }
 -(void)dialSnoopService:(NSString*)key{
     
-    self.snoopState = self.snoopState;  // uses dial value for snoop gain
+    // 09/29/24 why do we have this, instead of calling dialMuteDim?
+    // 
     
+    //self.snoopState = self.snoopState;  // uses dial value for snoop gain
+    [self dialMuteDim:@"99"];   // special-case dialMuteDim for '99'
+
     NSString *muteKey = [NSString stringWithFormat:@"%@_%@",DIAL_MUTE_KEY,key];
     NSInteger dialMute = [[NSUserDefaults standardUserDefaults] boolForKey:muteKey];
     
@@ -4797,9 +4802,10 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     //    SNOOP_STATE_FORCE_OFF,
     //    SNOOP_STATE_FORCE_ON
         
-//    if(snoopState == _snoopState || !self.snoopAuto){
-//        return; // no change, or not enabled
-//    }
+    if(snoopState == _snoopState){
+        return; // no change, or not enabled
+    }
+    NSLog(@"setSnoopState %ld",snoopState);
     _snoopState = snoopState;
     [self dialMuteDim:@"99"];   // special-case dialMuteDim for '99'
 
@@ -6070,6 +6076,8 @@ NSMutableArray *ufxStringArray;
 //        NSLog(@"sendUfxString: %@",str);
 //    }
 //    NSLog(@"sendUfxString: %@",str);
+    
+    if(_sendUfxStringInhibit){return;}  // temp kludge
     
     NSScanner *scanner = [NSScanner scannerWithString:[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
     

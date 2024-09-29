@@ -8,19 +8,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="Item">
             <connections>
-                <outlet property="button0" destination="IG7-oN-9ec" id="FW5-AG-Bq5"/>
-                <outlet property="button1" destination="0YT-Ih-VHw" id="VF3-ku-EMO"/>
-                <outlet property="button10" destination="X4X-UF-Anl" id="X7d-yg-cZ3"/>
-                <outlet property="button11" destination="3m8-Ja-WJG" id="OjS-w3-zuX"/>
-                <outlet property="button12" destination="sau-Wd-Vuo" id="nCE-Vm-jgP"/>
-                <outlet property="button2" destination="gV1-V1-JeK" id="v3f-Lb-3NM"/>
-                <outlet property="button3" destination="gAF-uf-RsF" id="ODM-wC-n2V"/>
-                <outlet property="button4" destination="5Ji-6O-lmp" id="Yrb-4x-oIA"/>
-                <outlet property="button5" destination="r8s-Cs-2XG" id="b1P-HR-qjl"/>
-                <outlet property="button6" destination="Cmz-jT-MC4" id="0oX-gO-coB"/>
-                <outlet property="button7" destination="sQ0-8q-yda" id="rOq-Uo-tag"/>
-                <outlet property="button8" destination="Gba-gg-wmf" id="Dkk-ne-QIv"/>
-                <outlet property="button9" destination="aIK-BF-7WU" id="XYc-KA-GNR"/>
                 <outlet property="slider0" destination="uO4-LO-Jap" id="Vml-Oc-S4y"/>
                 <outlet property="slider1" destination="eVb-If-Zp7" id="aN6-F0-5yg"/>
                 <outlet property="slider2" destination="BBy-DJ-j2R" id="h1N-38-wEI"/>

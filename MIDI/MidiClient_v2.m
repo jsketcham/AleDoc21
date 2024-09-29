@@ -9,6 +9,7 @@
 #import "MidiClient_v2.h"
 #import <Cocoa/Cocoa.h>
 #import "AleDelegate.h"
+#import "MidiCommands.h"
 
 #define PORT_NOT_OPEN 0
 
@@ -19,7 +20,6 @@
 
 @interface MidiClient(){
     
-    MIDIPacketList packet_list;
     MIDIClientRef client;
     MIDIPortRef outPort,inPort;
     MIDIEndpointRef source,dest;
@@ -490,39 +490,51 @@ static void notifyProc(const MIDINotification *message,
     
     if(outPort == PORT_NOT_OPEN || dest == 0) return;    // not open for tx, exit
     
-    // debugging dropped MIDI to UFX
-//    if([title isEqualToString:@"UFX"]){
-//        
-//        if(!midiTxTimer || !midiTxTimer.isValid){
-//            midiTxByteCtr = 0;
-//            midiTxTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target: self selector:@selector(midiTxTimerService) userInfo:nil repeats: false];
-//        }
-//        midiTxByteCtr += data.length;   // debugging missing UFX rx
-//    }
-    
+    // 09/08/24 send <256 byte packets, then remainder
+
+    MIDIPacketList packet_list;
+    MIDIPacket* packet = MIDIPacketListInit (&packet_list);
+
     Byte *buffer = (Byte*)[data bytes];
     int len = (int)[data length];
     
-    
-//    [self performSelectorOnMainThread:@selector(traceMidiData:) withObject:data waitUntilDone:false];
-    
-    MIDIPacket* packet = MIDIPacketListInit (&packet_list);
-    
-    packet = MIDIPacketListAdd (&packet_list,
-                                sizeof(packet_list),
-                                packet,
-                                0,  // timestamp
-                                len,
-                                buffer);
-    
     MIDIFlushOutput(dest);
-    
-    MIDISend (
-              outPort,
-              dest,
-              &packet_list
-              );
-    
+
+    for(int i = 0; i < len; i++){
+        
+        // packet.data is a 256 byte tuple
+        // break packets on message boundaries (like MIDIEventPacket)
+        // sysex, here, sends remainder so we have an empty buffer for sysex
+      if(((buffer[i] & 0x80) && i > 250) || ((buffer[i] == SYSTEM_EXCLUSIVE) && packet->length > 0)){
+            
+            MIDISend (
+                      outPort,
+                      dest,
+                      &packet_list
+                      );
+            
+            packet = MIDIPacketListInit (&packet_list);
+       }
+        
+        
+        packet = MIDIPacketListAdd (&packet_list,
+                                    sizeof(packet_list),
+                                    packet,
+                                    0,  // timestamp
+                                    1,
+                                    &buffer[i]);
+        
+        if(i == (len - 1) || buffer[i] == MIDI_EOX){    // SYSEX must be <= 256 bytes
+                        
+            MIDISend (
+                      outPort,
+                      dest,
+                      &packet_list
+                      );
+            
+            packet = MIDIPacketListInit (&packet_list);
+        }
+    }
 }
 static void SourceReadProc (const MIDIPacketList   *pktlist,
                             void                   *readProcRefCon,

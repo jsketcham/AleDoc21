@@ -201,6 +201,7 @@ enum{
 @property LpMini *lpMini;
 @property bool cueIdInSlate;
 @property LoopMidi *loopMidi;
+@property bool sendUfxStringInhibit;    // kludge 09/28/24
 
 // access
 

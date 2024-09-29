@@ -29,6 +29,14 @@
 @class MatrixView;
 @class LpMini;
 
+typedef enum{
+    CLEAR_CROSSPOINTS,
+    ON_CROSSPOINTS,
+    TEST_CROSSPOINTS,
+    IGNORE_FEEDBACK,
+    SEND_CROSSPOINTS_COUNT  // last item is count of items in enum
+}SEND_CROSSPOINTS;
+
 // size of 64x64 matrix
 #define MATRIX_VIEW_RECT 768
 // 2.00.00, 32 X 32 maximum matrix, size set by MatrixWindowController numRows, numCols
@@ -60,9 +68,11 @@
 -(void)invalidateRect;
 //-(void)autoSlate;
 -(void)autoSlate:(bool)on;
--(void)clearCrosspoints;    // 2.00.00
--(void)setCrosspoints:(NSInteger) gain; //2.10.02
+//-(void)clearCrosspoints;    // 2.00.00
+//-(void)setCrosspoints:(NSInteger) gain; //2.10.02
 -(void)setCrosspoint:(NSArray<NSDictionary*>*)crosspointArray :(NSInteger) gain :(bool)force;   // 2.00.00
 -(void)crossPointsOff;  // 2.10.02
+//-(void)toggleCrosspoints;
+-(void)sendCrosspoints:(SEND_CROSSPOINTS) sendType;    // fast col/row send
 
 @end

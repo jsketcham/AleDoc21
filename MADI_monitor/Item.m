@@ -28,7 +28,7 @@
 }
 -(void)awakeFromNib{
     
-    self.slider0.item = self;
+    self.slider0.item = self;   // need this for mouseDown
     self.slider1.item = self;
     self.slider2.item = self;
     self.slider3.item = self;
