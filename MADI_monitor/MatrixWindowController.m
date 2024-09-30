@@ -2270,17 +2270,17 @@ NSTimer *dimTimer;
 }
 -(void)rehRecPbOneshot{
     
-//    NSLog(@"rehRecPbOneshot");
+//    NSLog(@"rehRecPbOneshot _rehRecPb %d",_rehRecPb);
 
     // set the matrix buttons when rehRecPb changes
-    _aleDelegate.sendUfxStringInhibit = true;   // 09/29/24 want to send from _matrixView sendCrosspoints
-    
-    for(Matrix *matrix in _matrixArray){
-        [matrix stateFromStates];   // sets buttons, faders, refreshes crosspoints
-    }
-    _aleDelegate.sendUfxStringInhibit = false;
-    [_matrixView sendCrosspoints:ON_CROSSPOINTS];
-//    [self refreshCrosspoints];  // 2.10.02
+//    _aleDelegate.sendUfxStringInhibit = true;   // 09/29/24 want to send from _matrixView sendCrosspoints
+//    
+//    for(Matrix *matrix in _matrixArray){
+//        [matrix stateFromStates];   // sets buttons, faders, refreshes crosspoints
+//    }
+//    _aleDelegate.sendUfxStringInhibit = false;
+//    [_matrixView sendCrosspoints:ON_CROSSPOINTS];
+    [self refreshCrosspoints];  // 2.10.02
  
 }
 NSTimer *rehRecPbOneshotTimer;
