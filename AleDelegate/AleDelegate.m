@@ -411,7 +411,7 @@ enum{
                                                    context:NULL];
     }
     // 12/07/23 other observers
-    NSArray *otherKeys = @[@"cycleMode"];
+    NSArray *otherKeys = @[@"motionZoneByte"];
     
     for(NSString *key in otherKeys){
         
@@ -491,36 +491,44 @@ NSDictionary *setLEDForUnitIDDictionary;    // checkbox items, send state of che
  ,@"useAltGuideInRecord": @[@9,@46]
  };
  */
+NSTimer *motionZoneTimer;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary<NSKeyValueChangeKey, id> *)change
                        context:(void *)context{
     
-//  moved from showTcDigits:, using observer approach for snoopAuto
-    if([keyPath isEqualToString:@"snoopAuto"] || [keyPath isEqualToString:@"cycleMode"]){
+//  moved from showTcDigits:, using observer approach for snoopAuto, motionZoneByte
+    bool snoopAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"snoopAuto"];
+    NSInteger motionZoneByte = [[NSUserDefaults standardUserDefaults] integerForKey:@"motionZoneByte"];
+
+    if([keyPath isEqualToString:@"snoopAuto"] && snoopAuto){
         
-        bool snoopAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"snoopAuto"];
-        NSInteger cycleMode = [[NSUserDefaults standardUserDefaults] integerForKey:@"cycleMode"];
-        
-        if(snoopAuto){
-            switch (cycleMode){
-            case CYCLE_MODE_IDLE:
-                    self.snoopState = SNOOP_STATE_ON;
+        switch(motionZoneByte){
+            case 0x30:
+                self.snoopState = SNOOP_STATE_OFF;
                 break;
-            case CYCLE_MODE_RECORD:
-                    self.snoopState = SNOOP_STATE_OFF;
+            default:
+                self.snoopState = SNOOP_STATE_ON;
+                break;
+        }
+        
+    }if([keyPath isEqualToString:@"motionZoneByte"] && snoopAuto){
+        
+        if(motionZoneTimer){
+            [motionZoneTimer invalidate];
+        }
+        
+        switch(motionZoneByte){
+            case 0x30:
+                self.snoopState = SNOOP_STATE_OFF;
+                break;
+            case 0x8:   // stop, wait 0.5 seconds before SNOOP_STATE_ON
+                motionZoneTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(motionZoneTimerService) userInfo:nil repeats:false];
                 break;
             default:
                 break;
-            }
         }
-        
-//        if(snoopAuto && (cycleMode & 0x30) == 0x30){   // play+record
-//            self.snoopState = SNOOP_STATE_OFF;
-//        }else{
-//            self.snoopState = SNOOP_STATE_ON;
-//        }
     }
     
     if(setLEDForUnitIDDictionary[keyPath]){
@@ -568,7 +576,9 @@ NSDictionary *setLEDForUnitIDDictionary;    // checkbox items, send state of che
 //
 //    }
 }
-
+-(void)motionZoneTimerService{
+    self.snoopState = SNOOP_STATE_ON;   // PT is stopped
+}
 -(void)appLaunchedTimerService{
     
     [self onEditorWindow:nil];
@@ -5009,9 +5019,6 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     NSLog(@"setCycleMode %ld -> %ld",(long)_cycleMode,cycleMode);
     
     _cycleMode = cycleMode;
-    
-    [[NSUserDefaults standardUserDefaults] setInteger:cycleMode forKey:@"cycleMode"];   // observe for snoop
-    
 
     // RECORD sequencer
     
