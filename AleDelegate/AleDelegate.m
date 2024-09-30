@@ -411,7 +411,7 @@ enum{
                                                    context:NULL];
     }
     // 12/07/23 other observers
-    NSArray *otherKeys = @[@"motionZoneByte"];
+    NSArray *otherKeys = @[@"cycleMode"];
     
     for(NSString *key in otherKeys){
         
@@ -498,16 +498,29 @@ NSDictionary *setLEDForUnitIDDictionary;    // checkbox items, send state of che
                        context:(void *)context{
     
 //  moved from showTcDigits:, using observer approach for snoopAuto
-    if([keyPath isEqualToString:@"snoopAuto"] || [keyPath isEqualToString:@"motionZoneByte"]){
+    if([keyPath isEqualToString:@"snoopAuto"] || [keyPath isEqualToString:@"cycleMode"]){
         
         bool snoopAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"snoopAuto"];
-        NSInteger motionZoneByte = [[NSUserDefaults standardUserDefaults] integerForKey:@"motionZoneByte"];
+        NSInteger cycleMode = [[NSUserDefaults standardUserDefaults] integerForKey:@"cycleMode"];
         
-        if(snoopAuto && (motionZoneByte & 0x30) == 0x30){   // play+record
-            self.snoopState = SNOOP_STATE_OFF;
-        }else{
-            self.snoopState = SNOOP_STATE_ON;
+        if(snoopAuto){
+            switch (cycleMode){
+            case CYCLE_MODE_IDLE:
+                    self.snoopState = SNOOP_STATE_ON;
+                break;
+            case CYCLE_MODE_RECORD:
+                    self.snoopState = SNOOP_STATE_OFF;
+                break;
+            default:
+                break;
+            }
         }
+        
+//        if(snoopAuto && (cycleMode & 0x30) == 0x30){   // play+record
+//            self.snoopState = SNOOP_STATE_OFF;
+//        }else{
+//            self.snoopState = SNOOP_STATE_ON;
+//        }
     }
     
     if(setLEDForUnitIDDictionary[keyPath]){
@@ -4996,6 +5009,8 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     NSLog(@"setCycleMode %ld -> %ld",(long)_cycleMode,cycleMode);
     
     _cycleMode = cycleMode;
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:cycleMode forKey:@"cycleMode"];   // observe for snoop
     
 
     // RECORD sequencer
