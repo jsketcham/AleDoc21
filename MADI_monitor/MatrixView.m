@@ -439,6 +439,7 @@ bool toggle = false;
                 case CLEAR_CROSSPOINTS: rowBytes[2] = 0; break;
                 case TEST_CROSSPOINTS:  rowBytes[2] = 1; break;
                 case ON_CROSSPOINTS:
+                case DELTA_CROSSPOINTS:
                     if(inputFeedbackMask & outputFeedbackMask){
                         rowBytes[2] = 0;
                     }
@@ -447,9 +448,12 @@ bool toggle = false;
             }
 
             
-            if(matrix[x][y] & 0x80
+            if((matrix[x][y] & 0x80 && sendType == ON_CROSSPOINTS)
+               || (deltaMatrix[x][y] && sendType == DELTA_CROSSPOINTS)
                || sendType == CLEAR_CROSSPOINTS
                || sendType == TEST_CROSSPOINTS){
+                
+                deltaMatrix[x][y] = false;  // delta was sent
                 // crosspoint set, or allCrosspoints
                 if(sendCol){
                     // send column bytes once per column
@@ -541,8 +545,11 @@ bool toggle = false;
     oldValue &= 0x7f;   // the gain part
     
     // only send enabled crosspoints
+
     // toggling crosspoint off sends max attenuation
     if((enable && (oldValue != gain)) || force){
+        
+        deltaMatrix[x][y] = true;   // message to sendCrosspoints()
         
         NSString *channel = _colTitles[x][@"SelectChannel"];
         NSString *controlChange = _colTitles[x][@"SelectControlChange"];
@@ -601,7 +608,7 @@ NSTimer *autoSlateTimer;
     [self autoSlate:false]; // auto slate off
     
 }
-// a change for github
+
 -(void)autoSlate:(bool)on{
     
     // 2.10.02 08/10/23 added a cc for auto slate, maybe free up

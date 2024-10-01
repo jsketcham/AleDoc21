@@ -34,6 +34,7 @@ typedef enum{
     ON_CROSSPOINTS,
     TEST_CROSSPOINTS,
     IGNORE_FEEDBACK,
+    DELTA_CROSSPOINTS,
     SEND_CROSSPOINTS_COUNT  // last item is count of items in enum
 }SEND_CROSSPOINTS;
 
@@ -50,6 +51,7 @@ typedef enum{
 
 @interface MatrixView : NSView{
     Byte matrix[MAX_ROWS_COLS][MAX_ROWS_COLS]; 
+    Byte deltaMatrix[MAX_ROWS_COLS][MAX_ROWS_COLS]; // 10/01/24 items that changed
 }
 @property (strong,readwrite) NSImage *backImage;
 @property MatrixWindowController *delegate;
