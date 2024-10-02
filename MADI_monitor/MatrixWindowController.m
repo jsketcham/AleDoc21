@@ -2435,7 +2435,14 @@ NSTimer *aipTimer;
     [_inAnnunciator setState:aheadInPast == MODE_IN];
     [_pastAnnunciator setState:aheadInPast == MODE_PAST];
     
-    [self refreshCrosspoints:DELTA_CROSSPOINTS];  // 2.10.02
+    switch(aheadInPast){
+        case MODE_AHEAD:    // doesn't have to be super fast
+            [self refreshCrosspoints:ON_CROSSPOINTS];  // 2.10.02
+            break;
+        default:    // IN, PAST, send changes only
+            [self refreshCrosspoints:DELTA_CROSSPOINTS];  // 2.10.02
+            break;
+    }
 
 //    [self refreshCrosspoints];  // approx. 6 milliseconds, calls autoSlate()
 

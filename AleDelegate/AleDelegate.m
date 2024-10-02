@@ -1632,11 +1632,8 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
             return;
         }
         
-        if([clientKey isEqualToString:@"remoteClient"] ){
-            NSLog(@"remoteClient");
-            
-        }
-        
+//        NSLog(@"sendDialMidi %@ %@",clientKey,midiMsgs);
+
         for (NSArray *midiMsg in midiMsgs){
             
             unsigned char msg[] = {0,0,0};
@@ -1678,6 +1675,7 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
                 
             }
             
+//            NSLog(@"sendDialMidi %@ %d %d %d",clientKey,msg[0],msg[1],msg[2]);
             [client midiTx:[NSData dataWithBytes:msg length:3]];
         }
     }
