@@ -1843,7 +1843,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     NSInteger dialMute = [[NSUserDefaults standardUserDefaults] boolForKey:muteKey];
     NSInteger dialValue = [[NSUserDefaults standardUserDefaults] integerForKey:valueKey];
     
-    NSLog(@"dialMuteDim valueKey %@ value %ld muteKey %@ mute %ld",valueKey,dialValue,muteKey,dialMute);
+//    NSLog(@"dialMuteDim valueKey %@ value %ld muteKey %@ mute %ld",valueKey,dialValue,muteKey,dialMute);
 
     NSString *muteButton = dialToMuteDictionary[key];
     

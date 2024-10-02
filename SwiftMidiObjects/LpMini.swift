@@ -388,7 +388,7 @@ let COLOR_RED_BLINK = UInt8(0xb)
             // the reason we are here
             let micData = NSData(bytes: micBytes, length: micBytes.count)
             accMidi?.midiClient?.midiTx(micData)
-            print("micBytes \(micBytes[0]) \(micBytes[1]) \(micBytes[2])")
+//            print("micBytes \(micBytes[0]) \(micBytes[1]) \(micBytes[2])")
         }
 
     }

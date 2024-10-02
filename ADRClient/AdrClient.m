@@ -114,7 +114,8 @@ NSTimer *adrClientTimer;
 //                NSString *s = [[NSString alloc] initWithFormat:@"/Users/%@/Library/Scripts/%@.scpt",NSUserName(),args[0]];
                 // /Applications/AleDoc21.app/Contents/Resources
                 NSString *s = [[NSString alloc] initWithFormat:@"/Applications/AleDoc21.app/Contents/Resources/%@.scpt",args[0]];
-
+                
+//                NSLog(@"adrClientTimerService script %@",args[0]);
                 
                 [args replaceObjectAtIndex:0 withObject:s];
                 
