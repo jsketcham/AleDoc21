@@ -1121,6 +1121,13 @@ bool bInitializePtCtr = false;
         
     }
 }
+// wait 1 second before selecting the new monitor format display
+NSTimer *monitorSwitchingDelayTimer;
+-(void)monitorSwitchingDelayTimerService{
+
+    [_delegate selectCurrentSixteenTrackMemory];
+
+}
 -(void)renameLastTrack:(NSArray*)msgArray{
     
     // renameLastTrack	nada 	0	nada2	 2.085
@@ -1141,11 +1148,16 @@ bool bInitializePtCtr = false;
             break;
         case 0:
             // normal naming
+            [self txMsg:@"armLastTrack"]; // 2.00.00 start sequencer
+
             break;
-//        case 1:
-//            // track format has changed, continue
-//            [delegate.matrixWindowController continueNumRecTracksRename];
-//            break;
+        case 1:
+            // track format has changed, show after delay
+            // used to call continueNumRecTracksRename, don't know why
+            // we stopped using it
+            monitorSwitchingDelayTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(monitorSwitchingDelayTimerService) userInfo:nil repeats:false];
+            
+            break;
         default:
             break;
     }
