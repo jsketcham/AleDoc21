@@ -1148,6 +1148,7 @@ NSTimer *monitorSwitchingDelayTimer;
             break;
         case 0:
             // normal naming
+            // cycle start, MODE_CONTROL_RECORD
             [self txMsg:@"armLastTrack"]; // 2.00.00 start sequencer
 
             break;
