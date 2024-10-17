@@ -1156,8 +1156,11 @@ NSTimer *monitorSwitchingDelayTimer;
             // track format has changed, show after delay
             // used to call continueNumRecTracksRename, don't know why
             // we stopped using it
-            monitorSwitchingDelayTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(monitorSwitchingDelayTimerService) userInfo:nil repeats:false];
-            
+//            monitorSwitchingDelayTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(monitorSwitchingDelayTimerService) userInfo:nil repeats:false];
+            //            // track format has changed, continue
+            //            [delegate.matrixWindowController continueNumRecTracksRename];
+            //            break;
+
             break;
         default:
             break;
