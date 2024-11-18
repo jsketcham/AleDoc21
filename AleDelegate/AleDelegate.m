@@ -1616,6 +1616,8 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
 
     NSInteger dialMute = [[NSUserDefaults standardUserDefaults] boolForKey:muteKey];
     NSInteger dialValue = [[NSUserDefaults standardUserDefaults] integerForKey:valueKey];
+    
+    AleDelegate *aleDelegate = (AleDelegate *)NSApp.delegate;
 
     // MIDI destinations for pots are in midiClientDictionary
     if(_statusClient && _lpMini.accMidi.midiClient && _matrixWindowController.boomRecorderMIDI){
@@ -1661,6 +1663,7 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
                 
                 delaySeconds /= 2;  // MIDI is in 1/2 frame increments
                 
+                [aleDelegate.videoDelayWindowController setDelaySeconds:delaySeconds];
                 [[NSUserDefaults standardUserDefaults]setDouble:delaySeconds forKey:@"videoDelaySeconds"];
                 
                 // 11/2/23 there is a chirp at the end of REC CYCLE, wait to turn off delay

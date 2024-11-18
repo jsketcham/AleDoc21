@@ -1658,7 +1658,7 @@ int ctr = 0;
 
     }
 }
--(void)linkRemoteDelayedVideo:(bool) state :(Matrix*)matrix{
+-(void)c:(bool) state :(Matrix*)matrix{
     
     // link Actor to Remote Actor
     
@@ -2420,6 +2420,7 @@ NSTimer *aipTimer;
         
     }else{
         self.delayedAheadInPast = aheadInPast;   // no delay
+        
     }
     
     
