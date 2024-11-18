@@ -1664,7 +1664,7 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
                 delaySeconds /= 2;  // MIDI is in 1/2 frame increments
                 
                 [aleDelegate.videoDelayWindowController setDelaySeconds:delaySeconds];
-                [[NSUserDefaults standardUserDefaults]setDouble:delaySeconds forKey:@"videoDelaySeconds"];
+//                [[NSUserDefaults standardUserDefaults]setDouble:delaySeconds forKey:@"videoDelaySeconds"];
                 
                 // 11/2/23 there is a chirp at the end of REC CYCLE, wait to turn off delay
                 if(msg[2] == 0 && self.cycleMode != CYCLE_MODE_IDLE){
@@ -1790,7 +1790,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     
     double videoDelaySeconds = (double) d * t / 2;
     
-    [[NSUserDefaults standardUserDefaults] setDouble:videoDelaySeconds forKey:@"videoDelaySeconds"];
+//    [[NSUserDefaults standardUserDefaults] setDouble:videoDelaySeconds forKey:@"videoDelaySeconds"];
     // because we don't know how to set a Swift static var from here
     [_videoDelayWindowController setDelaySeconds:videoDelaySeconds];
 

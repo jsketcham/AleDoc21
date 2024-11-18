@@ -57,6 +57,18 @@ class VideoDelayWindowController : NSWindowController{
     }
     @objc func setDelaySeconds(_ delaySeconds : Double){
         // because we don't know how to set a Swift static var from Objc
+        
+        var delaySeconds = delaySeconds
+        
+        if let aleDelegate : AleDelegate = NSApp.delegate as? AleDelegate,
+           aleDelegate.matrixWindowController.rehRecPb != MODE_CONTROL_RECORD{
+            
+            delaySeconds = 0
+            
+        }
+        
+        UserDefaults.standard.setValue(delaySeconds, forKey: "videoDelaySeconds")
+        let aleDelegate : AleDelegate = NSApp.delegate as! AleDelegate
         PixelBufferDelay.delaySeconds = delaySeconds
     }
 
