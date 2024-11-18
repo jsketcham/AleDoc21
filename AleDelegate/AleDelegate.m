@@ -1771,6 +1771,26 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 
 // MARK: ------------ extra routines for dial MIDI service -------------
 -(void)VideoDelayService:(NSString*)key{
+    
+    NSInteger d = [[NSUserDefaults standardUserDefaults]integerForKey:@"DialValueKey_103"];
+    // tcType
+    
+    double t = 0.041666;    // 24fps
+    
+    switch(self.getTcType){
+        case 0: break;
+        case 1: t = 0.040; break;
+        case 2: t = 0.03333; break;
+        case 3: t = 0.03333; break;
+            
+    }
+    
+    double videoDelaySeconds = (double) d * t / 2;
+    
+    [[NSUserDefaults standardUserDefaults] setDouble:videoDelaySeconds forKey:@"videoDelaySeconds"];
+    // because we don't know how to set a Swift static var from here
+    [_videoDelayWindowController setDelaySeconds:videoDelaySeconds];
+
     [_matrixWindowController refreshCrosspoints];
 }
 -(void)actorDirect:(NSString*)key{
@@ -5655,7 +5675,7 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
     // 2.10.02 'Link Comp, PB Routing' and 'Enable In/Past Switching'
     // make the states of the linked buttons follow
     
-    NSInteger state = [matrix toggleStates:(int)buttonTag];//[matrix stateForTag:buttonTag];
+    [matrix toggleStates:(int)buttonTag];//[matrix stateForTag:buttonTag];
     
 //    NSButton *button = [[NSButton alloc] init];
 //    button.tag = buttonTag;

@@ -26,7 +26,7 @@ struct CapturedFrame {
 class CaptureEngine: NSObject, @unchecked Sendable {
     
     private let logger = Logger()
-    var delaySeconds : Double = 0.0  // trying out publish/assign
+//    var delaySeconds : Double = 0.0  // trying out publish/assign
     
     private var stream: SCStream?
     private let videoSampleBufferQueue = DispatchQueue(label: "com.example.apple-samplecode.VideoSampleBufferQueue")

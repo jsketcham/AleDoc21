@@ -55,6 +55,10 @@ class VideoDelayWindowController : NSWindowController{
         self.screenRecorder = screenRecorder as? ScreenRecorder;
         
     }
+    @objc func setDelaySeconds(_ delaySeconds : Double){
+        // because we don't know how to set a Swift static var from Objc
+        PixelBufferDelay.delaySeconds = delaySeconds
+    }
 
 }
 // we don't know how to access this from objective c, see VideoDelayWindowController class

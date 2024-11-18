@@ -58,16 +58,16 @@ struct ConfigurationView: View {
                             }
                         }
                     }
-                    VStack(alignment: .leading, spacing: verticalLabelSpacing) {
-
-                        Text("video delay")
-                        TextField("Video delay seconds", value: $screenRecorder.videoDelaySeconds, format: .number)
-                            .textFieldStyle(.roundedBorder)
-                            .frame(width: 100)
-                            //.padding()
-
-                        Text("video delay \(screenRecorder.videoDelaySeconds).")
-                    }
+//                    VStack(alignment: .leading, spacing: verticalLabelSpacing) {
+//
+//                        Text("video delay")
+//                        TextField("Video delay seconds", value: $screenRecorder.videoDelaySeconds, format: .number)
+//                            .textFieldStyle(.roundedBorder)
+//                            .frame(width: 100)
+//                            //.padding()
+//
+//                        Text("video delay \(screenRecorder.videoDelaySeconds).")
+//                    }
 
                 }
                                 

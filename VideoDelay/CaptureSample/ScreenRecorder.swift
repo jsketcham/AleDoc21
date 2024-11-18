@@ -29,20 +29,21 @@ class ScreenRecorder: ObservableObject {
     
     @Published var isRunning = false
     
-    @Published var videoDelaySeconds = 0.0{
-        
-        didSet{
-            if videoDelaySeconds < 0.0 {
-                videoDelaySeconds = 0.0
-            }
-            
-            if videoDelaySeconds > 4.0{
-                videoDelaySeconds = 4.0
-            }
-            // rather than publish subscribe...
-//            UserDefaults.standard.setValue(videoDelaySeconds, forKey: "videoDelaySeconds")
-        }
-  }
+//    @Published var videoDelaySeconds = 0.0{
+//        
+//        didSet{
+//            if videoDelaySeconds < 0.0 {
+//                videoDelaySeconds = 0.0
+//            }
+//            
+//            if videoDelaySeconds > 4.0{
+//                videoDelaySeconds = 4.0
+//            }
+//            
+//            // a work around because we can't set this from objective c
+//            PixelBufferDelay.delaySeconds = videoDelaySeconds
+//        }
+//  }
     
     @Published var isFullScreen = false{
         didSet{

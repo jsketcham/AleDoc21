@@ -23,36 +23,36 @@ class PixelBufferDelay: NSObject {
     //
     var delayLine = [DelayItem]()
     var imageDelayLine = [ImageDelayItem]()
-    var delaySeconds = 0.0
+    static var delaySeconds : Double = 0.0
     
     override init() {
         super.init()
         
         // so we don't have to learn publish/subscribe
-        UserDefaults.standard.addObserver(self, forKeyPath: "videoDelaySeconds", context: nil)
-        delaySeconds = UserDefaults.standard.double(forKey: "videoDelaySeconds")
+//        UserDefaults.standard.addObserver(self, forKeyPath: "videoDelaySeconds", context: nil)
+//        PixelBufferDelay.delaySeconds = UserDefaults.standard.double(forKey: "videoDelaySeconds")
         print("PixelBufferDelay init")
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
-        if keyPath == "videoDelaySeconds"{
-//            print("set delaySeconds from observeValue")
-            delaySeconds = UserDefaults.standard.double(forKey: "videoDelaySeconds")
-            
-        }
-    }
+//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+//        
+//        if keyPath == "videoDelaySeconds"{
+////            print("set delaySeconds from observeValue")
+//            PixelBufferDelay.delaySeconds = UserDefaults.standard.double(forKey: "videoDelaySeconds")
+//            
+//        }
+//    }
     
     var delayCtr = 0
 
     func delay(_ pixelBuffer : CVPixelBuffer?){
         
         
-        if delaySeconds == 0.0{   // no delay, skip deep copies
+        if PixelBufferDelay.delaySeconds == 0.0{   // no delay, skip deep copies
             delayCtr = 0
             return
         }
-        let now = Date()
+//        let now = Date()
 
         if let pixelBuffer = pixelBuffer{
             delayLine.append(DelayItem(pixelBuffer: pixelBuffer.copy(),date: Date()))  // a deep copy
@@ -68,10 +68,10 @@ class PixelBufferDelay: NSObject {
         
         self.overWrite(pixelBuffer) // another deep copy
         
-        if delayCtr < 10{
-            delayCtr += 1
-            print("\(delayCtr) \(Date().timeIntervalSince(now))")
-        }
+//        if delayCtr < 10{
+//            delayCtr += 1
+//            print("\(delayCtr) \(Date().timeIntervalSince(now))")
+//        }
     }
     
     func getDelayed() -> CVPixelBuffer?{
@@ -83,19 +83,22 @@ class PixelBufferDelay: NSObject {
         // check that the last few delayed items are late
         // reduce bouncing, we expect to remove 1 item.
         
-        while Date().timeIntervalSince((delayLine.first?.date)!) > delaySeconds && delayLine.count > 1{
+        while Date().timeIntervalSince((delayLine.first?.date)!) > PixelBufferDelay.delaySeconds && delayLine.count > 1{
             
             delayLine.removeFirst() // the normal case, remove 1 item
             
             // if the next one is less than 20 ms, don't remove it
             // noise will ratchet down the delay line, then it will sit
-            if (Date().timeIntervalSince((delayLine.first?.date)!) - delaySeconds) < 0.02{
+            if (Date().timeIntervalSince((delayLine.first?.date)!) - PixelBufferDelay.delaySeconds) < 0.02{
                 break
             }
             
         }
 //        ctr += 1; ctr %= 60; if ctr == 0{print("delayLine.count \(delayLine.count)")}
-        UserDefaults.standard.set(delayLine.count, forKey: "delayLineCount")
+        
+        DispatchQueue.main.async{
+            UserDefaults.standard.set(self.delayLine.count, forKey: "delayLineCount")
+        }
         return delayLine.first?.pixelBuffer
     }
     var ctr = 0
@@ -140,7 +143,7 @@ class PixelBufferDelay: NSObject {
         // this has only a slight improvement over the 2 copy method, not worth the trouble
         // 4 ms for 2 copy, 3.3 ms for this
         
-        if delaySeconds == 0.0{   // no delay, skip deep copies
+        if PixelBufferDelay.delaySeconds == 0.0{   // no delay, skip deep copies
             delayCtr = 0
             return nil
         }
@@ -166,13 +169,13 @@ class PixelBufferDelay: NSObject {
         
         
         // remove items that are older than now plus delaySeconds
-        while Date().timeIntervalSince((imageDelayLine.first?.date)!) > delaySeconds && imageDelayLine.count > 1{
+        while Date().timeIntervalSince((imageDelayLine.first?.date)!) > PixelBufferDelay.delaySeconds && imageDelayLine.count > 1{
             
             imageDelayLine.removeFirst()
             
             // if the next one is less than 20 ms, don't remove it
             // noise will ratchet down the delay line, then it will sit
-            if (Date().timeIntervalSince((imageDelayLine.first?.date)!) - delaySeconds) < 0.02{
+            if (Date().timeIntervalSince((imageDelayLine.first?.date)!) - PixelBufferDelay.delaySeconds) < 0.02{
                 break
             }
 
