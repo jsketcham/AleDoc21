@@ -1663,7 +1663,6 @@ int ctr = 0;
     if([_matrixArray indexOfObject:matrix] == 2 && [[NSUserDefaults standardUserDefaults] boolForKey:@"linkRemoteActor"]){
         
         Matrix *dest = _matrixArray[5];
-        
         dest.followDelayedVideo = state;
         
     }
@@ -1671,33 +1670,9 @@ int ctr = 0;
     if([_matrixArray indexOfObject:matrix] == 3 && [[NSUserDefaults standardUserDefaults] boolForKey:@"linkRemoteEditor"]){
         
         Matrix *dest = _matrixArray[6];
-        
         dest.followDelayedVideo = state;
     }
 }
--(void)c:(bool) state :(Matrix*)matrix{
-    
-    // link Actor to Remote Actor
-    
-    if([_matrixArray indexOfObject:matrix] == 2 && [[NSUserDefaults standardUserDefaults] boolForKey:@"linkRemoteActor"]){
-        
-        //
-         Matrix *dest = _matrixArray[5];
-        dest.followDelayedVideo = state;
-
-    }
-    
-    // link Editor to Remote Editor
-    
-    if([_matrixArray indexOfObject:matrix] == 3 && [[NSUserDefaults standardUserDefaults] boolForKey:@"linkRemoteEditor"]){
-        
-        //
-        Matrix *dest = _matrixArray[6];
-        dest.followDelayedVideo = state;
-
-    }
-}
-
 
 #pragma mark
 #pragma mark ------------- AnnunciatorDelegate methods ---------------------
