@@ -68,7 +68,7 @@ class VideoDelayWindowController : NSWindowController{
         }
         
         UserDefaults.standard.setValue(delaySeconds, forKey: "videoDelaySeconds")
-        let aleDelegate : AleDelegate = NSApp.delegate as! AleDelegate
+        //let aleDelegate : AleDelegate = NSApp.delegate as! AleDelegate
         PixelBufferDelay.delaySeconds = delaySeconds
     }
 

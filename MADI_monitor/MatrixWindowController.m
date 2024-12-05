@@ -1658,6 +1658,23 @@ int ctr = 0;
 
     }
 }
+-(void)linkRemoteDelayedVideo:(bool) state :(Matrix*)matrix{
+    // 12/05/24 this routine was missing
+    if([_matrixArray indexOfObject:matrix] == 2 && [[NSUserDefaults standardUserDefaults] boolForKey:@"linkRemoteActor"]){
+        
+        Matrix *dest = _matrixArray[5];
+        
+        dest.followDelayedVideo = state;
+        
+    }
+    
+    if([_matrixArray indexOfObject:matrix] == 3 && [[NSUserDefaults standardUserDefaults] boolForKey:@"linkRemoteEditor"]){
+        
+        Matrix *dest = _matrixArray[6];
+        
+        dest.followDelayedVideo = state;
+    }
+}
 -(void)c:(bool) state :(Matrix*)matrix{
     
     // link Actor to Remote Actor
