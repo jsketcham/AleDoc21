@@ -108,6 +108,7 @@ NSLock *ioLock;
                           ,@"renameLastTrack:",@"jxaRenameLastTrack"
                           ,@"copyClipToComp:",@"copyClipToComp"
                           ,@"jxaCopyClipToComp:",@"jxaCopyClipToComp"
+                          ,@"jxaFoleyClip:",@"jxaFoleyClip"
                           ,@"copyClipToIndex:",@"copyClipToIndex"
                           ,@"getPreEdit:",@"getPreEdit"
                           //                          ,@"keyCode:",@"keyCode"
@@ -944,6 +945,32 @@ bool bInitializePtCtr = false;
     [delegate selectCurrentSixteenTrackMemory];
 
 }
+-(void)jxaFoleyClip:(NSArray*)msgArray{
+    
+    // from the script: result = trk  + "\t" + name + "\t" + startEnd
+    // 14 mono_103_02 01:02:10:14 01:02:10:14
+    
+    if(msgArray.count < 4){return;} // not enough fields
+    
+    if([msgArray[0] isEqualToString:@"-1"] ||
+       [msgArray[1] isEqualToString:@"-1"] ||
+       [msgArray[2] isEqualToString:@"-1"] ||
+       [msgArray[3] isEqualToString:@"-1"]){
+        
+        return; // an error was found by the script
+        
+    }
+    
+    NSString *trk       = msgArray[0];  // count up from bottom
+    NSString *name      = msgArray[1];
+    NSString *start     = msgArray[2];
+    NSString *end       = msgArray[3];
+    
+    AleDelegate *delegate = [NSApp delegate];
+    
+    [delegate.topDocument addCueWithTrackNameStartEnd: trk :name :start :end];
+
+}
 -(void)copyClipToComp:(NSArray*)msgArray{
     
 //    NSLog(@"copyClipToComp items in msgArray: %ld",msgArray.count);
@@ -1373,7 +1400,7 @@ NSTimer *recPlayTimer;
     NSCharacterSet *trimSet = [NSCharacterSet characterSetWithCharactersInString:@">\r\n"];
     msg = [msg stringByTrimmingCharactersInSet:trimSet];
     
-//    NSLog(@"rxMsg %@",msg);
+    //NSLog(@"rxMsg %@",msg);
     
     if(msg.length == 0) return;
     

@@ -248,6 +248,7 @@ enum{
 -(void)addRowToSelection: (NSString*)start :(NSString*)end :(NSString*)dialog;
 -(void)locateOrAddCue:(NSString*)cueID :(NSString*)start;
 -(void)addCueWithDialogAndStart:(NSString*) dialog :(NSString*)start;   // 2.10.02
+-(void)addCueWithTrackNameStartEnd:(NSString*)track : (NSString*)name :(NSString*)start :(NSString*)end;   // Foley
 
 #pragma mark -
 #pragma mark ---------------- additions for start/end dropdowns -----------------------

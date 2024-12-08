@@ -23,6 +23,7 @@
 		3238F6BA297B3AB30076DE3A /* DocLeftTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3238F6B9297B3AB30076DE3A /* DocLeftTableViewController.m */; };
 		3238F6BE297B3ADD0076DE3A /* DocRightTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3238F6BC297B3ADD0076DE3A /* DocRightTableViewController.m */; };
 		3238F6BF297B3ADD0076DE3A /* DocRightTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3238F6BD297B3ADD0076DE3A /* DocRightTableViewController.xib */; };
+		3241E2602D06245000410721 /* jxaFoleyClip.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 3241E25F2D06245000410721 /* jxaFoleyClip.scpt */; };
 		324D9AD629AC173500D750A8 /* ufxDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 324D9AD529AC173500D750A8 /* ufxDictionary.plist */; };
 		325F5D932AF5B00C00545514 /* cliclick in Resources */ = {isa = PBXBuildFile; fileRef = 325F5D922AF5B00C00545514 /* cliclick */; };
 		325F5DCA2AF5C00300545514 /* jxaRenameLastTrack.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 325F5D952AF5C00300545514 /* jxaRenameLastTrack.scpt */; };
@@ -218,6 +219,7 @@
 		3238F6BB297B3ADD0076DE3A /* DocRightTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocRightTableViewController.h; sourceTree = "<group>"; };
 		3238F6BC297B3ADD0076DE3A /* DocRightTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocRightTableViewController.m; sourceTree = "<group>"; };
 		3238F6BD297B3ADD0076DE3A /* DocRightTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocRightTableViewController.xib; sourceTree = "<group>"; };
+		3241E25F2D06245000410721 /* jxaFoleyClip.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jxaFoleyClip.scpt; sourceTree = "<group>"; };
 		324D9AD529AC173500D750A8 /* ufxDictionary.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ufxDictionary.plist; sourceTree = "<group>"; };
 		325F5D922AF5B00C00545514 /* cliclick */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = cliclick; sourceTree = "<group>"; };
 		325F5D952AF5C00300545514 /* jxaRenameLastTrack.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jxaRenameLastTrack.scpt; sourceTree = "<group>"; };
@@ -542,6 +544,7 @@
 				325F5DB62AF5C00300545514 /* wildSyncSelect2.scpt */,
 				325F5DB72AF5C00300545514 /* getPreEdit.scpt */,
 				325F5DB82AF5C00300545514 /* setDialog.scpt */,
+				3241E25F2D06245000410721 /* jxaFoleyClip.scpt */,
 				325F5DB92AF5C00300545514 /* jxaCopyClipToComp.scpt */,
 				325F5DBA2AF5C00300545514 /* armLastTrack.scpt */,
 				325F5DBB2AF5C00300545514 /* jxaSetDialog.scpt */,
@@ -1076,6 +1079,7 @@
 				325F5DF62AF5C00300545514 /* jxaGetProtoolsPosition.scpt in Resources */,
 				325F5DF22AF5C00300545514 /* pingProTools.scpt in Resources */,
 				325F5DD92AF5C00300545514 /* jxaPrerollOn.scpt in Resources */,
+				3241E2602D06245000410721 /* jxaFoleyClip.scpt in Resources */,
 				32DB425529734E2100573A3B /* PreferencesWindowController.xib in Resources */,
 				32DB41CF2973426F00573A3B /* Document.xib in Resources */,
 				325F5DDD2AF5C00300545514 /* playQuickTime.scpt in Resources */,

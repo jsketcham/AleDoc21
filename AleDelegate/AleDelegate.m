@@ -232,6 +232,7 @@ enum{
     NSError *error;
     NSDictionary *registrationDefaults = [NSDictionary dictionaryWithObjectsAndKeys://data,@"colorWells",
         [[NSNumber alloc]initWithBool:true],@"isFirstRun",
+        [[NSNumber alloc]initWithBool:true],@"incrTrack",
         [[NSNumber alloc]initWithBool:false],@"delayFullScreen",
         [[NSNumber alloc]initWithBool:true],@"delayExcludeApp",
 //        [[NSNumber alloc]initWithBool:false],@"screenRecorderChanged",   // we hate this
@@ -1051,8 +1052,11 @@ NSTimer *motionZoneTimer;
 -(void)incrementRecordTrack{
     
     Document *doc = self.topDocument;
+    
+    // 12/08/24 For Foley, don't increment the track after record
+    bool incrTrack = [[NSUserDefaults standardUserDefaults] boolForKey:@"incrTrack"];
 
-    if(doc == nil || !doc.recordCycleDictionary) return;
+    if(doc == nil || !doc.recordCycleDictionary || !incrTrack) return;
 
     NSString *track = [doc.recordCycleDictionary objectForKey:@"Track"];
     
@@ -1143,6 +1147,12 @@ NSTimer *motionZoneTimer;
 -(void)toggleProgressBarPerCue{
     // "progressBarPerCue"
     [[NSUserDefaults standardUserDefaults]setBool:(![[NSUserDefaults standardUserDefaults] boolForKey:@"progressBarPerCue"]) forKey:@"progressBarPerCue"];
+}
+-(void)foleyClipCapture{
+    
+    NSLog(@"foleyClipCapture");
+    [_adrClientWindowController txMsg:@"jxaFoleyClip"];
+    
 }
 
 //
@@ -2749,6 +2759,7 @@ NSInteger showSixteenTable[][2] = {{25,26},{27,28},{29,29},{30,30},{31,31},{32,3
                                        @"boomRecOnlineRemoteToggle",@"114",
                                        @"toggleProgressBar",@"122",
                                        @"toggleProgressBarPerCue",@"123",
+                                       @"foleyClipCapture",@"124",
 
                                        // skip 128 because XKeys uses -128 to signal -0
 
@@ -5652,6 +5663,18 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
                     break;
                 case 34:    // talkback D
                     _matrixWindowController.dimD = bytes[2] ? _matrixWindowController.dimD | DIM_MIDI_MASK : _matrixWindowController.dimD & ~DIM_MIDI_MASK;
+                    break;
+                
+                case 35:
+                    // Foley triggers, 12/07/24
+                    switch(bytes[2]){
+                        case 0:
+                            [self foleyClipCapture];
+                            break;
+                        default:
+                            break;
+                    }
+                    
                     break;
                 default:
                     break;

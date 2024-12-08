@@ -436,7 +436,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kY2-Jb-yiM">
-                                    <rect key="frame" x="195" y="52" width="89" height="22"/>
+                                    <rect key="frame" x="195" y="31" width="89" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" id="P6y-XB-AH7">
                                         <customFormatter key="formatter" id="d9k-3O-vYz" customClass="TCFormatter"/>
@@ -450,7 +450,7 @@
                                     </connections>
                                 </textField>
                                 <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kmr-zO-6io">
-                                    <rect key="frame" x="210" y="32" width="59" height="17"/>
+                                    <rect key="frame" x="210" y="11" width="59" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="TC Start" id="bAr-gh-Pfu">
                                         <font key="font" metaFont="system"/>
@@ -484,6 +484,17 @@
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
+                                <button toolTip="increment track number after recording a take" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gae-0q-aHC">
+                                    <rect key="frame" x="168" y="60" width="159" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Incr track after record" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="mdw-UZ-wlY">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.incrTrack" id="Ald-uf-y4E"/>
+                                    </connections>
+                                </button>
                             </subviews>
                         </view>
                         <constraints>

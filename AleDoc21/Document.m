@@ -1378,6 +1378,50 @@ enum{
     
 }
 
+-(void)addCueWithTrackNameStartEnd:(NSString*)track : (NSString*)name :(NSString*)start :(NSString*)end{
+    
+    NSMutableDictionary *dictionary = [self makeRowDictionary];
+    [_arrayController addObject:dictionary];    // 2.10.00, triggers binding
+
+    dictionary[@"Name"]     = name; // text describes the Foley cue
+    //dictionary[@"Dialog"]   = name; // text describes the Foley cue
+    dictionary[@"Start"]    = start;
+    dictionary[@"End"]      = end;
+
+    long trk = [track integerValue];    // count up from last track
+    
+    AleDelegate *aleDelegate = (AleDelegate *)[NSApp delegate];
+    bool show16 = [[NSUserDefaults standardUserDefaults] boolForKey:@"show16Tracks"];
+    
+    if(show16){
+        trk = (16 - trk) + 16 * (aleDelegate.currentTrack / 16);
+//        [aleDelegate setCurrentTrack:trk - 1];
+    }else{
+        trk = aleDelegate.currentTrack + 1;
+    }
+
+    dictionary[@"Track"]    = [NSString stringWithFormat:@"%ld",trk];
+
+    
+    // select the track
+
+    // scroll to last row
+    // http://stackoverflow.com/questions/1799728/how-to-make-nstableview-scroll-to-most-recently-added-row
+    
+    NSInteger numberOfRows = [_tableView numberOfRows];
+    
+    if(numberOfRows > 0){
+        
+        [_tableView scrollRowToVisible:numberOfRows - 1];
+        
+        // select the last row
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:numberOfRows - 1];
+        [_tableView selectRowIndexes:indexSet byExtendingSelection:false];
+        
+    }
+
+}
+
 -(void)addCueWithDialogAndStart:(NSString*) dialog :(NSString*)start{
     
     NSMutableDictionary *dictionary = [self makeRowDictionary];
