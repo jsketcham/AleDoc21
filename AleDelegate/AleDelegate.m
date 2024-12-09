@@ -2330,17 +2330,49 @@ NSInteger showSixteenTable[][2] = {{25,26},{27,28},{29,29},{30,30},{31,31},{32,3
     //    [self set16TrackLED];   // TODO: should this be here or in _matrixWindowController?
     
 }
--(void)toggleShowSixteen{
+NSTimer *toggleShowSixteenTimer;
+-(void)toggleShowSixteenTimerService{
     
-    // TODO: ask Evan why isn't showSixteenTracks:() and toggleShowSixteen() a single function?
-    // answer: because 'showSixteenTracks' shows 16 now, without toggling the state
-    bool state = [[NSUserDefaults standardUserDefaults] boolForKey:@"show16Tracks"];
-    state = state ? false : true;
-//    NSLog(@"show16Tracks %d",state);
-    [[NSUserDefaults standardUserDefaults] setBool:state forKey:@"show16Tracks"];
-    [self selectCurrentSixteenTrackMemory];             // show the tracks
+    // Foley needs to see either bank for capturing clips, long press
+    // don't call setCurrentTrack, that sets the 'Track' item in the current cue
+    // set the underlying value, though, so proper track memory bank is shown
+    _currentTrack = (_currentTrack + 16) % 32;   // show the other 16
+    [self selectCurrentSixteenTrackMemory];
+    //NSLog(@"toggleShowSixteenTimerService, currentTrack: %ld",_currentTrack);
 
-//    [_matrixWindowController setShow16Tracks:![_matrixWindowController show16Tracks]];
+}
+-(void)toggleShowSixteen:(NSEvent*)event{
+    
+    // long press shows the other bank
+    
+    bool isValid = toggleShowSixteenTimer && toggleShowSixteenTimer.isValid ? true : false;
+    
+    //NSLog(@"event.data1 %ld isValid %d",event.data1,isValid );
+    
+    if(toggleShowSixteenTimer){
+        [toggleShowSixteenTimer invalidate];
+    }
+    
+    if(event.data1 > 0){
+        
+        toggleShowSixteenTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(toggleShowSixteenTimerService) userInfo:nil repeats:false];
+    }else{
+        
+        if(isValid){    // trailing edge while timer is valid
+            
+            // TODO: ask Evan why isn't showSixteenTracks:() and toggleShowSixteen() a single function?
+            // answer: because 'showSixteenTracks' shows 16 now, without toggling the state
+            bool state = [[NSUserDefaults standardUserDefaults] boolForKey:@"show16Tracks"];
+            state = state ? false : true;
+        //    NSLog(@"show16Tracks %d",state);
+            [[NSUserDefaults standardUserDefaults] setBool:state forKey:@"show16Tracks"];
+            [self selectCurrentSixteenTrackMemory];             // show the tracks
+
+        //    [_matrixWindowController setShow16Tracks:![_matrixWindowController show16Tracks]];
+        }
+        
+    }
+    
 }
 //-(void)companionShowSixteen{
 //
@@ -2534,7 +2566,8 @@ NSInteger showSixteenTable[][2] = {{25,26},{27,28},{29,29},{30,30},{31,31},{32,3
                                                @"missingMethod:",@"59",
                                                @"missingMethod:",@"60",
                                                @"missingMethod:",@"61",
-                                               @"toggleShowSixteen",@"62",
+                                               @"toggleShowSixteen:",@"62",
+                                               @"toggleShowSixteen:",@"-62",
                                                @"missingMethod:",@"63",
                                                
                                                @"cleanupMono",@"64",
@@ -2629,7 +2662,8 @@ NSInteger showSixteenTable[][2] = {{25,26},{27,28},{29,29},{30,30},{31,31},{32,3
                                        
                                        @"recordToComposite:",@"32",
                                        @"pixShowHide:",@"33",
-                                       @"toggleShowSixteen",@"34",    //
+                                       @"toggleShowSixteen:",@"34",    //
+                                       @"toggleShowSixteen:",@"-34",    //
                                        @"overlayKey:",@"35",
                                        @"overlayKey:",@"-35",
 //                                       @"blackCueBlack",@"36",

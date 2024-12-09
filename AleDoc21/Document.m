@@ -1380,9 +1380,11 @@ enum{
 
 -(void)addCueWithTrackNameStartEnd:(NSString*)track : (NSString*)name :(NSString*)start :(NSString*)end{
     
+    AleDelegate *aleDelegate = (AleDelegate *)[NSApp delegate];
+    
     NSMutableDictionary *dictionary = [self makeRowDictionary];
     [_arrayController addObject:dictionary];    // 2.10.00, triggers binding
-
+    
     dictionary[@"Name"]     = name; // text describes the Foley cue
     //dictionary[@"Dialog"]   = name; // text describes the Foley cue
     dictionary[@"Start"]    = start;
@@ -1390,7 +1392,6 @@ enum{
 
     long trk = [track integerValue];    // count up from last track
     
-    AleDelegate *aleDelegate = (AleDelegate *)[NSApp delegate];
     bool show16 = [[NSUserDefaults standardUserDefaults] boolForKey:@"show16Tracks"];
     
     if(show16){

@@ -1122,6 +1122,7 @@ bool bInitializePtCtr = false;
     
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
 //    Document *doc = [delegate topDocument];
+    [delegate selectCurrentSixteenTrackMemory]; // sync what we see with _currentTrack, for capturing Foley clips   
     
 //    NSLog(@"getSession");
     if(msgArray.count < 1 || [[msgArray objectAtIndex:0]isEqualToString:@"-1"]){
@@ -1144,8 +1145,6 @@ bool bInitializePtCtr = false;
             
             delegate.matrixWindowController.sampleRateTag = 0;
         }
-        
-        
     }
 }
 // wait 1 second before selecting the new monitor format display
