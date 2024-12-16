@@ -401,6 +401,7 @@ enum{
         ,@"boomRecOnlineRemote" : @[@9,@114]
         ,@"enProgressBar" : @[@9,@122]
         ,@"progressBarPerCue" : @[@9,@123]
+        ,@"incrTrack" : @[@9,@125]
     };
       
     // add observers for checkbox changes
@@ -1153,6 +1154,10 @@ NSTimer *motionZoneTimer;
     NSLog(@"foleyClipCapture");
     [_adrClientWindowController txMsg:@"jxaFoleyClip"];
     
+}
+-(void)incrTrackAfterRec{
+    
+    [[NSUserDefaults standardUserDefaults] setBool:![[NSUserDefaults standardUserDefaults]boolForKey:@"incrTrack"] forKey:@"incrTrack"];
 }
 
 //
@@ -2794,6 +2799,7 @@ NSTimer *toggleShowSixteenTimer;
                                        @"toggleProgressBar",@"122",
                                        @"toggleProgressBarPerCue",@"123",
                                        @"foleyClipCapture",@"124",
+                                       @"incrTrackAfterRec",@"125",
 
                                        // skip 128 because XKeys uses -128 to signal -0
 
