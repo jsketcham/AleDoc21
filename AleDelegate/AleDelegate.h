@@ -308,4 +308,5 @@ enum{
 -(void)midiToOsc:(NSData*)data :(NSString*)title;
 -(void)actorDirect:(NSString*)key;
 -(void)dialAccessoryRefresh;
+-(void)foleyClipCapture;
 @end

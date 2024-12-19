@@ -38,8 +38,11 @@ let COLOR_RED_BLINK = UInt8(0xb)
     @objc func txOsc(_ str : String)
     @objc func toggleMatrixButton(_ index : Int, _ buttonTag : Int)
     @objc func getMatrixButton(_ index : Int, _ buttonTag : Int)->Bool
-    @objc func accessoryService(_ data : NSData)
-    
+    //@objc func accessoryService(_ data : NSData)
+    @objc func controlChangeService(_ data : NSData)
+    @objc func noteOnService(_ data : NSData)
+    @objc func noteOffService(_ data : NSData)
+
 }
 
 @objc class LpMini: NSObject {
@@ -1005,7 +1008,7 @@ extension LpMini :SwiftMidiDelegate{
             // accessoryService
             let data = NSData(bytes: midi, length: midi.count)
             DispatchQueue.main.async { [] in
-                self.delegate?.accessoryService(data)
+                self.delegate?.noteOnService(data)
             }
             
         }else if midi[2] == 0x7f{   // leading edge
@@ -1021,6 +1024,15 @@ extension LpMini :SwiftMidiDelegate{
         
     }
     func noteOffService(_ midi : [UInt8], _ sender : SwiftMidi){
+        
+        if sender == accMidi{
+            // accessoryService
+            let data = NSData(bytes: midi, length: midi.count)
+            DispatchQueue.main.async { [] in
+                self.delegate?.noteOnService(data)
+            }
+            
+        }
     }
     func controlChangeService(_ midi : [UInt8], _ sender : SwiftMidi){
         
@@ -1031,7 +1043,7 @@ extension LpMini :SwiftMidiDelegate{
             // accessoryService
             let data = NSData(bytes: midi, length: midi.count)
             DispatchQueue.main.async { [] in
-                self.delegate?.accessoryService(data)
+                self.delegate?.controlChangeService(data)
             }
             
         }else if midi[2] == 0x7f{   // LP Mini key leading edge

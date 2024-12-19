@@ -5683,8 +5683,13 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
 
 #pragma mark -
 #pragma mark ----------- AccessoryDelegate -----------------
-
--(void)accessoryService:(NSData*)data{
+-(void)noteOnService:(NSData*)data{
+    
+}
+-(void)noteOffService:(NSData*)data{
+    
+}
+-(void)controlChangeService:(NSData*)data{
     
     unsigned char bytes[data.length];
     [data getBytes:bytes length:data.length];

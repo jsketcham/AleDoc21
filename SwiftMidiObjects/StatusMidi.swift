@@ -38,7 +38,46 @@ extension StatusMidi :SwiftMidiDelegate{
             }
         }        
     }
+    @objc func controlChangeService(_ midi : [UInt8], _ sender : SwiftMidi){
+        //12/19/24
+        
+        guard let aleDelegate = NSApp.delegate as? AleDelegate else{
+            return
+        }
+        switch midi[0]{
+        case 176:
+            
+            switch(midi[1]){
 
-    
+            case 0:
+
+                aleDelegate.foleyClipCapture()
+
+                break
+                
+            case 1:
+                
+                if midi[2] < 3{
+                    
+                    aleDelegate.matrixWindowController.rehRecPb = Int32(midi[2])
+
+                }
+                
+                break
+                
+            case 2:
+                
+                aleDelegate.cycleButton()
+                
+                break
+                    
+            default: 
+                break
+            }
+            
+            break
+        default: break
+        }
+    }
 }
 
