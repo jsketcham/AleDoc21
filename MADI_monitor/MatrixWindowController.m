@@ -64,8 +64,7 @@
 #define SEND_FADER_TIMEOUT 0.05
 
 // tricky bit to change to ahead monitoring after a delay (protools does not stop as fast as we switch)
-#define AHEAD_MONITOR_DELAY 0.5
-#define MODE_MONITOR_DELAY 1.0
+#define MODE_MONITOR_DELAY 1.0  // FIXME: not used
 
 #define ROW_KEY @"row"
 #define COL_KEY @"col"
@@ -100,8 +99,7 @@
 @property (weak) IBOutlet NSBox *talkbackBox;
 @property (weak) IBOutlet NSSlider *tb2Slider;
 @property (weak) IBOutlet NSTextField *tb2Label;
-@property NSTimer *aheadMonitorTimer;
-@property NSTimer *modeMonitorTimer;
+@property NSTimer *modeMonitorTimer;    // FIXME: not used
 //@property NSTimer *playStopTimer;   // debounce MIDI play/stop transition
 @property NSTimer *madiTcpRestartTimer;
 @property (strong) IBOutlet NSComboBox *boomRecorderFrameRateCombo;

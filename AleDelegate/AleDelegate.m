@@ -5086,11 +5086,17 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 -(bool)overlay{
     return _overlay;
 }
+
+#define AHEAD_MONITOR_DELAY 0.5
+NSTimer *motionIdleTimer;
+-(void)motionIdleTimerService{
+    NSLog(@"motionIdleTimerService");
+    self.cycleMotion = CYCLE_MOTION_IDLE;
+}
+
 -(void)setCycleMode:(NSInteger)cycleMode{
     
     NSInteger lastValue = _cycleMode;
-    
-    NSLog(@"setCycleMode %ld -> %ld",(long)_cycleMode,cycleMode);
     
     _cycleMode = cycleMode;
 
@@ -5111,11 +5117,20 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
                 
                 [_matrixWindowController cueToTrimFrames];      // a sequencer
                 break;
+            case CYCLE_MODE_FINALIZE_RECORD:
+                // delay audio switching if CYCLE_MODE_FINALIZE_RECORD
+                // Tami found the phfft
+                NSLog(@"delayed monitor switching to AHEAD");
+                motionIdleTimer = [NSTimer scheduledTimerWithTimeInterval:AHEAD_MONITOR_DELAY target:self selector:@selector(motionIdleTimerService) userInfo:nil repeats:false];
+                break;
             default:
                 self.cycleMotion = CYCLE_MOTION_IDLE;
                 break;
         }
     }
+    
+    NSLog(@"setCycleMode %ld -> %ld",lastValue,(long)_cycleMode);
+
 }
 
 -(NSInteger)cycleMode{
@@ -5135,11 +5150,11 @@ int cycleColor = 0x8080FF;
 int cycleStopColor = 0x000080;
 int btnOffColor = 0x404040;
 
+
 -(void)setCycleMotion:(NSInteger)cycleMotion{
     
-    NSLog(@"setCycleMotion %ld -> %ld",_cycleMotion,cycleMotion);
-// tickle github
     NSInteger lastValue = _cycleMotion;
+    
     _cycleMotion = cycleMotion;
     [self sendMidiToClosure];   // 1.00.12
     NSString *txt = @"Cycle";
@@ -5181,7 +5196,7 @@ int btnOffColor = 0x404040;
     switch(cycleMotion){
         case CYCLE_MOTION_IDLE:
             [_overlayWindowController.viewController.streamer cancelAllStreamers];
-            _matrixWindowController.aheadInPast = MODE_AHEAD;   // 2.00.00 no longer using timeout
+            _matrixWindowController.aheadInPast = MODE_AHEAD;   // 2.00.00 no longer 
             switch(_matrixWindowController.rehRecPb){
                 case MODE_CONTROL_REHEARSE_PENDING:
                     _matrixWindowController.rehRecPb = MODE_CONTROL_REHEARSE;
@@ -5214,6 +5229,9 @@ int btnOffColor = 0x404040;
     if(lastValue == CYCLE_MOTION_PENDING && _cycleMotion == CYCLE_MOTION_IDLE){
         [self cycleButton];
     }
+    NSLog(@"setCycleMotion %ld -> %ld",lastValue,_cycleMotion);
+// tickle github
+
 }
 -(NSInteger)cycleMotion{
     return _cycleMotion;

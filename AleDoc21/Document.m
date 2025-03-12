@@ -934,7 +934,7 @@ enum{
 //    self.readUrl = nil; // for auto retry when encoding is changed
     
     NSError *error;
-    NSMutableArray *colTitles;
+    NSMutableArray *colTitles = [[NSMutableArray alloc]init];
     NSMutableArray *tableContents = [[NSMutableArray alloc]init];
     
     NSString *fileContents = [NSString stringWithContentsOfURL:url encoding:encoding error:&error];
@@ -964,6 +964,35 @@ enum{
     
     // .TAB and .TXT files start with the column titles
     int ale_state = hasHeader ? ALE_STATE_IDLE : ALE_STATE_COLUMN;
+    
+    bool hasColTitles = [[NSUserDefaults standardUserDefaults]boolForKey:@"hasColumnTitles"];
+    
+    if(!hasColTitles){
+        // read the first line to get the number of columns
+        for(NSString *str in strs){
+            
+            NSString *s = [str stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+            
+            if(s.length == 0){continue;}
+            // the first string that we believe is an ALE data record
+            
+            NSArray *array = [s componentsSeparatedByString:@"\t"];
+            
+            for(int i = 0; i < array.count; i++){
+                
+                [colTitles addObject:[NSString stringWithFormat:@"col %d", i + 1]];
+                
+            }
+            [colTitles addObject:@"Take"];
+            [colTitles addObject:@"Track"]; // mandatory columns
+
+            self.colTitles = colTitles;
+            
+            ale_state = ALE_STATE_DATA;
+            break;
+
+        }
+    }
     
     NSMutableDictionary *headerDictionary = [[NSMutableDictionary alloc]init];
     NSMutableDictionary *dictionary;
@@ -1025,7 +1054,7 @@ enum{
             default: return false;
         }
     }
-    // tickle for github
+   
     if(ale_state == ALE_STATE_DATA){
         
         // add 'Take' to colTitles if missing   2.10.02
