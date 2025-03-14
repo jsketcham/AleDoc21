@@ -413,7 +413,7 @@ enum{
                                                    context:NULL];
     }
     // 12/07/23 other observers
-    NSArray *otherKeys = @[@"motionZoneByte"];
+    NSArray *otherKeys = @[@"motionZoneByte",@"hasColumnTitles"];
     
     for(NSString *key in otherKeys){
         
@@ -531,7 +531,37 @@ NSTimer *motionZoneTimer;
             default:
                 break;
         }
-    }
+    }if([keyPath isEqualToString:@"hasColumnTitles"]){
+        
+//        bool hasColumnTitles = [[NSUserDefaults standardUserDefaults]boolForKey:@"hasColumnTitles"];
+//        // TODO: figuring out why we can't set column titles w/o crashing
+//        
+//        // this opens a new document, bad idea if there are unsaved changes
+//        
+//        Document *top = [self topDocument];
+//        
+//        NSMenu *mm;
+//        NSMenu *fileMenu;
+//        NSMenuItem *newItem;
+//        
+//        if(hasColumnTitles){
+//            
+//            mm = [NSApp mainMenu];
+//            if(mm){fileMenu = [[mm itemWithTitle:@"File"] submenu];}
+//            if(fileMenu){newItem = [fileMenu itemWithTitle:@"New"];}
+//            
+//            if(newItem){
+//                NSLog(@"newItem");
+//                NSUInteger idx = [[[newItem menu] itemArray] indexOfObject:newItem];
+//                [[newItem menu] performActionForItemAtIndex:idx];
+//                
+//                if(top){
+//                    [top close];
+//                }
+//            }
+//        }
+    
+    }//hasColumnTitles
     
     if(setLEDForUnitIDDictionary[keyPath]){
         

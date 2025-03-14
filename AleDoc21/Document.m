@@ -986,7 +986,7 @@ enum{
             [colTitles addObject:@"Take"];
             [colTitles addObject:@"Track"]; // mandatory columns
 
-            self.colTitles = colTitles;
+//            self.colTitles = colTitles;   // causes a crash on next drag/drop if we set hasColTitles
             
             ale_state = ALE_STATE_DATA;
             break;
