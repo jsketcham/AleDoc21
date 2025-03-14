@@ -2354,7 +2354,7 @@ NSTimer *rehRecPbOneshotTimer;
         
         double monitorDelay = [[NSUserDefaults standardUserDefaults] doubleForKey:@"monitorDelay"];
         
-//        NSLog(@"triggering rehRecPbOneshot, delay %3.2f",monitorDelay);
+        NSLog(@"triggering rehRecPbOneshot, delay %3.2f",monitorDelay);
 
         
         // delay in cycle monitor switching 9/05/23

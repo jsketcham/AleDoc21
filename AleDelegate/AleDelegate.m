@@ -5117,12 +5117,13 @@ NSTimer *motionIdleTimer;
                 
                 [_matrixWindowController cueToTrimFrames];      // a sequencer
                 break;
-            case CYCLE_MODE_FINALIZE_RECORD:
-                // delay audio switching if CYCLE_MODE_FINALIZE_RECORD
-                // Tami found the phfft
-                NSLog(@"delayed monitor switching to AHEAD");
-                motionIdleTimer = [NSTimer scheduledTimerWithTimeInterval:AHEAD_MONITOR_DELAY target:self selector:@selector(motionIdleTimerService) userInfo:nil repeats:false];
-                break;
+                // Tami delay needs to be in switching to REHEARSE
+//            case CYCLE_MODE_FINALIZE_RECORD:
+//                // delay audio switching if CYCLE_MODE_FINALIZE_RECORD
+//                // Tami found the phfft
+//                NSLog(@"delayed monitor switching to AHEAD");
+//                motionIdleTimer = [NSTimer scheduledTimerWithTimeInterval:AHEAD_MONITOR_DELAY target:self selector:@selector(motionIdleTimerService) userInfo:nil repeats:false];
+//                break;
             default:
                 self.cycleMotion = CYCLE_MOTION_IDLE;
                 break;

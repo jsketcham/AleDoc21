@@ -41,6 +41,8 @@ extension StatusMidi :SwiftMidiDelegate{
     @objc func controlChangeService(_ midi : [UInt8], _ sender : SwiftMidi){
         //12/19/24
         
+        return; // FIXME: 03/14/25 temp commented out the Foley addition, testing Tami 'has column titles' fix
+        
         guard let aleDelegate = NSApp.delegate as? AleDelegate else{
             return
         }
