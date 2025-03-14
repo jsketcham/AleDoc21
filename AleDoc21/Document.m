@@ -142,7 +142,7 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
         _columnSynonymDictionary = @{@"Name":@[@"CUEID",@"CONSOLIDATED LINE NUMBER"],   // scene name is not a synonym
                               @"Start":@[@"IN",@"START TIME",@"TIME IN"],
                               @"End":@[@"OUT",@"END TIME",@"TIME OUT"],
-                              @"Dialog":@[@"DIALOGUE",@"LINE"],
+                              @"Dialog":@[@"DIALOGUE",@"LINE TO"],  // 03/14/25
                               @"Character":@[@"CHARACTER NAME",@"ACTOR"],
                               @"Notes":@[@"PUBLIC NOTES",@"DIRECTOR'S NOTE"]};
         
@@ -945,7 +945,7 @@ enum{
         return false;
     }
         
-    fileContents = [fileContents stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+    fileContents = [fileContents stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \r\n"]];
     
     NSArray *strs;
 
@@ -971,7 +971,7 @@ enum{
         // read the first line to get the number of columns
         for(NSString *str in strs){
             
-            NSString *s = [str stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+            NSString *s = [str stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \r\n"]];
             
             if(s.length == 0){continue;}
             // the first string that we believe is an ALE data record
@@ -999,7 +999,7 @@ enum{
     
     for(NSString *str in strs){
         
-        NSString *s = [str stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+        NSString *s = [str stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \r\n"]];
         
         if(s.length == 0){continue;}
         
