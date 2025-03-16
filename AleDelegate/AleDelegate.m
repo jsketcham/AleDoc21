@@ -413,7 +413,7 @@ enum{
                                                    context:NULL];
     }
     // 12/07/23 other observers
-    NSArray *otherKeys = @[@"motionZoneByte",@"hasColumnTitles"];
+    NSArray *otherKeys = @[@"motionZoneByte"/*,@"hasColumnTitles"*/];
     
     for(NSString *key in otherKeys){
         
@@ -531,7 +531,8 @@ NSTimer *motionZoneTimer;
             default:
                 break;
         }
-    }if([keyPath isEqualToString:@"hasColumnTitles"]){
+    }
+//    if([keyPath isEqualToString:@"hasColumnTitles"]){
         
 //        bool hasColumnTitles = [[NSUserDefaults standardUserDefaults]boolForKey:@"hasColumnTitles"];
 //        // TODO: figuring out why we can't set column titles w/o crashing
@@ -561,7 +562,7 @@ NSTimer *motionZoneTimer;
 //            }
 //        }
     
-    }//hasColumnTitles
+//    }//hasColumnTitles
     
     if(setLEDForUnitIDDictionary[keyPath]){
         

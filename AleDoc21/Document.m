@@ -121,6 +121,33 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
 @synthesize encodingKey = _encodingKey;
 @synthesize notes = _notes;
 
+NSArray *wbColTitles = @[
+           @"Name",
+           @"Start",
+           @"End",
+           @"Character",
+           @"Dialog",
+           @"Notes",
+           @"Take",
+           @"Track",
+           @"Aux1",
+           @"Aux2",
+           @"Aux3",
+           @"Aux4",
+           @"Aux5",
+           @"Aux6",
+           @"Aux7",
+           @"Aux8",
+           @"Aux9",
+           @"Aux10",
+           @"Aux11",
+           @"Aux12",
+           @"Aux13",
+           @"Aux14",
+           @"Aux15",
+           @"Aux16"
+];
+
 //@synthesize streamerEnable = _streamerEnable;
 
 //@synthesize lastCycleRowDictionary = _lastCycleRowDictionary;
@@ -139,7 +166,7 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
         // 10/11/23 2.10.02 changed test to 'hasPrefix' because there is
         // a customer who has both tc and ft/fr cue sheets, 'Time In'
         // and 'Time Out' works for both cases
-        _columnSynonymDictionary = @{@"Name":@[@"CUEID",@"CONSOLIDATED LINE NUMBER"],   // scene name is not a synonym
+        _columnSynonymDictionary = @{@"Name":@[@"CUEID",@"CONSOLIDATED LINE NUMBER",@"LINE NUMBER"],   // scene name is not a synonym
                               @"Start":@[@"IN",@"START TIME",@"TIME IN"],
                               @"End":@[@"OUT",@"END TIME",@"TIME OUT"],
                               @"Dialog":@[@"DIALOGUE",@"LINE TO"],  // 03/14/25
@@ -240,51 +267,58 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
     [_tableView registerForDraggedTypes:[NSArray arrayWithObjects:NSPasteboardTypeString,NSPasteboardTypeFileURL,NSPasteboardTypeURL,nil]];
 
     // left table
+    
+    self.titles = [[NSMutableArray alloc] init];
+    for(int i = 0; i < wbColTitles.count; i++){
+        [self.titles addObject:@{@"wbTitle":wbColTitles[i],       
+                                 @"clientTitle":wbColTitles[i] }];
+    }
 
-    self.titles = [[NSMutableArray alloc]initWithArray:@[
-                @{@"wbTitle":@"Name",       @"clientTitle":@"Name"      },
-                @{@"wbTitle":@"Start",      @"clientTitle":@"Start"     },
-                @{@"wbTitle":@"End",        @"clientTitle":@"End"       },
-                @{@"wbTitle":@"Character",  @"clientTitle":@"Character" },
-                @{@"wbTitle":@"Dialog",     @"clientTitle":@"Dialog"    },
-                @{@"wbTitle":@"Notes",      @"clientTitle":@"Notes"     },
-                @{@"wbTitle":@"Take",       @"clientTitle":@"Take"      },
-                @{@"wbTitle":@"Track",      @"clientTitle":@"Track"     },
-                @{@"wbTitle":@"Aux1",       @"clientTitle":@"Aux1"      },
-                @{@"wbTitle":@"Aux2",       @"clientTitle":@"Aux2"      },
-                @{@"wbTitle":@"Aux3",       @"clientTitle":@"Aux3"      },
-                @{@"wbTitle":@"Aux4",       @"clientTitle":@"Aux4"      }]];
+//    self.titles = [[NSMutableArray alloc]initWithArray:@[
+//                @{@"wbTitle":wbColTitles[0],       @"clientTitle":wbColTitles[0] },
+//                @{@"wbTitle":wbColTitles[1],       @"clientTitle":wbColTitles[1] },
+//                @{@"wbTitle":wbColTitles[2],       @"clientTitle":wbColTitles[2] },
+//                @{@"wbTitle":wbColTitles[3],       @"clientTitle":wbColTitles[3] },
+//                @{@"wbTitle":wbColTitles[4],       @"clientTitle":wbColTitles[4] },
+//                @{@"wbTitle":wbColTitles[5],       @"clientTitle":wbColTitles[5] },
+//                @{@"wbTitle":wbColTitles[6],       @"clientTitle":wbColTitles[6] },
+//                @{@"wbTitle":wbColTitles[7],       @"clientTitle":wbColTitles[7] },
+//                @{@"wbTitle":wbColTitles[8],       @"clientTitle":wbColTitles[8] },
+//                @{@"wbTitle":wbColTitles[9],       @"clientTitle":wbColTitles[9] },
+//                @{@"wbTitle":wbColTitles[10],      @"clientTitle":wbColTitles[10]},
+//                @{@"wbTitle":wbColTitles[11],      @"clientTitle":wbColTitles[11]},
+//                @{@"wbTitle":wbColTitles[12],      @"clientTitle":wbColTitles[12]},
+//                @{@"wbTitle":wbColTitles[13],      @"clientTitle":wbColTitles[13]},
+//                @{@"wbTitle":wbColTitles[14],      @"clientTitle":wbColTitles[14]},
+//                @{@"wbTitle":wbColTitles[15],      @"clientTitle":wbColTitles[15]}]];
         
     // right table
-        
-    self.clientTitles = [[NSMutableArray alloc]initWithArray:@[
-                @{@"clientTitle":@"Name"        },
-                @{@"clientTitle":@"Start"       },
-                @{@"clientTitle":@"End"         },
-                @{@"clientTitle":@"Character"   },
-                @{@"clientTitle":@"Dialog"      },
-                @{@"clientTitle":@"Notes"       },
-                @{@"clientTitle":@"Take"        },
-                @{@"clientTitle":@"Track"       },
-                @{@"clientTitle":@"Aux1"        },
-                @{@"clientTitle":@"Aux2"        },
-                @{@"clientTitle":@"Aux3"        },
-                @{@"clientTitle":@"Aux4"        }]];
+    self.clientTitles = [[NSMutableArray alloc] init];
+    for(int i = 0; i < wbColTitles.count; i++){
+        [self.clientTitles arrayByAddingObject:@{@"clientTitle":wbColTitles[i] }];
+    }
+
+//    self.clientTitles = [[NSMutableArray alloc]initWithArray:@[
+//                @{@"clientTitle":wbColTitles[0] },
+//                @{@"clientTitle":wbColTitles[1] },
+//                @{@"clientTitle":wbColTitles[2] },
+//                @{@"clientTitle":wbColTitles[3] },
+//                @{@"clientTitle":wbColTitles[4] },
+//                @{@"clientTitle":wbColTitles[5] },
+//                @{@"clientTitle":wbColTitles[6] },
+//                @{@"clientTitle":wbColTitles[7] },
+//                @{@"clientTitle":wbColTitles[8] },
+//                @{@"clientTitle":wbColTitles[9] },
+//                @{@"clientTitle":wbColTitles[10]},
+//                @{@"clientTitle":wbColTitles[11]},
+//                @{@"clientTitle":wbColTitles[12]},
+//                @{@"clientTitle":wbColTitles[13]},
+//                @{@"clientTitle":wbColTitles[14]},
+//                @{@"clientTitle":wbColTitles[15]}]];
     
-     self.colTitles = @[
-                @"Name",
-                @"Start",
-                @"End",
-                @"Character",
-                @"Dialog",
-                @"Notes",
-                @"Take",
-                @"Track",
-                @"Aux1",
-                @"Aux2",
-                @"Aux3",
-                @"Aux4"
-     ];   // initializes tableview columns
+    self.colTitles = wbColTitles;   // initializes tableview columns
+    
+   // [self onHasColumnTitles:self];  // FIXME: working on hasColumnTitles logic
     
     //
 
@@ -310,11 +344,14 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
 }
 
 -(void)removeAllColumns{
-    
-    NSArray *cols = [[_tableView tableColumns] copy];   // immutable copy (not a ref to [_tableView tableColumns])
-    
-    for(int i = 0; i < cols.count; i++) [_tableView removeTableColumn:[cols objectAtIndex:i]];
-    
+        
+    while([[_tableView tableColumns] count] > 0) {
+        [_tableView removeTableColumn:[[_tableView tableColumns] lastObject]];
+    }
+
+    // _arrayController remove observers
+    // _arrayController remove bindings
+
 }
 -(void)addBoundColumn:(NSString*)colName{
     
@@ -346,7 +383,6 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
     
     [col bind:@"value" toObject:_arrayController withKeyPath:keyPath options:nil];
     [_arrayController addObserver:col forKeyPath:colName options:NSKeyValueObservingOptionNew context:nil];
-    
 
 }
 
@@ -964,36 +1000,21 @@ enum{
     
     // .TAB and .TXT files start with the column titles
     int ale_state = hasHeader ? ALE_STATE_IDLE : ALE_STATE_COLUMN;
-    
+
     bool hasColTitles = [[NSUserDefaults standardUserDefaults]boolForKey:@"hasColumnTitles"];
     
-    if(!hasColTitles){
-        // read the first line to get the number of columns
-        for(NSString *str in strs){
-            
-            NSString *s = [str stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \r\n"]];
-            
-            if(s.length == 0){continue;}
-            // the first string that we believe is an ALE data record
-            
-            NSArray *array = [s componentsSeparatedByString:@"\t"];
-            
-            for(int i = 0; i < array.count; i++){
-                
-                [colTitles addObject:[NSString stringWithFormat:@"col %d", i + 1]];
-                
-            }
-            [colTitles addObject:@"Take"];
-            [colTitles addObject:@"Track"]; // mandatory columns
-
-//            self.colTitles = colTitles;   // causes a crash on next drag/drop if we set hasColTitles
-            
-            ale_state = ALE_STATE_DATA;
-            break;
-
-        }
-    }
+    if(!hasColTitles && !hasHeader){
+        // use the wb col titles, will show up as col1 - coln in the right-hand table
+        colTitles = [[NSMutableArray alloc] init];
     
+        // try using Auxn
+        for(int i = 0; i < 16; i++){
+            [colTitles addObject:[NSString stringWithFormat:@"Aux%d",i + 1]];
+        }
+        //self.colTitles = colTitles; // CRASHES
+        ale_state = ALE_STATE_DATA;
+    }
+ 
     NSMutableDictionary *headerDictionary = [[NSMutableDictionary alloc]init];
     NSMutableDictionary *dictionary;
     
@@ -1030,10 +1051,15 @@ enum{
                     ale_state = ALE_STATE_DATA;
                     break;
                 }
-                // replace ' ' with '_' in titles, replace synonyms
-//                array = [[s stringByReplacingOccurrencesOfString:@" " withString:@"_"] componentsSeparatedByString:@"\t"];
+                
+                if(array.count == 0){break;}
                 
                 colTitles = [[NSMutableArray alloc]initWithArray: array];
+                
+                // 03/16/25 we saw an extra tab in the MYWS_0225_ADR CUES_all.txt sample
+                while([[colTitles lastObject] isEqualToString:@""]){
+                    [colTitles removeLastObject];
+                }
                 
                 if(!hasHeader){ale_state = ALE_STATE_DATA;} // .TAB and .TXT case
 
@@ -1041,13 +1067,13 @@ enum{
             case ALE_STATE_DATA:
                 
                 dictionary = [[NSMutableDictionary alloc]init];
-
+                
                 for(i = 0; i < colTitles.count; i++){
                     
                     dictionary[colTitles[i]] = array.count > i ? array[i] : @"";
                     
                 }
-                
+
                 [tableContents addObject:dictionary];
                 
                 break;
@@ -3529,4 +3555,40 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     }
 }
 
+#pragma mark -------------- actions ------------------
+
+- (IBAction)onHasColumnTitles:(id)sender {
+    
+    bool hasColTitles = [[NSUserDefaults standardUserDefaults]boolForKey:@"hasColumnTitles"];
+    
+    NSArray *colTitles = @[
+               @"Name",
+               @"Start",
+               @"End",
+               @"Character",
+               @"Dialog",
+               @"Notes",
+               @"Take",
+               @"Track",
+               @"Aux1",
+               @"Aux2",
+               @"Aux3",
+               @"Aux4",
+               @"Aux5",
+               @"Aux6",
+               @"Aux7",
+               @"Aux8"
+    ];
+    
+    NSArray *cols = [_tableView tableColumns];
+    
+    for(int i = 0; i < cols.count; i++){
+        
+        ((NSTableColumn*)cols[i]).title = hasColTitles ? (i < colTitles.count ? colTitles[i] : @"not used") : [NSString stringWithFormat:@"col %d",i + 1];
+    }
+    
+    [_tableView reloadData];
+
+    
+}
 @end
