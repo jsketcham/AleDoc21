@@ -3559,35 +3559,9 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 
 - (IBAction)onHasColumnTitles:(id)sender {
     
-    bool hasColTitles = [[NSUserDefaults standardUserDefaults]boolForKey:@"hasColumnTitles"];
-    
-    NSArray *colTitles = @[
-               @"Name",
-               @"Start",
-               @"End",
-               @"Character",
-               @"Dialog",
-               @"Notes",
-               @"Take",
-               @"Track",
-               @"Aux1",
-               @"Aux2",
-               @"Aux3",
-               @"Aux4",
-               @"Aux5",
-               @"Aux6",
-               @"Aux7",
-               @"Aux8"
-    ];
-    
-    NSArray *cols = [_tableView tableColumns];
-    
-    for(int i = 0; i < cols.count; i++){
-        
-        ((NSTableColumn*)cols[i]).title = hasColTitles ? (i < colTitles.count ? colTitles[i] : @"not used") : [NSString stringWithFormat:@"col %d",i + 1];
+    if(self.readUrl){
+        [self readAle:self.readUrl];
     }
-    
-    [_tableView reloadData];
 
     
 }
