@@ -268,53 +268,38 @@ NSArray *wbColTitles = @[
 
     // left table
     
-    self.titles = [[NSMutableArray alloc] init];
-    for(int i = 0; i < wbColTitles.count; i++){
-        [self.titles addObject:@{@"wbTitle":wbColTitles[i],       
-                                 @"clientTitle":wbColTitles[i] }];
-    }
-
-//    self.titles = [[NSMutableArray alloc]initWithArray:@[
-//                @{@"wbTitle":wbColTitles[0],       @"clientTitle":wbColTitles[0] },
-//                @{@"wbTitle":wbColTitles[1],       @"clientTitle":wbColTitles[1] },
-//                @{@"wbTitle":wbColTitles[2],       @"clientTitle":wbColTitles[2] },
-//                @{@"wbTitle":wbColTitles[3],       @"clientTitle":wbColTitles[3] },
-//                @{@"wbTitle":wbColTitles[4],       @"clientTitle":wbColTitles[4] },
-//                @{@"wbTitle":wbColTitles[5],       @"clientTitle":wbColTitles[5] },
-//                @{@"wbTitle":wbColTitles[6],       @"clientTitle":wbColTitles[6] },
-//                @{@"wbTitle":wbColTitles[7],       @"clientTitle":wbColTitles[7] },
-//                @{@"wbTitle":wbColTitles[8],       @"clientTitle":wbColTitles[8] },
-//                @{@"wbTitle":wbColTitles[9],       @"clientTitle":wbColTitles[9] },
-//                @{@"wbTitle":wbColTitles[10],      @"clientTitle":wbColTitles[10]},
-//                @{@"wbTitle":wbColTitles[11],      @"clientTitle":wbColTitles[11]},
-//                @{@"wbTitle":wbColTitles[12],      @"clientTitle":wbColTitles[12]},
-//                @{@"wbTitle":wbColTitles[13],      @"clientTitle":wbColTitles[13]},
-//                @{@"wbTitle":wbColTitles[14],      @"clientTitle":wbColTitles[14]},
-//                @{@"wbTitle":wbColTitles[15],      @"clientTitle":wbColTitles[15]}]];
+//    self.titles = [[NSMutableArray alloc] init];
+//    for(int i = 0; i < wbColTitles.count; i++){
+//        [self.titles addObject:@{@"wbTitle":wbColTitles[i],       
+//                                 @"clientTitle":wbColTitles[i] }];
+//    }
+    // leave this alone, the loop above doesn't display
+    self.titles = [[NSMutableArray alloc]initWithArray:@[
+                @{@"wbTitle":wbColTitles[0],       @"clientTitle":wbColTitles[0] },
+                @{@"wbTitle":wbColTitles[1],       @"clientTitle":wbColTitles[1] },
+                @{@"wbTitle":wbColTitles[2],       @"clientTitle":wbColTitles[2] },
+                @{@"wbTitle":wbColTitles[3],       @"clientTitle":wbColTitles[3] },
+                @{@"wbTitle":wbColTitles[4],       @"clientTitle":wbColTitles[4] },
+                @{@"wbTitle":wbColTitles[5],       @"clientTitle":wbColTitles[5] },
+                @{@"wbTitle":wbColTitles[6],       @"clientTitle":wbColTitles[6] },
+                @{@"wbTitle":wbColTitles[7],       @"clientTitle":wbColTitles[7] }]];
         
     // right table
-    self.clientTitles = [[NSMutableArray alloc] init];
-    for(int i = 0; i < wbColTitles.count; i++){
-        [self.clientTitles arrayByAddingObject:@{@"clientTitle":wbColTitles[i] }];
-    }
+//    self.clientTitles = [[NSMutableArray alloc] init];
+//    for(int i = 0; i < wbColTitles.count; i++){
+//        [self.clientTitles arrayByAddingObject:@{@"clientTitle":wbColTitles[i] }];
+//    }
 
-//    self.clientTitles = [[NSMutableArray alloc]initWithArray:@[
-//                @{@"clientTitle":wbColTitles[0] },
-//                @{@"clientTitle":wbColTitles[1] },
-//                @{@"clientTitle":wbColTitles[2] },
-//                @{@"clientTitle":wbColTitles[3] },
-//                @{@"clientTitle":wbColTitles[4] },
-//                @{@"clientTitle":wbColTitles[5] },
-//                @{@"clientTitle":wbColTitles[6] },
-//                @{@"clientTitle":wbColTitles[7] },
-//                @{@"clientTitle":wbColTitles[8] },
-//                @{@"clientTitle":wbColTitles[9] },
-//                @{@"clientTitle":wbColTitles[10]},
-//                @{@"clientTitle":wbColTitles[11]},
-//                @{@"clientTitle":wbColTitles[12]},
-//                @{@"clientTitle":wbColTitles[13]},
-//                @{@"clientTitle":wbColTitles[14]},
-//                @{@"clientTitle":wbColTitles[15]}]];
+    // leave this alone, the loop above doesn't display
+    self.clientTitles = [[NSMutableArray alloc]initWithArray:@[
+                @{@"clientTitle":wbColTitles[0] },
+                @{@"clientTitle":wbColTitles[1] },
+                @{@"clientTitle":wbColTitles[2] },
+                @{@"clientTitle":wbColTitles[3] },
+                @{@"clientTitle":wbColTitles[4] },
+                @{@"clientTitle":wbColTitles[5] },
+                @{@"clientTitle":wbColTitles[6] },
+                @{@"clientTitle":wbColTitles[7] }]];
     
     self.colTitles = wbColTitles;   // initializes tableview columns
     
