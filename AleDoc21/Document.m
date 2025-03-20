@@ -130,22 +130,41 @@ NSArray *wbColTitles = @[
            @"Notes",
            @"Take",
            @"Track",
-           @"Aux1",
-           @"Aux2",
-           @"Aux3",
-           @"Aux4",
-           @"Aux5",
-           @"Aux6",
-           @"Aux7",
-           @"Aux8",
-           @"Aux9",
-           @"Aux10",
-           @"Aux11",
-           @"Aux12",
-           @"Aux13",
-           @"Aux14",
-           @"Aux15",
-           @"Aux16"
+           @"Col1",
+           @"Col2",
+           @"Col3",
+           @"Col4",
+           @"Col5",
+           @"Col6",
+           @"Col7",
+           @"Col8",
+           @"Col9",
+           @"Col10",
+           @"Col11",
+           @"Col12",
+           @"Col13",
+           @"Col14",
+           @"Col15",
+           @"Col16"
+];
+NSArray *noColTitles = @[
+
+           @"Col1",
+           @"Col2",
+           @"Col3",
+           @"Col4",
+           @"Col5",
+           @"Col6",
+           @"Col7",
+           @"Col8",
+           @"Col9",
+           @"Col10",
+           @"Col11",
+           @"Col12",
+           @"Col13",
+           @"Col14",
+           @"Col15",
+           @"Col16"
 ];
 
 //@synthesize streamerEnable = _streamerEnable;
@@ -957,6 +976,7 @@ enum{
     NSError *error;
     NSMutableArray *colTitles = [[NSMutableArray alloc]init];
     NSMutableArray *tableContents = [[NSMutableArray alloc]init];
+    NSMutableArray *titlesCopy = [_titles copy];
     
     NSString *fileContents = [NSString stringWithContentsOfURL:url encoding:encoding error:&error];
     
@@ -992,11 +1012,27 @@ enum{
         // use the wb col titles, will show up as col1 - coln in the right-hand table
         colTitles = [[NSMutableArray alloc] init];
     
-        // try using Auxn
+        // try using Coln. If there is a matching item in _titles, use it.
+        //
         for(int i = 0; i < 16; i++){
-            [colTitles addObject:[NSString stringWithFormat:@"Aux%d",i + 1]];
+            
+            NSString *colTitle = [NSString stringWithFormat:@"Col%d",i + 1];
+            
+            [colTitles addObject:colTitle]; // assume failure
+
+            for(NSDictionary *dict in _titles){
+                
+                if([dict[@"clientTitle"] isEqualToString:colTitle]){
+                    
+                    [colTitles removeLastObject];
+                    [colTitles addObject:dict[@"wbTitle"]]; // use the wb column title
+                    break;
+                    
+                }
+                //NSDictionary *dict
+            }
+             
         }
-        //self.colTitles = colTitles; // CRASHES
         ale_state = ALE_STATE_DATA;
     }
  
@@ -1081,8 +1117,13 @@ enum{
         }
 
         if(hasHeader){self.headerDictionary = headerDictionary;}
-        self.clientColTitles = [[NSArray alloc] initWithArray:colTitles];
+        // TODO: working on keeping left table intact
+        self.clientColTitles = [[NSArray alloc] initWithArray: colTitles];
         self.clientTableContents = [[NSArray alloc] initWithArray:tableContents];
+        
+//        if(!hasColTitles && !hasHeader){
+//            _titles = titlesCopy;
+//        }
         
         AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
         [delegate getSession:nil];  // 2.10.00 arms change detector
@@ -2138,7 +2179,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 }
 -(void)setClientTableContents:(NSArray *)clientTableContents{
     _clientTableContents = clientTableContents;
-    
+        
 //    NSString *s = NSStringFromClass([_titles class]);
 //    NSString *s2 = NSStringFromClass([_titles[0] class]);
 //    NSLog(@"s %@ s2 %@",s, s2);
@@ -2164,7 +2205,9 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
                 NSString *clientKey = clientKeys[[correctedClientKeys indexOfObject:key]];
                 
                 rowDictionary[key] = dict[clientKey];
-                
+            
+               // keep the assignments
+               if(![[NSUserDefaults standardUserDefaults]boolForKey:@"hasColumnTitles"]){ continue;}
                 // show the client key in left tableview ('titles')
                for(NSMutableDictionary *title in [_titles copy]){
                     if([title[@"wbTitle"] isEqualToString:key]){
