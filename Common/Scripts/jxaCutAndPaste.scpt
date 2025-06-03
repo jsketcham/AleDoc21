@@ -1,4 +1,4 @@
-JsOsaDAS1.001.00bplist00ÑVscript_(g// to run in Terminal:
+JsOsaDAS1.001.00bplist00ÑVscript_(V// to run in Terminal:
 // % cd /Users/protools/Desktop/testScripts
 // % osascript -l JavaScript jxaCutAndPaste.scpt foobar 1 1
 
@@ -119,7 +119,7 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
     					//cancelButton: "Stop"
 					});
 					
-					return 'clip naming error';	// TODO: an alert
+					return -1;	// TODO: an alert
 				}
 				
 				copyToClipboard(currentApp,app);	// waits for clipboard length
@@ -218,7 +218,7 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 function waitForDialogWindow(pt,title,onOff){
 
 // wait for the presence or absence of the dialog window
-	for(let i = 0; i < 100; i++){
+	for(let i = 0; i < 200; i++){
 				
 		//console.log('loop count',i);
 					
@@ -395,4 +395,4 @@ function setCursorToolCluster(){
 return 0
 }
 
-                              (} jscr  úÞÞ­
+                              (ljscr  úÞÞ­

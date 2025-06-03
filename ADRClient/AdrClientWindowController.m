@@ -939,6 +939,7 @@ bool bInitializePtCtr = false;
     
 }
 -(void)jxaCopyClipToComp:(NSArray*)msgArray{
+    //NSLog(@"jxaCopyClipToComp");
     [self txMsg:@"videoOnline 1"];
     AleDelegate *delegate = [NSApp delegate];
     [delegate setCurrentTrack:delegate.lastTrack];
@@ -1311,8 +1312,10 @@ NSTimer *recPlayTimer;
 }
 
 -(void)cutAndPaste:(NSArray *)msgArray{
-    
+    //NSLog(@"cutAndPaste %ld %@ %@",msgArray.count,msgArray[0],msgArray[1]);
+
 //    NSLog(@"cutAndPaste callback, msgArray count: %ld",msgArray.count);
+
     
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
     Document *doc = delegate.topDocument;
@@ -1327,6 +1330,12 @@ NSTimer *recPlayTimer;
         // split the last item in msgArray, take is next to last
         @try {
             NSString *take = [msgArray objectAtIndex:msgArray.count - 2]; // actually file name like 'Group_AQ 109 1_05-01'
+            if([take isEqual:@"-1"]){
+                // error occurred
+                [delegate alertErr:@"Cut and Paste failed! Please do operation manually" :take];
+                delegate.cycleMode = CYCLE_MODE_IDLE;       
+                return;
+            }
             NSArray *array = [take componentsSeparatedByString:@"_"];
             take = [array objectAtIndex:array.count - 1];
             array = [take componentsSeparatedByString:@"-"];
@@ -1416,6 +1425,9 @@ NSTimer *recPlayTimer;
         return;
     }
     
+    // 06/03/25 must be here so we know the rx/tx order of messages
+    [self appendToLog:msg];
+
     NSRange range = [msg rangeOfString:@"\t"];
     NSArray *array;
     NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:@" ,"];
@@ -1443,9 +1455,6 @@ NSTimer *recPlayTimer;
     @catch (NSException *exception) {
         
     }
-    
-    [self appendToLog:msg];
-    
 }
 NSArray *hidePing = @[@"jxaGetSampleRate"
                       ,@"pingProTools"];

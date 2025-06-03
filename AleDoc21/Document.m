@@ -1121,10 +1121,6 @@ enum{
         self.clientColTitles = [[NSArray alloc] initWithArray: colTitles];
         self.clientTableContents = [[NSArray alloc] initWithArray:tableContents];
         
-//        if(!hasColTitles && !hasHeader){
-//            _titles = titlesCopy;
-//        }
-        
         AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
         [delegate getSession:nil];  // 2.10.00 arms change detector
         
