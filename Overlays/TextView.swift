@@ -598,7 +598,7 @@ class TextView: NSTextView {
     // MARK: ------- mouse ------------
 
     override func mouseEntered(with event: NSEvent) {
-//        print("mouse entered")
+        print("mouse entered")
         setPopupMenuState() // show our settings
         
         super.mouseEntered(with: event)
@@ -608,7 +608,11 @@ class TextView: NSTextView {
         print("\(key) mouseDown \(event.locationInWindow)")
         
         if NSEvent.modifierFlags.contains(.control){
-            Swift.print("control key pressed")
+            //Swift.print("control key pressed")
+            // Apple mouse has no right button, hold control to get popup
+            if let menu = menu{
+                NSMenu.popUpContextMenu(menu, with: event, for: self)
+            }
             
         }
 
@@ -945,6 +949,8 @@ class TextView: NSTextView {
     }
 
     func addMenuItems(){
+        
+        //print("\(String(describing: menu))")  // exists 06/04/25, how do we get the popup to show?
         
         if let _ = menu?.item(withTitle: ANCHOR_LABEL){
             return  // items already added (one menu for multiple TextView instances)

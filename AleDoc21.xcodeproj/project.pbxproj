@@ -94,6 +94,7 @@
 		3268C4EE2992F8D0000BE1C2 /* SwiftMidi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3268C4EA2992F8D0000BE1C2 /* SwiftMidi.swift */; };
 		3268C4EF2992F8D0000BE1C2 /* SwiftMidiConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3268C4EB2992F8D0000BE1C2 /* SwiftMidiConstants.swift */; };
 		3268C4F12992F8D0000BE1C2 /* SwiftMidiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3268C4ED2992F8D0000BE1C2 /* SwiftMidiClient.swift */; };
+		326E3BF12DF0DFE4000C1ECA /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 326E3BF02DF0DFE4000C1ECA /* AppKit.framework */; };
 		3276EF182A818A2600CC4319 /* ObjCPlayFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3276EF172A818A2600CC4319 /* ObjCPlayFile.mm */; };
 		327EDD6C2AAA2164001AEEBE /* DialMidiWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327EDD6A2AAA2164001AEEBE /* DialMidiWindowController.swift */; };
 		327EDD6D2AAA2164001AEEBE /* DialMidiWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 327EDD6B2AAA2164001AEEBE /* DialMidiWindowController.xib */; };
@@ -291,6 +292,7 @@
 		3268C4EA2992F8D0000BE1C2 /* SwiftMidi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftMidi.swift; sourceTree = "<group>"; };
 		3268C4EB2992F8D0000BE1C2 /* SwiftMidiConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftMidiConstants.swift; sourceTree = "<group>"; };
 		3268C4ED2992F8D0000BE1C2 /* SwiftMidiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftMidiClient.swift; sourceTree = "<group>"; };
+		326E3BF02DF0DFE4000C1ECA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		3276EF162A818A2600CC4319 /* ObjCPlayFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCPlayFile.h; sourceTree = "<group>"; };
 		3276EF172A818A2600CC4319 /* ObjCPlayFile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjCPlayFile.mm; sourceTree = "<group>"; };
 		327EDD6A2AAA2164001AEEBE /* DialMidiWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialMidiWindowController.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				326E3BF12DF0DFE4000C1ECA /* AppKit.framework in Frameworks */,
 				32DB426B297353F900573A3B /* MetalKit.framework in Frameworks */,
 				32DB4261297353C000573A3B /* Cocoa.framework in Frameworks */,
 				32DB425D297353AD00573A3B /* AVFoundation.framework in Frameworks */,
@@ -800,6 +803,7 @@
 		32DB4259297353A400573A3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				326E3BF02DF0DFE4000C1ECA /* AppKit.framework */,
 				32DB426A297353F900573A3B /* MetalKit.framework */,
 				32DB4266297353DC00573A3B /* Foundation.framework */,
 				32DB4262297353CE00573A3B /* CoreAudio.framework */,
