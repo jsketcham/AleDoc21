@@ -643,7 +643,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="n6X-8G-PbF"/>
-                            <menuItem title="Overlay" keyEquivalent="0" id="Rwk-OD-F2B">
+                            <menuItem title="Overlay" hidden="YES" enabled="NO" keyEquivalent="0" id="Rwk-OD-F2B">
                                 <connections>
                                     <action selector="onOverlayWindow:" target="Fa6-jP-QMQ" id="vxV-bK-tXS"/>
                                 </connections>

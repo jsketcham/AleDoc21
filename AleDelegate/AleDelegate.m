@@ -2286,7 +2286,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     // 2.00.00 code at end was unreliable, guessing it was the \n terminator
     
     NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_currentTrack >> 4];
-    NSString *msg16 = [NSString stringWithFormat:@"mem %d",(int)mem];
+    NSString *msg16 = [NSString stringWithFormat:@"jxaMem %d",(int)mem];
     
     NSInteger numRecTracksTag = [_matrixWindowController numRecTracksTag];
     
@@ -2296,7 +2296,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     NSInteger trackMax = trackBaseTable[numRecTracksTag + 1] - 1; //=
     if(track > trackMax) track = trackMax;
     
-    NSString *msg1 = [NSString stringWithFormat:@"mem %ld",track];
+    NSString *msg1 = [NSString stringWithFormat:@"jxaMem %ld",track];
     
     NSString *msg = _matrixWindowController.show16Tracks & 1 ? msg16 : msg1;
     [_adrClientWindowController txMsg:msg];
@@ -2310,7 +2310,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 //    if([_matrixWindowController show16Tracks]){
 //
 //        NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_currentTrack >> 4];
-//        if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"mem %d\n",(int)mem]];
+//        if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaMem %d\n",(int)mem]];
 //
 //    }else{
 //
@@ -2323,7 +2323,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     // 2.00.00 see selectCurrentSixteenTrackMemory
     
     NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_lastRecordTrack >> 4];
-    NSString *msg16 = [NSString stringWithFormat:@"mem %d",(int)mem];
+    NSString *msg16 = [NSString stringWithFormat:@"jxaMem %d",(int)mem];
     
     NSInteger numRecTracksTag = [_matrixWindowController numRecTracksTag];
     
@@ -2333,7 +2333,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     NSInteger trackMax = trackBaseTable[numRecTracksTag + 1] - 1; //=
     if(track > trackMax) track = trackMax;
     
-    NSString *msg1 = [NSString stringWithFormat:@"mem %ld",track];
+    NSString *msg1 = [NSString stringWithFormat:@"jxaMem %ld",track];
 
     NSString *msg = _matrixWindowController.show16Tracks & 1 ? msg16 : msg1;
     [_adrClientWindowController txMsg:msg];
@@ -2341,7 +2341,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 //    if([_matrixWindowController show16Tracks]){
 //
 //        NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_lastRecordTrack >> 4];
-//        if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"mem %d\n",(int)mem]];
+//        if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaMem %d\n",(int)mem]];
 //
 //    }else{
 //
@@ -2360,7 +2360,7 @@ NSInteger showSixteenTable[][2] = {{25,26},{27,28},{29,29},{30,30},{31,31},{32,3
 -(void)showSixteenTracks:(NSEvent*)event{
     
     NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_currentTrack >> 4];
-    if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"mem %d",(int)mem]];
+    if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaMem %d",(int)mem]];
     
     //    // TODO: can't check this until we are ate WB
     //    [self set16TrackLED];   // TODO: should this be here or in _matrixWindowController?
@@ -2416,7 +2416,7 @@ NSTimer *toggleShowSixteenTimer;
 //
 ////    // show 16 no matter what state the checkbox is in
 ////    NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_currentTrack >> 4];
-////    if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"mem %d\n",(int)mem]];
+////    if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaMem %d\n",(int)mem]];
 //
 //}
 #pragma mark -------------------------------------------------------------------
@@ -2973,22 +2973,22 @@ NSTimer *toggleShowSixteenTimer;
 //}
 -(void)mainOutputs{
     
-    [_adrClientWindowController txMsg:@"mem 19"];
+    [_adrClientWindowController txMsg:@"jxaMem 19"];
     
 }
 -(void)verbAndFutz{
     
-    [_adrClientWindowController txMsg:@"mem 21"];
+    [_adrClientWindowController txMsg:@"jxaMem 21"];
     
 }
 -(void)cleanupMono{
     
-    [_adrClientWindowController txMsg:@"mem 300"];
+    [_adrClientWindowController txMsg:@"jxaMem 300"];
     
 }
 -(void)cleanupStereo{
     
-    [_adrClientWindowController txMsg:@"mem 301"];
+    [_adrClientWindowController txMsg:@"jxaMem 301"];
     
 }
 //-(void)zeroFeetAtTc:(NSString*)tc{
@@ -3160,10 +3160,10 @@ NSTimer *toggleShowSixteenTimer;
 }
 // guideMem: outputMem:
 -(void)guideMem:(NSEvent*)event{
-    [_adrClientWindowController txMsg:@"mem 82"];
+    [_adrClientWindowController txMsg:@"jxaMem 82"];
 }
 -(void)outputMem:(NSEvent*)event{
-    [_adrClientWindowController txMsg:@"mem 19"];
+    [_adrClientWindowController txMsg:@"jxaMem 19"];
 }
 -(void)storeEndTc:(NSEvent*)event{
     
@@ -3282,7 +3282,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)pbRouting:(NSEvent*)event{
     
-    [_adrClientWindowController txMsg:@"mem 18"];
+    [_adrClientWindowController txMsg:@"jxaMem 18"];
     
 }
 -(void)prerollDown:(NSEvent*)event{
@@ -3339,7 +3339,7 @@ NSTimer *toggleShowSixteenTimer;
 -(void)inputBussing:(NSEvent*)event{
     
     // Recall memory Location 11
-    [_adrClientWindowController txMsg:@"mem 11"];
+    [_adrClientWindowController txMsg:@"jxaMem 11"];
     
 }
 -(void)wildSyncSelect:(NSEvent*)event{
@@ -3730,7 +3730,7 @@ NSTimer *toggleShowSixteenTimer;
     NSInteger trackMax = trackBaseTable[numRecTracksTag + 1] - 1; //=
     if(track > trackMax) track = trackMax;
     
-    NSString *msg = [NSString stringWithFormat:@"mem %ld",track];
+    NSString *msg = [NSString stringWithFormat:@"jxaMem %ld",track];
     [_adrClientWindowController txMsg:msg];
     
 }
@@ -3812,7 +3812,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     // startForDictionary:delegate.recordCycleDictionary
     NSString *start = [doc startForLogTrack:_currentTrack];
     // we will be in the cue. ctl-tab to get to start, shift-tab to select
-    [_adrClientWindowController txMsg:@"videoOnline 0"];    // offline for the edit
+    [_adrClientWindowController txMsg:@"jxaVideoOnline 0"];    // offline for the edit
     [self locate:start :@"5"];
 }
 -(void) trackToCompCopyOneshotServicex{

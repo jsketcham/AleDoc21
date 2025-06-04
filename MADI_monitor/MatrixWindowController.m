@@ -2557,7 +2557,7 @@ bool isFirstNumRecTracksTag = true;
         [delegate showSixteenTracks:nil];   // Evan request 2.10.02
         
     }else{
-        NSString *msg = [NSString stringWithFormat:@"mem %ld",numRecTracksTag + 33];
+        NSString *msg = [NSString stringWithFormat:@"jxaMem %ld",numRecTracksTag + 33];
         [delegate.adrClientWindowController txMsg:msg];
     }
 
@@ -2770,7 +2770,7 @@ bool isFirstNumRecTracksTag = true;
     trimFrames += [_tcc tcToBinary:start withType:tcType];
     start = [_tcc binaryToTc:(int)trimFrames withType:tcType];
     
-    [delegate.adrClientWindowController txMsg:@"videoOnline 0"];
+    [delegate.adrClientWindowController txMsg:@"jxaVideoOnline 0"];
     [delegate.adrClientWindowController txMsg:@"linkTimelineAndEditSelection 1"]; // so that locates load the edit in/out points
     [delegate selectCurrentSixteenTrackMemory];     // might have changed banks
     

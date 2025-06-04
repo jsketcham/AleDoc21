@@ -149,7 +149,7 @@
     MatrixWindowController *mwc = ((AleDelegate*)[NSApp delegate]).matrixWindowController; if(!mwc) return;
     EditorWindowController *ed = delegate.editorWindowController; if(!ed) return;
     
-    bool inhStreamer = (self.inhibitStreamerInPlayback && mwc.rehRecPb == MODE_CONTROL_PLAYBACK);
+//    bool inhStreamer = (self.inhibitStreamerInPlayback && mwc.rehRecPb == MODE_CONTROL_PLAYBACK);
     
     // 2.10.00 streamer can follow annunciator color
     bool useAnnunciatorColor = [[NSUserDefaults standardUserDefaults] boolForKey:@"useAnnunciatorColor"];

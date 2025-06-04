@@ -134,6 +134,7 @@ NSLock *ioLock;
                           ,@"isModalDialog:",@"isModalDialog"
                           ,@"isModalDialog:",@"jxaIsModalDialog"
                           ,@"pingProTools:",@"pingProTools"
+                          ,@"videoOnline:",@"jxaVideoOnline"
                           ,@"videoOnline:",@"videoOnline"
 //                          ,@"getVideoSyncOffset:",@"jxaGetVideoSyncOffset"
 
@@ -345,8 +346,12 @@ bool bInitializePtCtr = false;
 //}
 -(void)videoOnline:(NSArray*)msgArray{
     
-    //    NSLog(@"videoOnline");
+    //NSLog(@"videoOnline");
+//    if(msgArray.count > 0){
+//        NSLog(@"videoOnline %@",msgArray[0]);   // 0 == success
+//    }
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    // put streamers etc in front of PT video
     [delegate.overlayWindowController.viewController bringToFront];
     
 }
@@ -940,7 +945,7 @@ bool bInitializePtCtr = false;
 }
 -(void)jxaCopyClipToComp:(NSArray*)msgArray{
     //NSLog(@"jxaCopyClipToComp");
-    [self txMsg:@"videoOnline 1"];
+    [self txMsg:@"jxaVideoOnline 1"];
     AleDelegate *delegate = [NSApp delegate];
     [delegate setCurrentTrack:delegate.lastTrack];
     [delegate selectCurrentSixteenTrackMemory];
@@ -1123,13 +1128,13 @@ bool bInitializePtCtr = false;
     
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
 //    Document *doc = [delegate topDocument];
-    [delegate selectCurrentSixteenTrackMemory]; // sync what we see with _currentTrack, for capturing Foley clips   
     
 //    NSLog(@"getSession");
     if(msgArray.count < 1 || [[msgArray objectAtIndex:0]isEqualToString:@"-1"]){
         return;
     }
-    
+    [delegate selectCurrentSixteenTrackMemory]; // sync what we see with _currentTrack, for capturing Foley clips
+
     delegate.session = [msgArray objectAtIndex:0];    // loads the log when session changes
     // 2.10.02 jxaGetSession gets the sample rate
     
@@ -1355,7 +1360,7 @@ NSTimer *recPlayTimer;
         }
         
 //        [delegate selectCurrentSixteenTrackMemory]; // maybe show 16 tracks during the pass
-        [self txMsg:@"videoOnline 1"];
+        [self txMsg:@"jxaVideoOnline 1"];
 
         // TODO: 2.00.00 from AleDoc finalizeRecord:, there may be more
         delegate.lastRecordTrack = delegate.currentTrack;
