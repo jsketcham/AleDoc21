@@ -1133,7 +1133,7 @@ bool bInitializePtCtr = false;
     if(msgArray.count < 1 || [[msgArray objectAtIndex:0]isEqualToString:@"-1"]){
         return;
     }
-    [delegate selectCurrentSixteenTrackMemory]; // sync what we see with _currentTrack, for capturing Foley clips
+ //   [delegate selectCurrentSixteenTrackMemory]; // sync what we see with _currentTrack, for capturing Foley clips
 
     delegate.session = [msgArray objectAtIndex:0];    // loads the log when session changes
     // 2.10.02 jxaGetSession gets the sample rate
