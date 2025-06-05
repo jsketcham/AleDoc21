@@ -17,32 +17,15 @@
 @synthesize inLock = _inLock;
 @synthesize inArray = _inArray;
 
+// default to the application script path
+NSString *scptPath = @"/Applications/AleDoc21.app/Contents/Resources/";
+
 -(void)addToInArray:(NSString*)str{
     
     [self.inArray addObject:str];
     
 }
 
--(void)addToInArrayX:(NSString*)str{
-    
-    __weak typeof(self) weakSelf = self;
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // use weakSelf here
-        
-        NSDate *d = [[NSDate alloc] initWithTimeInterval:1.0 sinceDate:[NSDate date]];
-        
-        if ([weakSelf.inLock lockBeforeDate:d]){
-            
-            [weakSelf.inArray addObject:str];
-            [weakSelf.inLock unlock];
-            
-        }else{
-            NSLog(@"failed to get lock, lost item %@",str);
-        }
-        
-    });
-}
 -(void)processScriptResult:(ScriptResult*)scriptResult{
     
     // copied from AdrServer_v5xx
@@ -61,6 +44,16 @@ NSTimer *adrClientTimer;
 
 -(void)startAdrClient{
     
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"jxaCutAndPaste" ofType:@"scpt"];//@"";
+    if(path){
+        //NSLog(@"scptPath %@",scptPath);
+        NSArray *array = [scptPath componentsSeparatedByString:@"jxaCutAndPaste"];
+        if(array.count > 0){
+            NSLog(@"found path to jxaCutAndPaste.scpt: %@",array[0]);
+            scptPath = array[0];
+        }
+    }
+
     _adrClientRun = true;
     _inArray = [[NSMutableArray alloc] init];
     
@@ -113,8 +106,23 @@ NSTimer *adrClientTimer;
                 // moved Scripts to be a resource so that they get installed with the app
 //                NSString *s = [[NSString alloc] initWithFormat:@"/Users/%@/Library/Scripts/%@.scpt",NSUserName(),args[0]];
                 // /Applications/AleDoc21.app/Contents/Resources
-                NSString *s = [[NSString alloc] initWithFormat:@"/Applications/AleDoc21.app/Contents/Resources/%@.scpt",args[0]];
                 
+                // /Users/protools/Library/Developer/Xcode/DerivedData/AleDoc21-gynfetmepndnmdfwntcgqukdznvw/Build/Products/Debug/AleDoc21.app/Contents/Resources/jxaMem.scpt
+                
+                
+//                // where are the scripts?
+//                NSString *scptPath = [[NSBundle mainBundle]pathForResource:@"jxaMem" ofType:@"scpt"];//@"";
+//                if(scptPath){
+//                    NSLog(@"scptPath %@",scptPath);
+//                }else{
+//                    NSLog(@"scptPath is NULL");
+//
+//                }
+
+
+//                NSString *s = [[NSString alloc] initWithFormat:@"/Applications/AleDoc21.app/Contents/Resources/%@.scpt",args[0]];
+                NSString *s = [[NSString alloc] initWithFormat:@"%@%@.scpt",scptPath,args[0]];  // 06/05/25, uses debug path scripts when debugging
+
 //                NSLog(@"adrClientTimerService script %@",args[0]);
                 
                 [args replaceObjectAtIndex:0 withObject:s];

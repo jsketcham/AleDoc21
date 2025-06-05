@@ -2974,6 +2974,27 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     [defaults setObject:[NSNumber numberWithInteger:combo.indexOfSelectedItem] forKey:@"behaviorIndex"];
     
 }
+- (IBAction)onScriptPath:(id)sender {
+
+    // where are the scripts?
+    AleDelegate *aleDelegate = (AleDelegate*)[NSApp delegate];
+    NSString *scptPath = [[NSBundle mainBundle]pathForResource:@"jxaCutAndPaste" ofType:@"scpt"];//@"";
+    if(scptPath){
+        NSLog(@"scptPath %@",scptPath);
+        NSArray *array = [scptPath componentsSeparatedByString:@"jxaCutAndPaste"];
+        if(array.count > 0){
+            NSLog(@"%@",array[0]);
+            [aleDelegate.adrClientWindowController.adrClient addToInArray:array[0]];
+            return;
+        }
+    }
+    
+    NSLog(@"scptPath is NULL");
+    [aleDelegate.adrClientWindowController.adrClient addToInArray:@"can't find script path to jxaCutAndPaste.scpt"];
+
+
+}
+
 #pragma mark -
 #pragma mark ---------------- v1.00.04 additions ---------------------
 - (IBAction)onDisclosureButton:(id)sender {

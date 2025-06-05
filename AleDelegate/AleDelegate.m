@@ -220,7 +220,7 @@ enum{
     }
     
 }
-- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {        
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(xKeyEdge:) name:@"xKeyEdge" object:nil];
 //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deviceConnected:) name:@"deviceConnected" object:nil];

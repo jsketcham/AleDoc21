@@ -496,6 +496,17 @@
                                         <binding destination="9Sq-0K-FTP" name="value" keyPath="values.incrTrack" id="Ald-uf-y4E"/>
                                     </connections>
                                 </button>
+                                <button toolTip="print path to scripts in ADR Client window" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lP3-TZ-g0a">
+                                    <rect key="frame" x="649" y="1" width="100" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="push" title="script path" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZIE-v0-GIT">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onScriptPath:" target="-2" id="J5D-2V-bli"/>
+                                    </connections>
+                                </button>
                             </subviews>
                         </view>
                         <constraints>
@@ -734,7 +745,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-x8E"/>
             </connections>
-            <point key="canvasLocation" x="342.5" y="182"/>
+            <point key="canvasLocation" x="594" y="188"/>
         </window>
         <arrayController id="mjy-cA-Ow7" userLabel="WB Array Controller">
             <connections>
