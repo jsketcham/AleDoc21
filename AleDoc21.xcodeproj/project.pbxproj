@@ -109,6 +109,7 @@
 		32A35F7F2A71578F0080AE1B /* VideoDelayWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A35F7D2A71578F0080AE1B /* VideoDelayWindowController.swift */; };
 		32C7B2972AAB62DF0064F259 /* LoopMidi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C7B2962AAB62DF0064F259 /* LoopMidi.swift */; };
 		32C7B2A62AAB8D570064F259 /* StatusMidi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C7B2A52AAB8D570064F259 /* StatusMidi.swift */; };
+		32CAFA5E2DF1DEB000F7BF85 /* jxaMem.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 32CAFA5D2DF1DEB000F7BF85 /* jxaMem.scpt */; };
 		32DB419529733F9900573A3B /* StreamerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DB419329733F9800573A3B /* StreamerWindowController.m */; };
 		32DB419629733F9900573A3B /* StreamerWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32DB419429733F9800573A3B /* StreamerWindowController.xib */; };
 		32DB41AE2973405100573A3B /* LeftTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DB41982973404E00573A3B /* LeftTableViewController.m */; };
@@ -309,6 +310,8 @@
 		32A35F7D2A71578F0080AE1B /* VideoDelayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDelayWindowController.swift; sourceTree = "<group>"; };
 		32C7B2962AAB62DF0064F259 /* LoopMidi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopMidi.swift; sourceTree = "<group>"; };
 		32C7B2A52AAB8D570064F259 /* StatusMidi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMidi.swift; sourceTree = "<group>"; };
+		32CAFA5D2DF1DEB000F7BF85 /* jxaMem.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jxaMem.scpt; sourceTree = "<group>"; };
+		32CAFA5F2DF1DEC800F7BF85 /* jxaVideoOnline.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = jxaVideoOnline.scpt; sourceTree = "<group>"; };
 		32DB419229733F9800573A3B /* StreamerWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamerWindowController.h; sourceTree = "<group>"; };
 		32DB419329733F9800573A3B /* StreamerWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamerWindowController.m; sourceTree = "<group>"; };
 		32DB419429733F9800573A3B /* StreamerWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StreamerWindowController.xib; sourceTree = "<group>"; };
@@ -556,6 +559,8 @@
 				325F5DBE2AF5C00300545514 /* muteTrackWithIndex.scpt */,
 				325F5DBF2AF5C00300545514 /* getProtoolsInfo.scpt */,
 				325F5DC02AF5C00300545514 /* jxaAddCue.scpt */,
+				32CAFA5F2DF1DEC800F7BF85 /* jxaVideoOnline.scpt */,
+				32CAFA5D2DF1DEB000F7BF85 /* jxaMem.scpt */,
 				325F5DC12AF5C00300545514 /* jxaGetProtoolsPosition.scpt */,
 				325F5DC22AF5C00300545514 /* showAlert.scpt */,
 				325F5DC32AF5C00300545514 /* boomRecAbort.scpt */,
@@ -1035,6 +1040,7 @@
 				325F5DD52AF5C00300545514 /* boomRecStop.scpt in Resources */,
 				325F5DE72AF5C00300545514 /* jxaWildSyncSelect.scpt in Resources */,
 				325F5DD12AF5C00300545514 /* jxaCutAndPaste.scpt in Resources */,
+				32CAFA5E2DF1DEB000F7BF85 /* jxaMem.scpt in Resources */,
 				325F5DE02AF5C00300545514 /* mainCounterFormat.scpt in Resources */,
 				32DB423E29734B2900573A3B /* green16.png in Resources */,
 				325F5DF02AF5C00300545514 /* jxaSetDialog.scpt in Resources */,
