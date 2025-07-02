@@ -2632,8 +2632,14 @@ bool isFirstNumRecTracksTag = true;
     // 12/7/23 replace instances of \\r with \n
     // see sample:
     // /Users/protools/FooFolder/CLR Tom Adam Scott 120523.txt
+    NSString *fName = [[fileName componentsSeparatedByCharactersInSet:illegalFileNameCharacters] componentsJoinedByString:@" "];
     
-    return [[fileName componentsSeparatedByCharactersInSet:illegalFileNameCharacters] componentsJoinedByString:@" "];
+    // 07/02/25 replace double blanks with a single blank
+    // two blanks appear as '. ' in the filename (Jason noticed)
+    fName = [fName stringByReplacingOccurrencesOfString:@"  "
+                                         withString:@" "];
+    
+    return fName;
 }
 //-(void)finalizeRecord:(bool)cutAndPaste{
 //
