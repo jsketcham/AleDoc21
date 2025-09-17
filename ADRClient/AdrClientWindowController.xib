@@ -20,7 +20,7 @@
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="521" height="271"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
-            <view key="contentView" id="2">
+            <view key="contentView" toolTip="type script commands here, press 'Enter'" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="521" height="271"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -76,9 +76,9 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageFrameStyle="groove" id="tis-qb-0a8"/>
                     </imageView>
                     <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OSA-53-DR9">
-                        <rect key="frame" x="20" y="205" width="481" height="22"/>
+                        <rect key="frame" x="93" y="205" width="408" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="type here, press 'Enter'" drawsBackground="YES" id="ydg-X7-pUF">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="type commands here, press 'Enter'" drawsBackground="YES" id="ydg-X7-pUF">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -120,6 +120,18 @@
                             <binding destination="-2" name="value" keyPath="self.runState" id="s1X-VB-Nhh"/>
                         </connections>
                     </button>
+                    <textField toolTip="type script commands here, press 'Enter'" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T8C-W3-5Vj">
+                        <rect key="frame" x="20" y="204" width="481" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="ZS9-LE-bmy">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <action selector="requestTextFieldReturnAction:" target="-2" id="rLY-0h-tbw"/>
+                        </connections>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="Qr5-Qt-Kxg" secondAttribute="bottom" constant="-1" id="7GE-yr-kYs"/>

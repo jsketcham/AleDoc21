@@ -1,4 +1,4 @@
-JsOsaDAS1.001.00bplist00ÑVscript_(V// to run in Terminal:
+JsOsaDAS1.001.00bplist00ÑVscript_(æ// to run in Terminal:
 // % cd /Users/protools/Desktop/testScripts
 // % osascript -l JavaScript jxaCutAndPaste.scpt foobar 1 1
 
@@ -13,6 +13,8 @@ const args = $.NSProcessInfo.processInfo.arguments;
 
 var argv = [];
 var result = -1;	// assume failure
+
+//console.log('jxaCutAndPaste');
 
 if (args.count > 1){
 
@@ -29,7 +31,7 @@ if (args.count > 1){
 
 if (argv.length > 0) {
 	
-	console.log('argv',argv);
+	//console.log('jxaCutAndPaste argv',argv);
 	
   	const app = Application('System Events');
 	const pt = app.processes['Pro Tools'];
@@ -225,12 +227,15 @@ function waitForDialogWindow(pt,title,onOff){
 		try{
 				if(onOff == pt.windows.name().includes(title)){
 				
+					console.log("did delay jxaCutAndPaste waitForDialogWindow");
+					delay(0.2);
+				
 					return 0;
 				}
 
 		}catch(error){
 					
-			console.log('waitForDialogWindow',i);
+			console.log('waitForDialogWindow error ',i);
 		}
 									
 	}
@@ -395,4 +400,4 @@ function setCursorToolCluster(){
 return 0
 }
 
-                              (ljscr  úÞÞ­
+                              (üjscr  úÞÞ­
