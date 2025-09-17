@@ -47,6 +47,7 @@ extension SwiftMidi : SwiftMidiClientDelegate{
         
         if loopInToOut{
             // relay the input to the output, Evan's request, 09/08/23 2.10.02
+            //print("processBytes \(bytes), loopInToOut \(loopInToOut)")
             midiClient?.midiTx(NSData(bytes: bytes, length: bytes.count))
         }
         
@@ -120,7 +121,8 @@ extension SwiftMidi : SwiftMidiClientDelegate{
 //                    print("threeByteMidi \(array)")
                     self.delegate?.noteOffService?(array,self);
                     break
-                case CONTROL_CHANGE: self.delegate?.controlChangeService?(array,self); break
+                case CONTROL_CHANGE: 
+                    self.delegate?.controlChangeService?(array,self); break
                default: break
                 }
                 

@@ -43,7 +43,8 @@ struct WordBytes{
     var packet_list = MIDIPacketList()
     var inPort : MIDIPortRef = 0
     var outPort : MIDIPortRef = 0
-    var source : MIDIEndpointRef = 0
+    //var source : MIDIEndpointRef = 0
+    var sourceArray = Array<MIDIEndpointRef>()
 //    var dest : MIDIEndpointRef = 0
     var destArray = Array<MIDIEndpointRef>()    // there may be multiple outputs
     var title : String?
@@ -90,8 +91,14 @@ struct WordBytes{
                 
                 // add in,out menus
                 let menu = NSMenu(title: title)
-                menu.addItem(withTitle: INPUT_KEY, action: nil, keyEquivalent: "")
-                menu.addItem(withTitle: OUTPUT_KEY, action: nil, keyEquivalent: "")
+                let inputItem = NSMenuItem(title: INPUT_KEY, action: nil, keyEquivalent: "")
+                // adding a tooltip causes menu to not show in some cases
+                //inputItem.toolTip = "hold option key to toggle multiple inputs"
+                menu.addItem(inputItem)
+                let outputItem = NSMenuItem(title: OUTPUT_KEY, action: nil, keyEquivalent: "")
+                // adding a tooltip causes menu to not show in some cases
+                //outputItem.toolTip = "hold option key to toggle multiple outputs"
+                menu.addItem(outputItem)
 //                outItem.toolTip = "for multiple outputs, hold OPTION key when selecting"
                 
                 let menuItem = NSMenuItem(title: title, action: nil, keyEquivalent: "")
@@ -234,7 +241,7 @@ struct WordBytes{
             memcpy(&buffer[0],&packet.data.0,Int(packet.length))
             
             DispatchQueue.main.async { [] in
-//                print("\(buffer)")
+                //print("readProc \(buffer)")
                 midiClient.delegate?.processBytes(buffer)
             }
             
@@ -243,22 +250,47 @@ struct WordBytes{
         }
     }
     
-    
     @objc func inputAction(_ sender: Any){
         
+        let flags = NSEvent.modifierFlags
         let menuItem = sender as! NSMenuItem
+        var inputArray = [String]()
         
-        for item in menuItem.menu!.items{
+        menuItem.menu!.items[0].state = .off    // set OFF_KEY to off
+        
+        if flags.contains(.option) && menuItem.title != OFF_KEY{
             
-            item.state = .off   // all off
+            menuItem.state = menuItem.state == .off ? .on : .off // toggle
+            
+            for item in menuItem.menu!.items{
+                
+                if item.state == .on{
+                    
+                    inputArray.append(item.title)
+                    
+                }
+            }
+                        
+            if inputArray.count == 0{
+                inputArray.append(OFF_KEY)
+            }
+            
+        }else{
+            
+            // interlock
+            for item in menuItem.menu!.items{
+                
+                item.state = .off   // all off
+            }
+            
+            menuItem.state = .on    // selected item on
+            inputArray.append(menuItem.title)
             
         }
-        
-        menuItem.state = .on    // selected item on
 
-        selectInput(menuItem.title)
-        
+        selectInput(inputArray.joined(separator: "\t"))
     }
+
     @objc func outputAction(_ sender: Any){
         
         let flags = NSEvent.modifierFlags
@@ -320,6 +352,7 @@ struct WordBytes{
         let inName = UserDefaults.standard.string(forKey: defaultsInKey!)
         let outName = UserDefaults.standard.string(forKey: defaultsOutKey!)
         let outNameArray = outName?.components(separatedBy: "\t")   // multiple outputs
+        let inNameArray = inName?.components(separatedBy: "\t") // multiple inputs
 
         inputNames = getSourceNames()
         outputNames = getDestinationNames()
@@ -330,8 +363,10 @@ struct WordBytes{
             newItem?.target = self;
             newItem?.onStateImage = NSImage.init(named: "NSMenuRadio")
             
-            if name == inName {newItem?.state = .on}
-            
+            if let _ = inNameArray?.firstIndex(of: name){
+                newItem?.state = .on
+            }
+
             inMenu.addItem(newItem!)
         }
         
@@ -408,33 +443,46 @@ struct WordBytes{
             return
         }
         
-        if MIDIPortDisconnectSource(inPort,source) != 0{
-            print("failed to disconnect previous source")
-        }
-        
-        source = 0
-        
         UserDefaults.standard.set(input!.isEmpty ? OFF_KEY : input, forKey: defaultsInKey!)
-        
-        let count: Int = MIDIGetNumberOfSources();
-        for i in 0..<count {
-            let endpoint:MIDIEndpointRef = MIDIGetSource(i);
-            if (endpoint != 0 && (getDisplayName(endpoint) == input))
-            {
-                source = endpoint
-                if MIDIPortConnectSource(inPort,source,nil) != 0{
-                    print("MIDI Input: \(input ?? "INPUT MISSING") did not connect!")
-                }else{
-                    
-//                    outputOff(input) // no feedback
-                    delegate?.didSelectInput?(input!)
-                }
-                break
-                
-                
+
+        for src in sourceArray{
+            
+            if MIDIPortDisconnectSource(inPort,src) != 0{
+                print("failed to disconnect previous source")
             }
         }
+        
+        sourceArray.removeAll()
+
+        UserDefaults.standard.set(input!.isEmpty ? OFF_KEY : input, forKey: defaultsInKey!)
+        //source = 0
+        
+        for item in input!.components(separatedBy: "\t"){
+            
+            let count: Int = MIDIGetNumberOfSources();
+            for i in 0..<count {
+                let endpoint:MIDIEndpointRef = MIDIGetSource(i);
+                if (endpoint != 0 && (getDisplayName(endpoint) == item))
+                {
+                    sourceArray.append(endpoint)
+                    
+                    if MIDIPortConnectSource(inPort,endpoint,nil) != 0{
+                        print("MIDI Input: \(input ?? "INPUT MISSING") did not connect!")
+                    }else{
+                        
+    //                    outputOff(input) // no feedback
+                        delegate?.didSelectInput?(item)
+                    }
+                    break
+                    
+                }
+            }
+        }
+        
+        print("sourceArray \(sourceArray)")
+
     }
+
     func outputOff(_ output : String?){
         // no feedback
         let midiMenu = NSApp.mainMenu?.item(withTitle: MIDI_KEY)?.submenu
@@ -478,35 +526,45 @@ struct WordBytes{
 
     }
     func inputOff(_ input : String?){
+        
         // no feedback
         let midiMenu = NSApp.mainMenu?.item(withTitle: MIDI_KEY)?.submenu
         let menuItem = midiMenu?.item(withTitle: title!)
         let menu = menuItem?.submenu
         let item = menu?.item(withTitle: INPUT_KEY)
         
+        var inNameArray = [String]()
+        
         if let inMenu = item?.submenu{
+            
+            inMenu.items[0].state = .off   // OFF item
             
             for item in inMenu.items{
                 
                 if item.title == input{
                     
-                    if item.state == .on{
-                        
-                        item.state = .off
-                        inMenu.items[0].state = .on // OFF item
-                        
-                        if MIDIPortDisconnectSource(inPort,source) != 0{
-                            print("inputOff failed to disconnect previous source")
-                        }else{
-                            source = 0
-                            print("inputOff disconnected previous source \(item.title)")
-                        }
-
-                    }
+                    item.state = .off
+                    break
                     
-                    return
+                }
+                
+            }
+            
+            for item in inMenu.items{
+                
+                if item.state == .on{
+                    inNameArray.append(item.title)
                 }
             }
+            
+            if inNameArray.count == 0{
+                
+                inMenu.items[0].state = .on    // OFF item
+                inNameArray.append(OFF_KEY)
+                
+            }
+            
+            selectInput(inNameArray.joined(separator: "\t"))
         }
     }
     func selectOutput(_ output : String?){
@@ -642,6 +700,7 @@ struct WordBytes{
             midiTx(data, dest)
             
         }
+        
     }
     
     func midiTx(_ data : NSData, _ dest : MIDIEndpointRef){
@@ -650,6 +709,11 @@ struct WordBytes{
             return
         }
         
+//        if self.title == "Mic Preamp 1 Send"{
+//            print("Mic Preamp 1 Send count \(data.count) \(data)" )
+//            
+//        }
+
         // Cancels sending packets that were previously scheduled for future delivery
         MIDIFlushOutput(dest);
 
