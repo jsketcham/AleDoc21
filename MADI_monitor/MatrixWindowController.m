@@ -790,7 +790,7 @@ NSTimer *annunciatorOffTimer;
         NSArray *inputArrayPlist = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"inputs" ofType: @"plist"]];
         if(!_inputArray || _inputArray.count != inputArrayPlist.count){
             
-            _inputArray = inputArrayPlist;  // missing list, or list size changed
+            self.inputArray = inputArrayPlist;  // missing list, or list size changed
         }
         [self didChangeValueForKey:@"inputArray"];
         
@@ -802,7 +802,7 @@ NSTimer *annunciatorOffTimer;
         _outputArray = [unarch decodeObjectOfClasses:set forKey:OUTPUT_ARRAY_KEY];  // assume no save
         NSArray *outputArrayPlist = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"outputs" ofType: @"plist"]];
         if(!_outputArray || _outputArray.count != outputArrayPlist.count){
-            _outputArray = outputArrayPlist;    // missing list, or list size changed
+            self.outputArray = outputArrayPlist;    // missing list, or list size changed
         }
         // change 'ISDN' to 'Source Connect'
         for (int i = 0; i < _outputArray.count; i++){
