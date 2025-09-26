@@ -786,10 +786,11 @@ NSTimer *annunciatorOffTimer;
         NSSet *set = [NSSet setWithObjects:[NSDictionary class],[NSString class],[NSNumber class],[NSArray class], nil];
         
         [self willChangeValueForKey:@"inputArray"];
-        _inputArray = [unarch decodeObjectOfClasses:set forKey:INPUT_ARRAY_KEY];    // no save
-        if(!_inputArray){
+        _inputArray = [unarch decodeObjectOfClasses:set forKey:INPUT_ARRAY_KEY];    // assume no save
+        NSArray *inputArrayPlist = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"inputs" ofType: @"plist"]];
+        if(!_inputArray || _inputArray.count != inputArrayPlist.count){
             
-            _inputArray = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"inputs" ofType: @"plist"]];
+            _inputArray = inputArrayPlist;  // missing list, or list size changed
         }
         [self didChangeValueForKey:@"inputArray"];
         
@@ -798,9 +799,10 @@ NSTimer *annunciatorOffTimer;
         unarch = [[NSKeyedUnarchiver alloc]initForReadingFromData:data error:&error];
         
         [self willChangeValueForKey:@"outputArray"];
-        _outputArray = [unarch decodeObjectOfClasses:set forKey:OUTPUT_ARRAY_KEY];  // no save
-        if(!_outputArray){
-            _outputArray = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"outputs" ofType: @"plist"]];
+        _outputArray = [unarch decodeObjectOfClasses:set forKey:OUTPUT_ARRAY_KEY];  // assume no save
+        NSArray *outputArrayPlist = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"outputs" ofType: @"plist"]];
+        if(!_outputArray || _outputArray.count != outputArrayPlist.count){
+            _outputArray = outputArrayPlist;    // missing list, or list size changed
         }
         // change 'ISDN' to 'Source Connect'
         for (int i = 0; i < _outputArray.count; i++){
