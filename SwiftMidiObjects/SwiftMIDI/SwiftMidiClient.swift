@@ -273,6 +273,7 @@ struct WordBytes{
                         
             if inputArray.count == 0{
                 inputArray.append(OFF_KEY)
+                menuItem.menu!.items[0].state = .on // 9/29/25 missing OFF indicator
             }
             
         }else{
