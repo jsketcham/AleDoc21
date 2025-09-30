@@ -1,4 +1,4 @@
-JsOsaDAS1.001.00bplist00ÑVscript_(æ// to run in Terminal:
+JsOsaDAS1.001.00bplist00ÑVscript_)ð// to run in Terminal:
 // % cd /Users/protools/Desktop/testScripts
 // % osascript -l JavaScript jxaCutAndPaste.scpt foobar 1 1
 
@@ -44,12 +44,14 @@ if (argv.length > 0) {
 		const tracksUp = argv.length > 2 ? argv[2] : "1";
 		const remoteOffset = argv.length > 3 ? argv[3] : "0";
 		
-		result = copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset);
+		var names = pt.windows.name()
+		
+		result = copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset) + '\t' + names;
 
 	}
 }
 
-result;
+result 
 
 function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 
@@ -124,9 +126,9 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 					return -1;	// TODO: an alert
 				}
 				
-				copyToClipboard(currentApp,app);	// waits for clipboard length
+				var ptName = copyToClipboard(currentApp,app);	// waits for clipboard length
 				
-				var ptName = currentApp.theClipboard();	//cue 012 _02-01
+				if (ptName == null){ return -1}
 				
 				console.log('clipboard',ptName);
 				
@@ -144,12 +146,13 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 				console.log('clipName', trackName);
 				
 				app.keystroke(trackName); 
-				app.keystroke('\r');
+				app.keyCode(36);	// return 
+				//app.keystroke('\r');
 								
 				// wait for the name dialog to close
 				status = waitForDialogWindow(pt,'Name',false);
 				// it is likely that we have an error dialog up, duplicate clip name
-				if(status == "-1"){
+				if(status != 0){
 					console.log('duplicate track name?');
 					app.keystroke('\r');
 									
@@ -207,8 +210,6 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 				
 				//delay(0.5)	// delay to avoid a double click
 				lastTrackBtn.actions['AXPress'].perform()	// select track
-
-				
 				
 				return ptName;
 			}
@@ -225,13 +226,26 @@ function waitForDialogWindow(pt,title,onOff){
 		//console.log('loop count',i);
 					
 		try{
-				if(onOff == pt.windows.name().includes(title)){
+				var names = pt.windows.name()
+				//console.log(onOff,names)
 				
-					console.log("did delay jxaCutAndPaste waitForDialogWindow");
-					delay(0.2);
-				
-					return 0;
+				for (let i = 0; i < names.length; i++){
+	
+					if(onOff && names[i].startsWith(title)){
+						return 0
+					}
 				}
+				if(!onOff){return 0}
+				
+				//if(onOff == pt.windows.name().includes(title)){
+				//var doesIncludeTitle = pt.windows.name().includes(title)
+				//console.log(pt.windows.name(),onOff, doesIncludeTitle)
+				
+					//console.log("did delay jxaCutAndPaste waitForDialogWindow");
+					//delay(0.2);
+				
+					//return 0;
+				//}
 
 		}catch(error){
 					
@@ -262,26 +276,18 @@ function copyToClipboard(currentApp,app){
 		// this error is because we are waiting for the clipboard, and is OK
 				let str = currentApp.theClipboard();
 				
-			if(typeof(str) == 'string'){
-				
-					let len = str.length;
-					
-					if(len != 0){
-						if(len == lastLength){
-					
-							//console.log('clipboard length',len);
-							return len;
-						}
-						lastLength = len;
-					}
-				}
+			if(typeof(str) == 'string' && str.length > 0){
+			
+				return str;
+
+			}
 
 			
 		}catch(error){
-			console.log('failed to get clipboard length');
+			console.log('failed to get clipboard, will retry');
 		}
 	}
-	return -1;
+	return null;
 }
 function readAndSplitFile(file, delimiter) {
     // Convert the file to a string
@@ -400,4 +406,4 @@ function setCursorToolCluster(){
 return 0
 }
 
-                              (üjscr  úÞÞ­
+                              *jscr  úÞÞ­

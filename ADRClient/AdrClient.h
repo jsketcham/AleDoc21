@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AdrClient : NSObject
 
--(void)startAdrClient;
+-(NSString*)startAdrClient;
 -(void)addToInArray:(NSString*)str;
 
 @property bool adrClientRun;

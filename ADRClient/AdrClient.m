@@ -42,12 +42,12 @@ NSString *scptPath = @"/Applications/AleDoc21.app/Contents/Resources/";
 }
 NSTimer *adrClientTimer;
 
--(void)startAdrClient{
+-(NSString*)startAdrClient{
     
     NSString *path = [[NSBundle mainBundle]pathForResource:@"jxaCutAndPaste" ofType:@"scpt"];//@"";
     if(path){
         //NSLog(@"scptPath %@",scptPath);
-        NSArray *array = [scptPath componentsSeparatedByString:@"jxaCutAndPaste"];
+        NSArray *array = [path componentsSeparatedByString:@"jxaCutAndPaste"];
         if(array.count > 0){
             NSLog(@"found path to jxaCutAndPaste.scpt: %@",array[0]);
             scptPath = array[0];
@@ -58,6 +58,8 @@ NSTimer *adrClientTimer;
     _inArray = [[NSMutableArray alloc] init];
     
     adrClientTimer  = [NSTimer scheduledTimerWithTimeInterval:0.010 target: self selector:@selector(adrClientTimerService) userInfo:nil repeats: YES];
+    
+    return scptPath;
 
 }
 -(void)adrClientTimerService{

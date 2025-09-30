@@ -162,7 +162,8 @@ NSLock *ioLock;
     
     _adrClient = [[AdrClient alloc] init];
     _adrClient.delegate = self;
-    [_adrClient startAdrClient];    // a local thread instead of a tcp server/client
+    NSString *scptPath = [_adrClient startAdrClient];   // where the scripts are
+    [self appendToLog:[NSString stringWithFormat:@"path to scripts: %@",scptPath]];    // a local thread instead of a tcp server/client
     
     //    [self startTcpClient];
     
