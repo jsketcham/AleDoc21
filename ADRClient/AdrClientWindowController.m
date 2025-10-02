@@ -32,6 +32,7 @@
 @property TcCalculator *tcc;
 @property NSDate *lastMouseUp;    // detect double clicks, restore yPos
 @property NSControlStateValue runState;
+@property NSString *adrClientLogString;
 
 @end
 
@@ -150,6 +151,17 @@ NSLock *ioLock;
     [super windowDidLoad];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    
+    NSString *path = [self getPathToAdrClientLog];
+    NSError *error;
+    
+    @try {
+        _adrClientLogString = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+    } @catch (NSException *exception) {
+        _adrClientLogString = @"";
+    } @finally {
+        
+    }
     
     //    _tcpClient = [[TcpClientBrowser alloc] init];
     //    [_tcpClient setDelegate:self];
@@ -1464,7 +1476,6 @@ NSTimer *recPlayTimer;
 }
 NSArray *hidePing = @[@"jxaGetSampleRate"
                       ,@"pingProTools"];
-
 -(void)appendToLog:(NSString*)msg{
     
     if(_runState != NSControlStateValueOn){
@@ -1505,8 +1516,82 @@ NSArray *hidePing = @[@"jxaGetSampleRate"
     // scroll to end of document
     [_rxTextView scrollToEndOfDocument:nil];
     
+    // append to ~/Logs/adrClientLog.txt
+    [self saveToAdrClientLog:msg];
+    
+    
 }
+-(NSString*)getPathToAdrClientLog{
+    NSError *error;
+    BOOL isDir;
+    
+    NSString *pathToLog = [[[NSProcessInfo processInfo]environment]objectForKey:@"HOME"];
+    pathToLog = [pathToLog stringByAppendingString:[NSString stringWithFormat:@"/Logs"]];
+    NSFileManager *mgr = [[NSFileManager alloc] init];
+    
+    if(![mgr fileExistsAtPath:pathToLog isDirectory:&isDir]){
+        
+        // create the ~/Logs directory
+        [mgr createDirectoryAtPath:pathToLog withIntermediateDirectories:false attributes:nil error:&error];
+        
+    }
+    pathToLog = [pathToLog stringByAppendingString:[NSString stringWithFormat:@"/adrClientLog.txt"]];
+    //    NSLog(@"pathToLog: %@",pathToLog);
+    return pathToLog;
+    
+}
+#define MAX_LOG_CHARS 20000
+-(void)saveToAdrClientLog:(NSString *)msg{
 
+    // msg must end with \n
+    if(![msg hasSuffix:@"\n"]){
+        
+        msg = [msg stringByAppendingString:@"\n"];
+        
+    }
+    _adrClientLogString = [_adrClientLogString stringByAppendingString:msg];
+    
+    // keep ~100 cues, average 2K bytes per cue
+    while(_adrClientLogString.length > MAX_LOG_CHARS){
+        
+        NSLog(@"_adrClientLogString len before trimming %ld",_adrClientLogString.length);
+        
+        NSRange range = NSMakeRange(0, _adrClientLogString.length - MAX_LOG_CHARS);   // first line in the log
+        
+        _adrClientLogString = [_adrClientLogString stringByReplacingCharactersInRange:range withString:@""];
+        NSLog(@"_adrClientLogString len after trimming %ld",_adrClientLogString.length);
+
+        
+    }
+    
+    NSString *filePath = [self getPathToAdrClientLog]; // Replace with your file path
+    
+    NSError *error;
+    
+    @try {
+        [_adrClientLogString writeToFile:filePath atomically:YES
+                     encoding:NSUTF8StringEncoding
+                        error:&error];
+
+    } @catch (NSException *exception) {
+        NSLog(@"failed to write adrClientLog.txt");
+        
+    }
+
+}
+-(void)deleteAdrClientLog{
+    // delete the last adrClientLog.txt
+    NSFileManager *mgr = [NSFileManager defaultManager];
+    NSString *path = [self getPathToAdrClientLog];
+    NSError *error;
+    
+    @try {
+        NSLog(@"deleting %@",path);
+        [mgr removeItemAtPath:path error:&error];
+    } @catch (NSException *exception) {
+        NSLog(@"didn't delete the last log");
+    }
+}
 -(void)txMsg:(NSString *)msg{
     
 //    NSLog(@"txMsg: %@",msg);

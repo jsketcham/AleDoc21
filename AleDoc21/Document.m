@@ -976,7 +976,7 @@ enum{
     NSError *error;
     NSMutableArray *colTitles = [[NSMutableArray alloc]init];
     NSMutableArray *tableContents = [[NSMutableArray alloc]init];
-    NSMutableArray *titlesCopy = [_titles copy];
+    //NSMutableArray *titlesCopy = [_titles copy];
     
     NSString *fileContents = [NSString stringWithContentsOfURL:url encoding:encoding error:&error];
     

@@ -73,5 +73,6 @@
 -(void)muteTrackForIndex:(NSInteger)index :(bool)mute;
 -(NSInteger)getIndexForYPos:(NSString*)yPos;
 -(void)appendToLog:(NSString*)msg;
+-(void)deleteAdrClientLog;
 //-(NSInteger)yIndexForYPos;
 @end
