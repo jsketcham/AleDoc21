@@ -1549,8 +1549,8 @@ NSArray *hidePing = @[@"jxaGetSampleRate"
         msg = [msg stringByAppendingString:@"\n"];
         
     }
-    if(_adrClientLogString == nil){_adrClientLogString = @"";}
-    _adrClientLogString = [_adrClientLogString stringByAppendingString:msg];
+    // if nil, set to msg, otherwise append msg
+    _adrClientLogString = _adrClientLogString ? [_adrClientLogString stringByAppendingString:msg] : msg;
     
     // keep ~100 cues, average 2K bytes per cue
     while(_adrClientLogString.length > MAX_LOG_CHARS){

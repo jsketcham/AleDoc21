@@ -196,7 +196,7 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 					last = names.pop()
 				}
 				
-				delay(0.5)	// delay to avoid a double click 
+				delay(0.75)	// delay to avoid a double click 
 				btn = editWindow.groups[last].popUpButtons[0]	// Track Name button							
 				btn.actions['AXPress'].perform()	// select track
 			
@@ -208,7 +208,7 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 				app.keyCode(51);	// delete 
 				app.keystroke('\t', { using: 'option down' });	// tab to start of take
 				
-				//delay(0.5)	// delay to avoid a double click
+				delay(0.75)	// delay to avoid a double click
 				lastTrackBtn.actions['AXPress'].perform()	// select track
 				
 				return ptName;
