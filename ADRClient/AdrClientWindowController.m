@@ -1554,12 +1554,12 @@ NSArray *hidePing = @[@"jxaGetSampleRate"
     // keep ~100 cues, average 2K bytes per cue
     while(_adrClientLogString.length > MAX_LOG_CHARS){
         
-        NSLog(@"_adrClientLogString len before trimming %ld",_adrClientLogString.length);
+        //NSLog(@"_adrClientLogString len before trimming %ld",_adrClientLogString.length);
         
         NSRange range = NSMakeRange(0, _adrClientLogString.length - MAX_LOG_CHARS);   // first line in the log
         
         _adrClientLogString = [_adrClientLogString stringByReplacingCharactersInRange:range withString:@""];
-        NSLog(@"_adrClientLogString len after trimming %ld",_adrClientLogString.length);
+        //NSLog(@"_adrClientLogString len after trimming %ld",_adrClientLogString.length);
 
         
     }
