@@ -1,4 +1,4 @@
-JsOsaDAS1.001.00bplist00ÑVscript_)ð// to run in Terminal:
+JsOsaDAS1.001.00bplist00ÑVscript_*l// to run in Terminal:
 // % cd /Users/protools/Desktop/testScripts
 // % osascript -l JavaScript jxaCutAndPaste.scpt foobar 1 1
 
@@ -228,14 +228,19 @@ function waitForDialogWindow(pt,title,onOff){
 		try{
 				var names = pt.windows.name()
 				//console.log(onOff,names)
+				var titlePresent = 0;
 				
 				for (let i = 0; i < names.length; i++){
 	
-					if(onOff && names[i].startsWith(title)){
-						return 0
+					if(names[i].startsWith(title)){
+						titlePresent = 1;
+						break;
 					}
 				}
-				if(!onOff){return 0}
+				if(onOff == titlePresent){
+					console.log("onOff, titlePresent",onOff,titlePresent)
+					return 0
+				}
 				
 				//if(onOff == pt.windows.name().includes(title)){
 				//var doesIncludeTitle = pt.windows.name().includes(title)
@@ -406,4 +411,4 @@ function setCursorToolCluster(){
 return 0
 }
 
-                              *jscr  úÞÞ­
+                              *‚jscr  úÞÞ­
