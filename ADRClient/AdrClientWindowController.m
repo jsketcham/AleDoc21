@@ -1510,8 +1510,12 @@ NSArray *hidePing = @[@"jxaGetSampleRate"
     // 10/11/24 too many tabs put /r into the text, don't know why
     msg = [msg stringByReplacingOccurrencesOfString:@"\t" withString:@" "];
     
+    if(![msg hasSuffix:@"\n"]){
+        msg = [msg stringByAppendingString:@"\n"];
+    }
+    
     NSTextStorage * sto = [_rxTextView textStorage];
-    NSAttributedString *ats = [[NSAttributedString alloc] initWithString:[msg stringByAppendingString:@"\n"]];
+    NSAttributedString *ats = [[NSAttributedString alloc] initWithString:msg];
     [sto appendAttributedString:ats];
     // scroll to end of document
     [_rxTextView scrollToEndOfDocument:nil];

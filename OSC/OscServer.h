@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol OscServerDelegate
 -(void)rxOsc:(NSString *)str;
 -(void)connectionReady:(nw_connection_t) connection;
+-(void)appendToLog:(NSString*)msg;
 @end
 
 @interface OscServer : NSObject<ServerDelegate>

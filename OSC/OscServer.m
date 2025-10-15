@@ -43,7 +43,9 @@
 }
 -(void)appendToLog:(NSString*) msg{
     
-    if(_delegate && [_delegate respondsToSelector:@selector(appendToLog:)]){
+    bool logEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"showCompanionRx"];
+    
+    if(logEnabled && _delegate && [_delegate respondsToSelector:@selector(appendToLog:)]){
         
         // assume _logDelegate is a GUI
         [_delegate performSelectorOnMainThread:@selector(appendToLog:) withObject:msg waitUntilDone:false];
@@ -52,9 +54,11 @@
 }
 - (void)transmit:(NSString*)str {
     
-    if (![str containsString:@"\n"]){
+    [self appendToLog:[NSString stringWithFormat:@"osc tx: %@", str]];
+    
+    if (![str hasSuffix:@"\n"]){
         
-        str = [NSString stringWithFormat:@"%@\n",str];
+        str = [str stringByAppendingString:@"\n"];
         
     }
 
@@ -85,8 +89,8 @@
     
     NSString *msg = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
 
-    [self appendToLog:[NSString stringWithFormat:@"%@: %@",server.isUdp ? @"udp" : @"tcp", msg]];
-    
+    [self appendToLog:[NSString stringWithFormat:@"osc rx: %@", msg]];
+
     if(_delegate && [_delegate respondsToSelector:@selector(rxOsc:)]){
         
         [_delegate performSelectorOnMainThread:@selector(rxOsc:) withObject:msg waitUntilDone:false];

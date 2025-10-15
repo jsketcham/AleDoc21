@@ -1,4 +1,4 @@
-JsOsaDAS1.001.00bplist00ÑVscript_*l// to run in Terminal:
+JsOsaDAS1.001.00bplist00ÑVscript_*J// to run in Terminal:
 // % cd /Users/protools/Desktop/testScripts
 // % osascript -l JavaScript jxaCutAndPaste.scpt foobar 1 1
 
@@ -146,8 +146,7 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 				console.log('clipName', trackName);
 				
 				app.keystroke(trackName); 
-				app.keyCode(36);	// return 
-				//app.keystroke('\r');
+				app.keystroke('\r');
 								
 				// wait for the name dialog to close
 				status = waitForDialogWindow(pt,'Name',false);
@@ -411,4 +410,4 @@ function setCursorToolCluster(){
 return 0
 }
 
-                              *‚jscr  úÞÞ­
+                              *`jscr  úÞÞ­

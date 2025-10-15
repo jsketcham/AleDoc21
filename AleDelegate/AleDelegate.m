@@ -6109,7 +6109,11 @@ NSMutableDictionary *midiFilterDictionary;
     [self txOsc:@"filterItems 0"];    // get MIDI feedbacks (companion needs an operand)
     
 }
-
+-(void)appendToLog:(NSString*)msg{
+    
+    [_adrClientWindowController appendToLog:msg];
+    
+}
 #pragma mark -
 #pragma mark ----------- MIDI helpers -----------------
 -(bool)isStop{
