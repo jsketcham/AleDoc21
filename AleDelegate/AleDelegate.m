@@ -5196,6 +5196,8 @@ int btnOffColor = 0x404040;
     switch (cycleMotion){
         case CYCLE_MOTION_IDLE:
             txt = @"Cycle";
+            //fg = 0xffffff;
+            bg = cycleStopColor;    // 10/17/25, this was missing 
 //            if(lastValue != CYCLE_MOTION_IDLE){
 //                _matrixWindowController.rehRecPb = MODE_CONTROL_REHEARSE;
 //            }
