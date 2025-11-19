@@ -1346,7 +1346,7 @@ NSTimer *recPlayTimer;
         
         // split the last item in msgArray, take is next to last
         @try {
-            NSString *take = msgArray[1]; // actually file name like 'Group_AQ 109 1_05-01'
+            NSString *take = msgArray[0]; // actually file name like 'Group_AQ 109 1_05-01'
             if([take isEqual:@"-1"]){
                 // error occurred
                 [delegate alertErr:@"Cut and Paste failed! Please do operation manually" :take];
