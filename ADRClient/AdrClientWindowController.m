@@ -1330,7 +1330,7 @@ NSTimer *recPlayTimer;
 }
 
 -(void)cutAndPaste:(NSArray *)msgArray{
-    //NSLog(@"cutAndPaste %ld %@ %@",msgArray.count,msgArray[0],msgArray[1]);
+    NSLog(@"cutAndPaste %ld %@ %@",msgArray.count,msgArray[0],msgArray[1]);
 
 //    NSLog(@"cutAndPaste callback, msgArray count: %ld",msgArray.count);
 
@@ -1347,7 +1347,7 @@ NSTimer *recPlayTimer;
         
         // split the last item in msgArray, take is next to last
         @try {
-            NSString *take = [msgArray objectAtIndex:msgArray.count - 2]; // actually file name like 'Group_AQ 109 1_05-01'
+            NSString *take = msgArray[0]; // actually file name like 'Group_AQ 109 1_05-01'
             if([take isEqual:@"-1"]){
                 // error occurred
                 [delegate alertErr:@"Cut and Paste failed! Please do operation manually" :take];
