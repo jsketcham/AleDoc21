@@ -1366,6 +1366,8 @@ NSTimer *recPlayTimer;
                 
                 [doc.recordCycleDictionary setObject:[NSString stringWithFormat:@"%ld",[number integerValue]] forKey:@"Take"];
                 [doc.tableView reloadData];
+                [doc sendTakeToStreamerForDictionary];
+
             }
         }
         @catch (NSException *exception) {
