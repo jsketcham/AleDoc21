@@ -1330,8 +1330,7 @@ NSTimer *recPlayTimer;
 }
 
 -(void)cutAndPaste:(NSArray *)msgArray{
-    NSLog(@"cutAndPaste %ld %@ %@",msgArray.count,msgArray[0],msgArray[1]);
-
+   // NSLog(@"cutAndPaste %ld %@ %@",msgArray.count,msgArray[0],msgArray[1]);
 //    NSLog(@"cutAndPaste callback, msgArray count: %ld",msgArray.count);
 
     
