@@ -73,6 +73,25 @@
 
 @implementation Document
 
+// AI overview code, on drag/drop we want to not have a modification date warning
+- (NSDate *)fileModificationDate {
+    // Return a custom date
+    if (self.fileURL) {
+        NSError *error = nil;
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.fileURL.path error:&error];
+        if (attributes) {
+            return [attributes fileModificationDate];
+        } else {
+            NSLog(@"Error getting file attributes: %@", error);
+        }
+    }
+    return [super fileModificationDate];
+}
+
+- (void)setFileModificationDate:(NSDate *)newDate {
+    [super setFileModificationDate:newDate];
+}
+
 NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
 
 @synthesize tableContents = _tableContents;
@@ -566,10 +585,10 @@ NSArray *noColTitles = @[
     
     //    if(saveFileAfterChanges && _readUrl && _readTypeName) [self writeToURL:_readUrl ofType:_readTypeName error:&outError];
     
-    if(saveFileAfterChanges && _readUrl/* && _readTypeName*/){
+    if(saveFileAfterChanges && self.fileURL/* && _readTypeName*/){  // was self.readUrl
         
-        NSURL *writeURL = [_readUrl URLByDeletingLastPathComponent];
-        NSString *lastPathComponent = [_readUrl lastPathComponent];
+        NSURL *writeURL = [self.fileURL URLByDeletingLastPathComponent];        // was self.readUrl
+        NSString *lastPathComponent = [self.fileURL lastPathComponent];         // was self.readUrl
         NSString *extension = [lastPathComponent pathExtension];
         NSRange range = [lastPathComponent rangeOfString:extension];
         
@@ -617,12 +636,16 @@ NSArray *noColTitles = @[
 //        
 //    }
 //}
+bool urlDidChange = false;
+
 -(BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
     
     NSError *error;
 
     self.readTypeName = typeName;   // may need later, trying different encodings
-    self.readUrl = url;
+    //self.readUrl = url;
+    urlDidChange = url != self.fileURL;
+    self.fileURL = url; // 11/20/25, do this so that the write url is the most recent read url
     
     if([self readAle:url] == false){
         
@@ -645,9 +668,14 @@ NSArray *noColTitles = @[
     return false;
     
 }
+-(void)saveToURL:(NSURL *)url ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation delegate:(id)delegate didSaveSelector:(SEL)didSaveSelector contextInfo:(void *)contextInfo{
+    
+    [super saveToURL:url ofType:typeName forSaveOperation:saveOperation delegate:delegate didSaveSelector:didSaveSelector contextInfo:contextInfo];
+    
+}
 -(BOOL)writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
     
-    NSLog(@"writeToURL ofType %@",typeName);
+    NSLog(@"writeToURL ofType %@, file: %@",typeName,url.absoluteString);
     if(_tableContents == nil || _tableContents.count == 0) return false;
 
     NSString *extension = [url pathExtension];
@@ -1126,6 +1154,11 @@ enum{
         
         // drag/drop case, window is already open
         [self selectRow:0];
+        // AI overview, stop 'this document has been renamed' warning
+        
+        if(urlDidChange){
+            [self saveToURL:[self fileURL] ofType:[self fileType] forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:NULL];
+        }
         
         return true;    // or we get the indication that it was rejected
     }
@@ -2148,11 +2181,11 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     encoding = ((NSString*)_encodings[encodingKey]).intValue;
     
     // re-try the same file with a different encoding
-    if(_readUrl && _readTypeName){
+    if(self.fileURL && _readTypeName){  // was self.readUrl
         
 //        NSError *error;
         
-        [self readAle:_readUrl];
+        [self readAle:self.fileURL];    // was self.readUrl
         
     }
 }
@@ -3604,8 +3637,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 
 - (IBAction)onHasColumnTitles:(id)sender {
     
-    if(self.readUrl){
-        [self readAle:self.readUrl];
+    if(self.fileURL){   // was self.readUrl
+        [self readAle:self.fileURL];    // was self.readUrl
     }
 
     

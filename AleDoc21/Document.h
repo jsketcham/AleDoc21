@@ -113,7 +113,7 @@ enum{
 @property (strong) IBOutlet TCFormatter *tcFormatterTableView;
 // github
 // for our save after changes
-@property (strong) NSURL *readUrl;
+//@property (strong) NSURL *readUrl;
 @property (strong) NSString *readTypeName;
 
 // streamer/punch/beeps on the control head
