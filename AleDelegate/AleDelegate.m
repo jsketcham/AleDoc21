@@ -368,7 +368,7 @@ enum{
     
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector (didChangeScreenParameters:)
                                                  name: NSApplicationDidChangeScreenParametersNotification object: nil];
-    
+        
     // open editor window last so that editor/doc/matrix windows stack on the right side the first time we open
     [self setAppLaunchedTimer:[NSTimer scheduledTimerWithTimeInterval:0.5 target: self selector:@selector(appLaunchedTimerService) userInfo:nil repeats: NO]];
     

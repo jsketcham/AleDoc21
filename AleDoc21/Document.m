@@ -364,6 +364,11 @@ NSArray *noColTitles = @[
     [formatter setDelegate:nil];    // always is timecode format, convenient fact
     
     [self selectRow:0];
+    
+    // 11/21/25 we would like to know when we become main, so that we can set dialog, take number, etc
+//    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector (windowDidBecomeMain:)
+//                                                 name: NSWindowDidBecomeMainNotification object: nil];
+
 }
 
 -(void)removeAllColumns{
@@ -1368,7 +1373,12 @@ enum{
 //}
 - (void)windowDidBecomeMain:(NSNotification *)notification{
     
-    //    NSLog(@"windowDidBecomeMain");
+    NSLog(@"windowDidBecomeMain %@",self.docWindow.title);
+    if(!self.recordCycleDictionary){
+        // select the first cue, if any
+        [self nextCue];
+    }
+    // TODO: maybe set on-screen cue name, dialog, take number
     //    [self cueSheetTitleFromWindow];
 //    [self enablesFromStreamer];
 }
