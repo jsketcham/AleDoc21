@@ -909,8 +909,19 @@ NSTimer *motionZoneTimer;
     
     NSString *cueID = [doc cueIDForDictionary];
     NSString *character = [doc actorForDictionary];
+    
+    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
+    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+    
+    if(spacer == NULL){spacer = @" ";}
+    if(spacer.length > 1){
+        spacer = [spacer substringToIndex:2];   // 1 character
+    }
 
-    if(doc.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",character,cueID];  // 2.00.00 ' '
+    if(doc.characterInTrackName) cueID = [NSString stringWithFormat:@"%@%@%@",character,spacer,cueID];  // 2.00.00 ' '
+    
+    cueID = [_matrixWindowController sanitizeFileNameString:cueID]; // no @"/\\?%*|\"<>.^\r\n\t"
+    
     // maybe add some extra text to the cue ID
     NSString *nameNote = [_editorWindowController nameNote];
     NSInteger beforeAfterTag = [_editorWindowController beforeAfterTag];
@@ -928,6 +939,8 @@ NSTimer *motionZoneTimer;
         }
         
     }else nameNote = cueID;
+    
+    nameNote = [_matrixWindowController sanitizeFileNameString:nameNote];
     
     // always call renameLastTrack, it checks for name not changing
     // otherwise you can manually change the name to some bogus value

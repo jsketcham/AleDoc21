@@ -220,6 +220,7 @@ enum{
 -(void)saveMatrixArrayForMemory:(NSInteger)memory;
 -(void)recallMatrixArrayForMemory:(NSInteger)memory;
 -(void)fileWasDropped:(NSURL*)url;
+- (NSString *)sanitizeFileNameString:(NSString *)fileName;
 
 @end
 #endif

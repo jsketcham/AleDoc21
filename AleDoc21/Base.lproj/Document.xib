@@ -49,9 +49,9 @@
                         </connections>
                     </button>
                     <box autoresizesSubviews="NO" misplaced="YES" borderType="line" title="Setup" translatesAutoresizingMaskIntoConstraints="NO" id="iUG-0D-0vC">
-                        <rect key="frame" x="17" y="325" width="936" height="251"/>
+                        <rect key="frame" x="17" y="325" width="1023" height="251"/>
                         <view key="contentView" id="mjl-sU-wy4">
-                            <rect key="frame" x="4" y="5" width="928" height="231"/>
+                            <rect key="frame" x="4" y="5" width="1015" height="231"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UW0-bw-S8h">
@@ -98,8 +98,213 @@
                                         <binding destination="9Sq-0K-FTP" name="value" keyPath="values.showNotes" id="S6t-za-Efq"/>
                                     </connections>
                                 </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OaK-Yo-IFk">
+                                    <rect key="frame" x="13" y="87" width="109" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="push" title="Add cue" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CmC-Tv-9ao">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onAddCueButton:" target="-2" id="RGD-zz-dbo"/>
+                                    </connections>
+                                </button>
+                                <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QA2-m4-Fs5">
+                                    <rect key="frame" x="26" y="30" width="64" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="push" title="test" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Nbv-ZQ-vfc">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                </button>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ief-k7-LQt">
+                                    <rect key="frame" x="16" y="206" width="135" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Show take counter" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="n3t-mm-Iag">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.showTake" id="9JB-6Z-Swv"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9lH-eE-mVu">
+                                    <rect key="frame" x="168" y="146" width="159" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Has column titles" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="EkE-5P-AlS">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="onHasColumnTitles:" target="-2" id="b6y-GB-sbU"/>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.hasColumnTitles" id="eEM-Xi-apj"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VqI-tT-YGa">
+                                    <rect key="frame" x="168" y="125" width="186" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Keep name underscores" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="IsM-oc-UVc">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.keepUnderscores" id="bJf-MC-kbv"/>
+                                    </connections>
+                                </button>
+                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hkV-5U-2mS">
+                                    <rect key="frame" x="20" y="65" width="53" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="ohu-SJ-DA4">
+                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" formatWidth="-1" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="OsQ-Ku-4xW"/>
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.cueCtr" id="T4s-ug-EG3"/>
+                                    </connections>
+                                </textField>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wGk-yF-4oh">
+                                    <rect key="frame" x="168" y="103" width="163" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Save file after changes" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="rZq-9Z-GEY">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="-2" name="hidden" keyPath="self.aleMini" id="Sby-u6-Enz"/>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.saveFileAfterChanges" id="INK-Ze-1Wn"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fMs-p9-Ar4">
+                                    <rect key="frame" x="168" y="206" width="141" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Char in track name" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="CCw-gp-92O">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.characterInTrackName" id="VQw-Lz-O1R"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z96-pV-VDs">
+                                    <rect key="frame" x="168" y="186" width="141" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Dialog in clip name" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="LVR-Iz-OiG">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.dialogInClipName" id="Vsh-zd-eku"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZQ2-gU-HXC">
+                                    <rect key="frame" x="168" y="166" width="141" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Notes in clip name" bezelStyle="regularSquare" imagePosition="left" inset="2" id="gZB-L6-0KL">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.notesInClipName" id="hyj-88-zY0"/>
+                                    </connections>
+                                </button>
+                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="poE-S4-lUa">
+                                    <rect key="frame" x="603" y="217" width="140" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="&lt;-drag, drop to assign" id="ggN-to-Tya">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zX0-Ce-s0q">
+                                    <rect key="frame" x="168" y="81" width="152" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Record to composite" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6Hs-fd-4Tt">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="-2" name="hidden" keyPath="self.aleMini" id="xAX-Xd-2pb"/>
+                                        <binding destination="-2" name="value" keyPath="self.recordToComposite" id="juS-ko-ekY"/>
+                                    </connections>
+                                </button>
+                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lXf-eI-xbk">
+                                    <rect key="frame" x="79" y="68" width="68" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Next Cue#" id="doT-fQ-X2L">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kY2-Jb-yiM">
+                                    <rect key="frame" x="195" y="31" width="89" height="22"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" id="P6y-XB-AH7">
+                                        <customFormatter key="formatter" id="d9k-3O-vYz" customClass="TCFormatter"/>
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="-2" name="enabled" keyPath="self.startEntryEnable" id="QxS-pL-am0"/>
+                                        <binding destination="-2" name="value" keyPath="self.timeCodeStart" id="bie-Xu-VxQ"/>
+                                    </connections>
+                                </textField>
+                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kmr-zO-6io">
+                                    <rect key="frame" x="210" y="11" width="59" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="TC Start" id="bAr-gh-Pfu">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rP9-rN-RVp">
+                                    <rect key="frame" x="646" y="9" width="59" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Behavior" id="LwX-qZ-Lb3">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button toolTip="increment track number after recording a take" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gae-0q-aHC">
+                                    <rect key="frame" x="168" y="60" width="159" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Incr track after record" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="mdw-UZ-wlY">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.incrTrack" id="Ald-uf-y4E"/>
+                                    </connections>
+                                </button>
+                                <textField toolTip="char between actor and cue name" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hxb-8P-wRy">
+                                    <rect key="frame" x="317" y="184" width="28" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="KAy-CT-CHm">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.dialogSpacer" id="Zta-kb-GdY"/>
+                                    </connections>
+                                </textField>
+                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="my0-3d-HV1">
+                                    <rect key="frame" x="353" y="187" width="47" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Spacer" id="iDC-bq-HDL">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
                                 <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Columns" translatesAutoresizingMaskIntoConstraints="NO" id="XdF-Vb-Upf">
-                                    <rect key="frame" x="344" y="33" width="423" height="198"/>
+                                    <rect key="frame" x="403" y="33" width="423" height="198"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <view key="contentView" id="qDs-Do-CWW">
                                         <rect key="frame" x="4" y="5" width="415" height="178"/>
@@ -227,86 +432,8 @@
                                         </subviews>
                                     </view>
                                 </box>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OaK-Yo-IFk">
-                                    <rect key="frame" x="13" y="87" width="109" height="32"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="push" title="Add cue" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CmC-Tv-9ao">
-                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="onAddCueButton:" target="-2" id="RGD-zz-dbo"/>
-                                    </connections>
-                                </button>
-                                <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QA2-m4-Fs5">
-                                    <rect key="frame" x="26" y="30" width="64" height="32"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="push" title="test" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Nbv-ZQ-vfc">
-                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                </button>
-                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ief-k7-LQt">
-                                    <rect key="frame" x="16" y="206" width="135" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Show take counter" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="n3t-mm-Iag">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.showTake" id="9JB-6Z-Swv"/>
-                                    </connections>
-                                </button>
-                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9lH-eE-mVu">
-                                    <rect key="frame" x="168" y="146" width="159" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Has column titles" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="EkE-5P-AlS">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="onHasColumnTitles:" target="-2" id="b6y-GB-sbU"/>
-                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.hasColumnTitles" id="eEM-Xi-apj"/>
-                                    </connections>
-                                </button>
-                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VqI-tT-YGa">
-                                    <rect key="frame" x="168" y="125" width="186" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Keep name underscores" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="IsM-oc-UVc">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.keepUnderscores" id="bJf-MC-kbv"/>
-                                    </connections>
-                                </button>
-                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hkV-5U-2mS">
-                                    <rect key="frame" x="20" y="65" width="53" height="21"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="ohu-SJ-DA4">
-                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" formatWidth="-1" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="OsQ-Ku-4xW"/>
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.cueCtr" id="T4s-ug-EG3"/>
-                                    </connections>
-                                </textField>
-                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wGk-yF-4oh">
-                                    <rect key="frame" x="168" y="103" width="163" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Save file after changes" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="rZq-9Z-GEY">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <binding destination="-2" name="hidden" keyPath="self.aleMini" id="Sby-u6-Enz"/>
-                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.saveFileAfterChanges" id="INK-Ze-1Wn"/>
-                                    </connections>
-                                </button>
                                 <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Streamer/Punch/Beeps" translatesAutoresizingMaskIntoConstraints="NO" id="ROk-Rn-hdk">
-                                    <rect key="frame" x="768" y="99" width="155" height="124"/>
+                                    <rect key="frame" x="827" y="99" width="155" height="124"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <view key="contentView" id="Anr-q8-LQz">
                                         <rect key="frame" x="4" y="5" width="147" height="104"/>
@@ -373,94 +500,8 @@
                                         </subviews>
                                     </view>
                                 </box>
-                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fMs-p9-Ar4">
-                                    <rect key="frame" x="168" y="206" width="141" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Char in track name" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="CCw-gp-92O">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.characterInTrackName" id="VQw-Lz-O1R"/>
-                                    </connections>
-                                </button>
-                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z96-pV-VDs">
-                                    <rect key="frame" x="168" y="186" width="141" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Dialog in clip name" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="LVR-Iz-OiG">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.dialogInClipName" id="Vsh-zd-eku"/>
-                                    </connections>
-                                </button>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZQ2-gU-HXC">
-                                    <rect key="frame" x="168" y="166" width="141" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Notes in clip name" bezelStyle="regularSquare" imagePosition="left" inset="2" id="gZB-L6-0KL">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.notesInClipName" id="hyj-88-zY0"/>
-                                    </connections>
-                                </button>
-                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="poE-S4-lUa">
-                                    <rect key="frame" x="603" y="217" width="140" height="16"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="&lt;-drag, drop to assign" id="ggN-to-Tya">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zX0-Ce-s0q">
-                                    <rect key="frame" x="168" y="81" width="152" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Record to composite" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6Hs-fd-4Tt">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <binding destination="-2" name="hidden" keyPath="self.aleMini" id="xAX-Xd-2pb"/>
-                                        <binding destination="-2" name="value" keyPath="self.recordToComposite" id="juS-ko-ekY"/>
-                                    </connections>
-                                </button>
-                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lXf-eI-xbk">
-                                    <rect key="frame" x="79" y="68" width="68" height="16"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Next Cue#" id="doT-fQ-X2L">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kY2-Jb-yiM">
-                                    <rect key="frame" x="195" y="31" width="89" height="22"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" id="P6y-XB-AH7">
-                                        <customFormatter key="formatter" id="d9k-3O-vYz" customClass="TCFormatter"/>
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <binding destination="-2" name="enabled" keyPath="self.startEntryEnable" id="QxS-pL-am0"/>
-                                        <binding destination="-2" name="value" keyPath="self.timeCodeStart" id="bie-Xu-VxQ"/>
-                                    </connections>
-                                </textField>
-                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kmr-zO-6io">
-                                    <rect key="frame" x="210" y="11" width="59" height="17"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="TC Start" id="bAr-gh-Pfu">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
                                 <comboBox focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g05-MK-5AL">
-                                    <rect key="frame" x="346" y="4" width="222" height="26"/>
+                                    <rect key="frame" x="405" y="4" width="222" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="DRS-61-MFQ">
                                         <font key="font" metaFont="system"/>
@@ -476,28 +517,8 @@
                                         </connections>
                                     </comboBoxCell>
                                 </comboBox>
-                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rP9-rN-RVp">
-                                    <rect key="frame" x="571" y="9" width="59" height="17"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Behavior" id="LwX-qZ-Lb3">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <button toolTip="increment track number after recording a take" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gae-0q-aHC">
-                                    <rect key="frame" x="168" y="60" width="159" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Incr track after record" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="mdw-UZ-wlY">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <binding destination="9Sq-0K-FTP" name="value" keyPath="values.incrTrack" id="Ald-uf-y4E"/>
-                                    </connections>
-                                </button>
                                 <button hidden="YES" toolTip="print path to scripts in ADR Client window" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lP3-TZ-g0a">
-                                    <rect key="frame" x="649" y="1" width="100" height="32"/>
+                                    <rect key="frame" x="633" y="1" width="100" height="32"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="push" title="script path" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZIE-v0-GIT">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -510,7 +531,7 @@
                             </subviews>
                         </view>
                         <constraints>
-                            <constraint firstAttribute="width" constant="930" id="gEx-bc-SV6"/>
+                            <constraint firstAttribute="width" constant="1017" id="gEx-bc-SV6"/>
                         </constraints>
                         <connections>
                             <binding destination="-2" name="hidden" keyPath="self.disclosureState" id="Lkk-Wa-tY9">
@@ -745,7 +766,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-x8E"/>
             </connections>
-            <point key="canvasLocation" x="594" y="188"/>
+            <point key="canvasLocation" x="593.5" y="188"/>
         </window>
         <arrayController id="mjy-cA-Ow7" userLabel="WB Array Controller">
             <connections>

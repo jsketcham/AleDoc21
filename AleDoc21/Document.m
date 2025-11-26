@@ -141,49 +141,49 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
 @synthesize notes = _notes;
 
 NSArray *wbColTitles = @[
-           @"Name",
-           @"Start",
-           @"End",
-           @"Character",
-           @"Dialog",
-           @"Notes",
-           @"Take",
-           @"Track",
-           @"Col1",
-           @"Col2",
-           @"Col3",
-           @"Col4",
-           @"Col5",
-           @"Col6",
-           @"Col7",
-           @"Col8",
-           @"Col9",
-           @"Col10",
-           @"Col11",
-           @"Col12",
-           @"Col13",
-           @"Col14",
-           @"Col15",
-           @"Col16"
+    @"Name",
+    @"Start",
+    @"End",
+    @"Character",
+    @"Dialog",
+    @"Notes",
+    @"Take",
+    @"Track",
+    @"Col1",
+    @"Col2",
+    @"Col3",
+    @"Col4",
+    @"Col5",
+    @"Col6",
+    @"Col7",
+    @"Col8",
+    @"Col9",
+    @"Col10",
+    @"Col11",
+    @"Col12",
+    @"Col13",
+    @"Col14",
+    @"Col15",
+    @"Col16"
 ];
 NSArray *noColTitles = @[
-
-           @"Col1",
-           @"Col2",
-           @"Col3",
-           @"Col4",
-           @"Col5",
-           @"Col6",
-           @"Col7",
-           @"Col8",
-           @"Col9",
-           @"Col10",
-           @"Col11",
-           @"Col12",
-           @"Col13",
-           @"Col14",
-           @"Col15",
-           @"Col16"
+    
+    @"Col1",
+    @"Col2",
+    @"Col3",
+    @"Col4",
+    @"Col5",
+    @"Col6",
+    @"Col7",
+    @"Col8",
+    @"Col9",
+    @"Col10",
+    @"Col11",
+    @"Col12",
+    @"Col13",
+    @"Col14",
+    @"Col15",
+    @"Col16"
 ];
 
 //@synthesize streamerEnable = _streamerEnable;
@@ -205,11 +205,11 @@ NSArray *noColTitles = @[
         // a customer who has both tc and ft/fr cue sheets, 'Time In'
         // and 'Time Out' works for both cases
         _columnSynonymDictionary = @{@"Name":@[@"CUEID",@"CONSOLIDATED LINE NUMBER",@"LINE NUMBER"],   // scene name is not a synonym
-                              @"Start":@[@"IN",@"START TIME",@"TIME IN"],
-                              @"End":@[@"OUT",@"END TIME",@"TIME OUT"],
-                              @"Dialog":@[@"DIALOGUE",@"LINE TO"],  // 03/14/25
-                              @"Character":@[@"CHARACTER NAME",@"ACTOR"],
-                              @"Notes":@[@"PUBLIC NOTES",@"DIRECTOR'S NOTE"]};
+                                     @"Start":@[@"IN",@"START TIME",@"TIME IN"],
+                                     @"End":@[@"OUT",@"END TIME",@"TIME OUT"],
+                                     @"Dialog":@[@"DIALOGUE",@"LINE TO"],  // 03/14/25
+                                     @"Character":@[@"CHARACTER NAME",@"ACTOR"],
+                                     @"Notes":@[@"PUBLIC NOTES",@"DIRECTOR'S NOTE"]};
         
         // mandatory ALE header items
         
@@ -238,45 +238,82 @@ NSArray *noColTitles = @[
         
         NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *registrationDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                      @"0",@"beepsTrimFrames",
-                      @"0",@"characterInTrackName",
-                      @"0",@"dialogInClipName",
-                      [NSNumber numberWithFloat:36.0],@"point",
-                      arch.encodedData,@"color",
-                      [NSNumber numberWithBool:0],@"followMtcEnable",
-                      [NSNumber numberWithInteger:0],@"behaviorIndex",
-                      [NSNumber numberWithBool:YES],@"showTake",
-                      [NSNumber numberWithBool:YES],@"hasColumnHeaders",
-                      [NSNumber numberWithBool:NO],@"keepUnderscores",
-                      [NSNumber numberWithInteger:1],@"cueCtr",
-                      nil];
+                                              @"0",@"beepsTrimFrames",
+                                              @"0",@"characterInTrackName",
+                                              @"0",@"dialogInClipName",
+                                              @" ",@"dialogSpacer", // 11/26/25 char between character and cue name
+                                              [NSNumber numberWithFloat:36.0],@"point",
+                                              arch.encodedData,@"color",
+                                              [NSNumber numberWithBool:0],@"followMtcEnable",
+                                              [NSNumber numberWithInteger:0],@"behaviorIndex",
+                                              [NSNumber numberWithBool:YES],@"showTake",
+                                              [NSNumber numberWithBool:YES],@"hasColumnHeaders",
+                                              [NSNumber numberWithBool:NO],@"keepUnderscores",
+                                              [NSNumber numberWithInteger:1],@"cueCtr",
+                                              nil];
         
         [defaults registerDefaults:registrationDefaults];
         
         _timeCodeStart = @"01:00:00:00";    // assumption
         
-        //        // register for display format change notification
-        //        [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayFmtDidChange:) name:@"displayFmtDidChange" object:nil];
+                // register for display format change notification
+//                [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spacerDidChange:) name:@"displayFmtDidChange" object:nil];
+        
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"dialogSpacer" options:0 context:nil];
         
         self.encodings = @{@"UTF-8":@"4",
-        @"Mac OS Roman":@"30",
-        @"Latin 1":@"5",
-        @"ASCII":@"1",
-        @"Unicode":@"10"};
+                           @"Mac OS Roman":@"30",
+                           @"Latin 1":@"5",
+                           @"ASCII":@"1",
+                           @"Unicode":@"10"};
         
         self.encodingKeys = @[@"UTF-8"
                               ,@"Mac OS Roman"
                               ,@"Latin 1"
                               ,@"ASCII"
                               ,@"Unicode"
-                            ]; // combo box, try in order (Tami asked for UTF-8 default)
+        ]; // combo box, try in order (Tami asked for UTF-8 default)
         
         self.encodingKey = _encodingKeys[0];    // default encoding is UTF-8
-
+        
     }
     return self;
 }
+-(void)setDefaultSpacer{
+    
+    [self willChangeValueForKey:@"dialogSpacer"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"_" forKey:@"dialogSpacer"];
+    [self didChangeValueForKey:@"dialogSpacer"];
 
+}
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    
+    if([keyPath isEqualToString:@"dialogSpacer"]){
+        
+        NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+        NSLog(@"dialogSpacer %@",spacer);
+        
+        AleDelegate *aleDelegate = (AleDelegate*)[NSApp delegate];
+        NSString *illegalChars = @"/\\?%*|\"<>.^";
+        
+        NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:illegalChars];
+        
+        if([spacer rangeOfCharacterFromSet:set].location != NSNotFound){
+            
+            [aleDelegate alertErr:@"do not use the following chars as spacers (can't be in a file name)" :illegalChars];
+            
+            __weak typeof(self) weakSelf = self;
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf setDefaultSpacer];
+            });
+        }
+
+        
+    }
+    
+    
+}
 - (NSString *)windowNibName
 {
     // Override returning the nib file name of the document
@@ -1376,7 +1413,7 @@ enum{
     NSLog(@"windowDidBecomeMain %@",self.docWindow.title);
     if(!self.recordCycleDictionary){
         // select the first cue, if any
-        [self nextCue];
+        [self cueWithRowIndex:0];
     }
     // TODO: maybe set on-screen cue name, dialog, take number
     //    [self cueSheetTitleFromWindow];
@@ -1763,7 +1800,8 @@ enum{
     
     [_tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:false];
     
-    [_tableView reloadData];
+    self.recordCycleDictionary = [_tableContents objectAtIndex:row];
+    [_tableView scrollRowToVisible:row];
 
 }
 -(void)unmergeCue{
