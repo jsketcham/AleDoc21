@@ -305,7 +305,7 @@ NSArray *noColTitles = @[
             __weak typeof(self) weakSelf = self;
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf setDefaultSpacer];
+                [weakSelf setDefaultSpacer];    // at GUI level, fix the spacer char
             });
         }
 
