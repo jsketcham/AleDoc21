@@ -1,0 +1,1 @@
+{"id":"aledoc","name":"aledoc","shortname":"aledoc","description":"","version":"2.0.0","license":"ISC","repository":"","bugs":"","maintainers":[],"legacyIds":[],"runtime":{"type":"node22","api":"nodejs-ipc","apiVersion":"1.13.2","entrypoint":"../main.js"},"manufacturer":"WB","products":["AleDoc"],"keywords":[],"isPrerelease":false}

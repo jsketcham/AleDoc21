@@ -20,7 +20,6 @@
 		321A0FF3297333BC00CA4F1E /* inputs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 321A0FEF297333BC00CA4F1E /* inputs.plist */; };
 		3227BF1A2986FA070018B672 /* clear16.png in Resources */ = {isa = PBXBuildFile; fileRef = 3227BF192986FA070018B672 /* clear16.png */; };
 		322EF00A2991B12B00CC057E /* LpMini.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322EF0092991B12B00CC057E /* LpMini.swift */; };
-		32359AC92ECF8FBB00D3CB5D /* companionModules in Resources */ = {isa = PBXBuildFile; fileRef = 32359AC82ECF8FBB00D3CB5D /* companionModules */; };
 		3238F6BA297B3AB30076DE3A /* DocLeftTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3238F6B9297B3AB30076DE3A /* DocLeftTableViewController.m */; };
 		3238F6BE297B3ADD0076DE3A /* DocRightTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3238F6BC297B3ADD0076DE3A /* DocRightTableViewController.m */; };
 		3238F6BF297B3ADD0076DE3A /* DocRightTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3238F6BD297B3ADD0076DE3A /* DocRightTableViewController.xib */; };
@@ -104,6 +103,7 @@
 		32892D392A701B0E00971C95 /* AudioPlayerWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32892D372A701B0E00971C95 /* AudioPlayerWindowController.swift */; };
 		32892D3A2A701B0E00971C95 /* AudioPlayerWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32892D382A701B0E00971C95 /* AudioPlayerWindowController.xib */; };
 		32892D3C2A701DA800971C95 /* AudioPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32892D3B2A701DA800971C95 /* AudioPlayerViewController.swift */; };
+		328CAC782ED89AD800CF785C /* companionModules in Resources */ = {isa = PBXBuildFile; fileRef = 328CAC772ED89AD800CF785C /* companionModules */; };
 		328F26D42AAF96AB0002A9FD /* ControlMidi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328F26D32AAF96AB0002A9FD /* ControlMidi.swift */; };
 		3291311E2982D0050083217A /* ColorSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3291311D2982D0050083217A /* ColorSupport.m */; };
 		3296F08A2AE1D8450005B2F5 /* MtcMidi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3296F0892AE1D8450005B2F5 /* MtcMidi.swift */; };
@@ -218,7 +218,6 @@
 		321A0FEF297333BC00CA4F1E /* inputs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = inputs.plist; sourceTree = "<group>"; };
 		3227BF192986FA070018B672 /* clear16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear16.png; sourceTree = "<group>"; };
 		322EF0092991B12B00CC057E /* LpMini.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LpMini.swift; sourceTree = "<group>"; };
-		32359AC82ECF8FBB00D3CB5D /* companionModules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = companionModules; path = ../../../../companionModules; sourceTree = "<group>"; };
 		3238F6B8297B3AB30076DE3A /* DocLeftTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocLeftTableViewController.h; sourceTree = "<group>"; };
 		3238F6B9297B3AB30076DE3A /* DocLeftTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocLeftTableViewController.m; sourceTree = "<group>"; };
 		3238F6BB297B3ADD0076DE3A /* DocRightTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocRightTableViewController.h; sourceTree = "<group>"; };
@@ -306,6 +305,7 @@
 		32892D372A701B0E00971C95 /* AudioPlayerWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerWindowController.swift; sourceTree = "<group>"; };
 		32892D382A701B0E00971C95 /* AudioPlayerWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioPlayerWindowController.xib; sourceTree = "<group>"; };
 		32892D3B2A701DA800971C95 /* AudioPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewController.swift; sourceTree = "<group>"; };
+		328CAC772ED89AD800CF785C /* companionModules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = companionModules; sourceTree = "<group>"; };
 		328F26D32AAF96AB0002A9FD /* ControlMidi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlMidi.swift; sourceTree = "<group>"; };
 		3291311D2982D0050083217A /* ColorSupport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorSupport.m; sourceTree = "<group>"; };
 		3291311F2982D01F0083217A /* ColorSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorSupport.h; sourceTree = "<group>"; };
@@ -458,7 +458,7 @@
 		321A0FDC2973308800CA4F1E /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				32359AC82ECF8FBB00D3CB5D /* companionModules */,
+				328CAC772ED89AD800CF785C /* companionModules */,
 				325F5D942AF5C00300545514 /* Scripts */,
 				325F5D922AF5B00C00545514 /* cliclick */,
 				32DB41DC297343A300573A3B /* ScriptResult.h */,
@@ -1051,7 +1051,7 @@
 				325F5D932AF5B00C00545514 /* cliclick in Resources */,
 				325F5DCF2AF5C00300545514 /* prerollOff.scpt in Resources */,
 				325F5DFE2AF5C00300545514 /* setZeroFeetAtTc.scpt in Resources */,
-				32359AC92ECF8FBB00D3CB5D /* companionModules in Resources */,
+				328CAC782ED89AD800CF785C /* companionModules in Resources */,
 				325F5DE42AF5C00300545514 /* cutAndPaste.scpt in Resources */,
 				32DB423F29734B2900573A3B /* blue16.png in Resources */,
 				325F5DE22AF5C00300545514 /* jxaSetCueName.scpt in Resources */,
