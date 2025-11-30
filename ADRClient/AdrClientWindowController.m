@@ -1149,6 +1149,9 @@ bool bInitializePtCtr = false;
  //   [delegate selectCurrentSixteenTrackMemory]; // sync what we see with _currentTrack, for capturing Foley clips
 
     delegate.session = [msgArray objectAtIndex:0];    // loads the log when session changes
+    [self deleteAdrClientLog];  // fresh session, fresh log
+    [self appendToAdrClientLog:delegate.session];   // first log item is session 
+
     // 2.10.02 jxaGetSession gets the sample rate
     
     if(msgArray.count > 2){
@@ -1522,7 +1525,7 @@ NSArray *hidePing = @[@"jxaGetSampleRate"
     [_rxTextView scrollToEndOfDocument:nil];
     
     // append to ~/Logs/adrClientLog.txt
-    [self saveToAdrClientLog:msg];
+    [self appendToAdrClientLog:msg];
     
     
 }
@@ -1546,7 +1549,7 @@ NSArray *hidePing = @[@"jxaGetSampleRate"
     
 }
 #define MAX_LOG_CHARS 20000
--(void)saveToAdrClientLog:(NSString *)msg{
+-(void)appendToAdrClientLog:(NSString *)msg{
 
     // msg must end with \n
     if(![msg hasSuffix:@"\n"]){
@@ -1554,34 +1557,27 @@ NSArray *hidePing = @[@"jxaGetSampleRate"
         msg = [msg stringByAppendingString:@"\n"];
         
     }
-    // if nil, set to msg, otherwise append msg
-    _adrClientLogString = _adrClientLogString ? [_adrClientLogString stringByAppendingString:msg] : msg;
-    
-    // keep ~100 cues, average 2K bytes per cue
-    while(_adrClientLogString.length > MAX_LOG_CHARS){
-        
-        //NSLog(@"_adrClientLogString len before trimming %ld",_adrClientLogString.length);
-        
-        NSRange range = NSMakeRange(0, _adrClientLogString.length - MAX_LOG_CHARS);   // first line in the log
-        
-        _adrClientLogString = [_adrClientLogString stringByReplacingCharactersInRange:range withString:@""];
-        //NSLog(@"_adrClientLogString len after trimming %ld",_adrClientLogString.length);
-
-        
-    }
     
     NSString *filePath = [self getPathToAdrClientLog]; // Replace with your file path
-    
     NSError *error;
     
-    @try {
-        [_adrClientLogString writeToFile:filePath atomically:YES
-                     encoding:NSUTF8StringEncoding
-                        error:&error];
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
 
-    } @catch (NSException *exception) {
-        NSLog(@"failed to write adrClientLog.txt");
-        
+    if (fileHandle) {
+        // Seek to the end of the file
+        [fileHandle seekToEndOfFile];
+
+        // Convert the string to data
+        NSData *dataToAppend = [msg dataUsingEncoding:NSUTF8StringEncoding];
+
+        // Write the data to the file
+        [fileHandle writeData:dataToAppend];
+
+        // Close the file handle
+        [fileHandle closeFile];
+    } else {
+        // create the file
+        [msg writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
     }
 
 }
