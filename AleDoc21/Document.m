@@ -1202,6 +1202,8 @@ enum{
             [self saveToURL:[self fileURL] ofType:[self fileType] forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:NULL];
         }
         
+        [self readLog]; // get in sync with the log
+        
         return true;    // or we get the indication that it was rejected
     }
 
@@ -2015,6 +2017,46 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     //    NSLog(@"pathToLog: %@",pathToLog);
     return pathToLog;
     
+}
+-(void)appendMsgToFile:(NSString*)msg :(NSString*)path{
+    
+    NSError *error;
+    BOOL isDir;
+
+    NSFileManager *mgr = [[NSFileManager alloc] init];
+    NSString *pathWithoutLastComponent = [path stringByDeletingLastPathComponent];
+
+    if(![mgr fileExistsAtPath:pathWithoutLastComponent isDirectory:&isDir]){
+        
+        [mgr createDirectoryAtPath:pathWithoutLastComponent withIntermediateDirectories:false attributes:nil error:&error];
+
+        // To create a new empty file or update the modification date of an existing file
+//        if ([mgr createFileAtPath:path contents:nil attributes:nil]) {
+//            NSLog(@"File touched (created or timestamp updated) successfully at: %@", path);
+//        } else {
+//            NSLog(@"Failed to touch file at: %@", path);
+//            return;
+//        }
+    }
+    
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:path];
+    
+    if (fileHandle) {
+        // Seek to the end of the file
+        [fileHandle seekToEndOfFile];
+
+        // Convert the string to data
+        NSData *dataToAppend = [msg dataUsingEncoding:NSUTF8StringEncoding];
+
+        // Write the data to the file
+        [fileHandle writeData:dataToAppend];
+
+        // Close the file handle
+        [fileHandle closeFile];
+    } else {
+        // create the file
+        [msg writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    }
 }
 -(void)saveToLog{
     
