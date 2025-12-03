@@ -73,25 +73,6 @@
 
 @implementation Document
 
-// AI overview code, on drag/drop we want to not have a modification date warning
-- (NSDate *)fileModificationDate {
-    // Return a custom date
-    if (self.fileURL) {
-        NSError *error = nil;
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.fileURL.path error:&error];
-        if (attributes) {
-            return [attributes fileModificationDate];
-        } else {
-            NSLog(@"Error getting file attributes: %@", error);
-        }
-    }
-    return [super fileModificationDate];
-}
-
-- (void)setFileModificationDate:(NSDate *)newDate {
-    [super setFileModificationDate:newDate];
-}
-
 NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
 
 @synthesize tableContents = _tableContents;
@@ -141,49 +122,49 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
 @synthesize notes = _notes;
 
 NSArray *wbColTitles = @[
-    @"Name",
-    @"Start",
-    @"End",
-    @"Character",
-    @"Dialog",
-    @"Notes",
-    @"Take",
-    @"Track",
-    @"Col1",
-    @"Col2",
-    @"Col3",
-    @"Col4",
-    @"Col5",
-    @"Col6",
-    @"Col7",
-    @"Col8",
-    @"Col9",
-    @"Col10",
-    @"Col11",
-    @"Col12",
-    @"Col13",
-    @"Col14",
-    @"Col15",
-    @"Col16"
+           @"Name",
+           @"Start",
+           @"End",
+           @"Character",
+           @"Dialog",
+           @"Notes",
+           @"Take",
+           @"Track",
+           @"Col1",
+           @"Col2",
+           @"Col3",
+           @"Col4",
+           @"Col5",
+           @"Col6",
+           @"Col7",
+           @"Col8",
+           @"Col9",
+           @"Col10",
+           @"Col11",
+           @"Col12",
+           @"Col13",
+           @"Col14",
+           @"Col15",
+           @"Col16"
 ];
 NSArray *noColTitles = @[
-    
-    @"Col1",
-    @"Col2",
-    @"Col3",
-    @"Col4",
-    @"Col5",
-    @"Col6",
-    @"Col7",
-    @"Col8",
-    @"Col9",
-    @"Col10",
-    @"Col11",
-    @"Col12",
-    @"Col13",
-    @"Col14",
-    @"Col15",
-    @"Col16"
+
+           @"Col1",
+           @"Col2",
+           @"Col3",
+           @"Col4",
+           @"Col5",
+           @"Col6",
+           @"Col7",
+           @"Col8",
+           @"Col9",
+           @"Col10",
+           @"Col11",
+           @"Col12",
+           @"Col13",
+           @"Col14",
+           @"Col15",
+           @"Col16"
 ];
 
 //@synthesize streamerEnable = _streamerEnable;
@@ -205,11 +186,11 @@ NSArray *noColTitles = @[
         // a customer who has both tc and ft/fr cue sheets, 'Time In'
         // and 'Time Out' works for both cases
         _columnSynonymDictionary = @{@"Name":@[@"CUEID",@"CONSOLIDATED LINE NUMBER",@"LINE NUMBER"],   // scene name is not a synonym
-                                     @"Start":@[@"IN",@"START TIME",@"TIME IN"],
-                                     @"End":@[@"OUT",@"END TIME",@"TIME OUT"],
-                                     @"Dialog":@[@"DIALOGUE",@"LINE TO"],  // 03/14/25
-                                     @"Character":@[@"CHARACTER NAME",@"ACTOR"],
-                                     @"Notes":@[@"PUBLIC NOTES",@"DIRECTOR'S NOTE"]};
+                              @"Start":@[@"IN",@"START TIME",@"TIME IN"],
+                              @"End":@[@"OUT",@"END TIME",@"TIME OUT"],
+                              @"Dialog":@[@"DIALOGUE",@"LINE TO"],  // 03/14/25
+                              @"Character":@[@"CHARACTER NAME",@"ACTOR"],
+                              @"Notes":@[@"PUBLIC NOTES",@"DIRECTOR'S NOTE"]};
         
         // mandatory ALE header items
         
@@ -238,82 +219,45 @@ NSArray *noColTitles = @[
         
         NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *registrationDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                                              @"0",@"beepsTrimFrames",
-                                              @"0",@"characterInTrackName",
-                                              @"0",@"dialogInClipName",
-                                              @" ",@"dialogSpacer", // 11/26/25 char between character and cue name
-                                              [NSNumber numberWithFloat:36.0],@"point",
-                                              arch.encodedData,@"color",
-                                              [NSNumber numberWithBool:0],@"followMtcEnable",
-                                              [NSNumber numberWithInteger:0],@"behaviorIndex",
-                                              [NSNumber numberWithBool:YES],@"showTake",
-                                              [NSNumber numberWithBool:YES],@"hasColumnHeaders",
-                                              [NSNumber numberWithBool:NO],@"keepUnderscores",
-                                              [NSNumber numberWithInteger:1],@"cueCtr",
-                                              nil];
+                      @"0",@"beepsTrimFrames",
+                      @"0",@"characterInTrackName",
+                      @"0",@"dialogInClipName",
+                      [NSNumber numberWithFloat:36.0],@"point",
+                      arch.encodedData,@"color",
+                      [NSNumber numberWithBool:0],@"followMtcEnable",
+                      [NSNumber numberWithInteger:0],@"behaviorIndex",
+                      [NSNumber numberWithBool:YES],@"showTake",
+                      [NSNumber numberWithBool:YES],@"hasColumnHeaders",
+                      [NSNumber numberWithBool:NO],@"keepUnderscores",
+                      [NSNumber numberWithInteger:1],@"cueCtr",
+                      nil];
         
         [defaults registerDefaults:registrationDefaults];
         
         _timeCodeStart = @"01:00:00:00";    // assumption
         
-                // register for display format change notification
-//                [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spacerDidChange:) name:@"displayFmtDidChange" object:nil];
-        
-        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"dialogSpacer" options:0 context:nil];
+        //        // register for display format change notification
+        //        [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayFmtDidChange:) name:@"displayFmtDidChange" object:nil];
         
         self.encodings = @{@"UTF-8":@"4",
-                           @"Mac OS Roman":@"30",
-                           @"Latin 1":@"5",
-                           @"ASCII":@"1",
-                           @"Unicode":@"10"};
+        @"Mac OS Roman":@"30",
+        @"Latin 1":@"5",
+        @"ASCII":@"1",
+        @"Unicode":@"10"};
         
         self.encodingKeys = @[@"UTF-8"
                               ,@"Mac OS Roman"
                               ,@"Latin 1"
                               ,@"ASCII"
                               ,@"Unicode"
-        ]; // combo box, try in order (Tami asked for UTF-8 default)
+                            ]; // combo box, try in order (Tami asked for UTF-8 default)
         
         self.encodingKey = _encodingKeys[0];    // default encoding is UTF-8
-        
+
     }
     return self;
 }
--(void)setDefaultSpacer{
-    
-    [self willChangeValueForKey:@"dialogSpacer"];
-    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"dialogSpacer"];
-    [self didChangeValueForKey:@"dialogSpacer"];
 
-}
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    
-    if([keyPath isEqualToString:@"dialogSpacer"]){
-        
-        NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
-        NSLog(@"dialogSpacer %@",spacer);
-        
-        AleDelegate *aleDelegate = (AleDelegate*)[NSApp delegate];
-        NSString *illegalChars = @"/\\?%*|\"<>.^";
-        
-        NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:illegalChars];
-        
-        if([spacer rangeOfCharacterFromSet:set].location != NSNotFound){
-            
-            [aleDelegate alertErr:@"do not use the following chars as spacers (can't be in a file name)" :illegalChars];
-            
-            __weak typeof(self) weakSelf = self;
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf setDefaultSpacer];    // at GUI level, fix the spacer char
-            });
-        }
-
-        
-    }
-    
-    
-}
 - (NSString *)windowNibName
 {
     // Override returning the nib file name of the document
@@ -401,11 +345,6 @@ NSArray *noColTitles = @[
     [formatter setDelegate:nil];    // always is timecode format, convenient fact
     
     [self selectRow:0];
-    
-    // 11/21/25 we would like to know when we become main, so that we can set dialog, take number, etc
-//    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector (windowDidBecomeMain:)
-//                                                 name: NSWindowDidBecomeMainNotification object: nil];
-
 }
 
 -(void)removeAllColumns{
@@ -627,10 +566,10 @@ NSArray *noColTitles = @[
     
     //    if(saveFileAfterChanges && _readUrl && _readTypeName) [self writeToURL:_readUrl ofType:_readTypeName error:&outError];
     
-    if(saveFileAfterChanges && self.fileURL/* && _readTypeName*/){  // was self.readUrl
+    if(saveFileAfterChanges && _readUrl/* && _readTypeName*/){
         
-        NSURL *writeURL = [self.fileURL URLByDeletingLastPathComponent];        // was self.readUrl
-        NSString *lastPathComponent = [self.fileURL lastPathComponent];         // was self.readUrl
+        NSURL *writeURL = [_readUrl URLByDeletingLastPathComponent];
+        NSString *lastPathComponent = [_readUrl lastPathComponent];
         NSString *extension = [lastPathComponent pathExtension];
         NSRange range = [lastPathComponent rangeOfString:extension];
         
@@ -678,16 +617,12 @@ NSArray *noColTitles = @[
 //        
 //    }
 //}
-bool urlDidChange = false;
-
 -(BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
     
     NSError *error;
 
     self.readTypeName = typeName;   // may need later, trying different encodings
-    //self.readUrl = url;
-    urlDidChange = url != self.fileURL;
-    self.fileURL = url; // 11/20/25, do this so that the write url is the most recent read url
+    self.readUrl = url;
     
     if([self readAle:url] == false){
         
@@ -710,19 +645,10 @@ bool urlDidChange = false;
     return false;
     
 }
--(void)saveToURL:(NSURL *)url ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation delegate:(id)delegate didSaveSelector:(SEL)didSaveSelector contextInfo:(void *)contextInfo{
-    
-    [super saveToURL:url ofType:typeName forSaveOperation:saveOperation delegate:delegate didSaveSelector:didSaveSelector contextInfo:contextInfo];
-    
-}
 -(BOOL)writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
     
-    NSLog(@"writeToURL ofType %@, file: %@",typeName,url.absoluteString);
+    NSLog(@"writeToURL ofType %@",typeName);
     if(_tableContents == nil || _tableContents.count == 0) return false;
-    
-    // 12/2/25 ****NEVER*** write to .tab file
-    
-    //url = [url URLByAppendingPathExtension:@"ale"];
 
     NSString *extension = [url pathExtension];
     
@@ -1200,13 +1126,6 @@ enum{
         
         // drag/drop case, window is already open
         [self selectRow:0];
-        // AI overview, stop 'this document has been renamed' warning
-        
-        if(urlDidChange){
-            [self saveToURL:[self fileURL] ofType:[self fileType] forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:NULL];
-        }
-        
-        [self readLog]; // get in sync with the log
         
         return true;    // or we get the indication that it was rejected
     }
@@ -1416,12 +1335,7 @@ enum{
 //}
 - (void)windowDidBecomeMain:(NSNotification *)notification{
     
-    NSLog(@"windowDidBecomeMain %@",self.docWindow.title);
-    if(!self.recordCycleDictionary){
-        // select the first cue, if any
-        [self cueWithRowIndex:0];
-    }
-    // TODO: maybe set on-screen cue name, dialog, take number
+    //    NSLog(@"windowDidBecomeMain");
     //    [self cueSheetTitleFromWindow];
 //    [self enablesFromStreamer];
 }
@@ -1806,8 +1720,7 @@ enum{
     
     [_tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:false];
     
-    self.recordCycleDictionary = [_tableContents objectAtIndex:row];
-    [_tableView scrollRowToVisible:row];
+    [_tableView reloadData];
 
 }
 -(void)unmergeCue{
@@ -2022,46 +1935,6 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     return pathToLog;
     
 }
--(void)appendMsgToFile:(NSString*)msg :(NSString*)path{
-    
-    NSError *error;
-    BOOL isDir;
-
-    NSFileManager *mgr = [[NSFileManager alloc] init];
-    NSString *pathWithoutLastComponent = [path stringByDeletingLastPathComponent];
-
-    if(![mgr fileExistsAtPath:pathWithoutLastComponent isDirectory:&isDir]){
-        
-        [mgr createDirectoryAtPath:pathWithoutLastComponent withIntermediateDirectories:false attributes:nil error:&error];
-
-        // To create a new empty file or update the modification date of an existing file
-//        if ([mgr createFileAtPath:path contents:nil attributes:nil]) {
-//            NSLog(@"File touched (created or timestamp updated) successfully at: %@", path);
-//        } else {
-//            NSLog(@"Failed to touch file at: %@", path);
-//            return;
-//        }
-    }
-    
-    NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:path];
-    
-    if (fileHandle) {
-        // Seek to the end of the file
-        [fileHandle seekToEndOfFile];
-
-        // Convert the string to data
-        NSData *dataToAppend = [msg dataUsingEncoding:NSUTF8StringEncoding];
-
-        // Write the data to the file
-        [fileHandle writeData:dataToAppend];
-
-        // Close the file handle
-        [fileHandle closeFile];
-    } else {
-        // create the file
-        [msg writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
-    }
-}
 -(void)saveToLog{
     
     if(_recordCycleDictionary == nil){return;}    // nothing to save
@@ -2275,11 +2148,11 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     encoding = ((NSString*)_encodings[encodingKey]).intValue;
     
     // re-try the same file with a different encoding
-    if(self.fileURL && _readTypeName){  // was self.readUrl
+    if(_readUrl && _readTypeName){
         
 //        NSError *error;
         
-        [self readAle:self.fileURL];    // was self.readUrl
+        [self readAle:_readUrl];
         
     }
 }
@@ -3731,8 +3604,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 
 - (IBAction)onHasColumnTitles:(id)sender {
     
-    if(self.fileURL){   // was self.readUrl
-        [self readAle:self.fileURL];    // was self.readUrl
+    if(self.readUrl){
+        [self readAle:self.readUrl];
     }
 
     

@@ -913,7 +913,7 @@ NSTimer *motionZoneTimer;
     // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
     NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
     
-    if(spacer == NULL){spacer = @" ";}
+    if(spacer == NULL || [spacer isEqualToString:@" "]){spacer = @"";}
     if(spacer.length > 1){
         spacer = [spacer substringToIndex:2];   // 1 character
     }
