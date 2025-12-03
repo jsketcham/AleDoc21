@@ -282,7 +282,7 @@ NSArray *noColTitles = @[
 -(void)setDefaultSpacer{
     
     [self willChangeValueForKey:@"dialogSpacer"];
-    [[NSUserDefaults standardUserDefaults] setValue:@"_" forKey:@"dialogSpacer"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"dialogSpacer"];
     [self didChangeValueForKey:@"dialogSpacer"];
 
 }
@@ -719,15 +719,12 @@ bool urlDidChange = false;
     
     NSLog(@"writeToURL ofType %@, file: %@",typeName,url.absoluteString);
     if(_tableContents == nil || _tableContents.count == 0) return false;
+    
+    // 12/2/25 ****NEVER*** write to .tab file
+    
+    //url = [url URLByAppendingPathExtension:@"ale"];
 
     NSString *extension = [url pathExtension];
-    
-    if([[extension uppercaseString] isEqualToString:@"TAB"]){
-        
-        AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-        [delegate  alertErr:@"Do 'save as'" :@".tab overwrite error"];
-        return false;
-    }
     
     bool isAle = [[extension uppercaseString] isEqualToString:@"ALE"];
 

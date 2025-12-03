@@ -62,7 +62,7 @@
                         </textFieldCell>
                     </textField>
                     <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="alf-6w-Tnd" customClass="EditorTextField">
-                        <rect key="frame" x="246" y="196" width="236" height="27"/>
+                        <rect key="frame" x="246" y="196" width="185" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="G8u-kG-G4K">
                             <font key="font" metaFont="system" size="18"/>
@@ -212,7 +212,7 @@
                         </connections>
                     </button>
                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ppT-Wj-bgv">
-                        <rect key="frame" x="490" y="223" width="70" height="17"/>
+                        <rect key="frame" x="490" y="225" width="70" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Beeps ofs" drawsBackground="YES" id="Qik-Vu-OOD">
                             <font key="font" metaFont="system"/>
@@ -628,6 +628,27 @@
                             <binding destination="F60-ao-68o" name="value" keyPath="values.incrTrack" id="OSA-Bn-CFb"/>
                         </connections>
                     </button>
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bTg-gQ-URA">
+                        <rect key="frame" x="433" y="226" width="47" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Spacer" id="9m9-Y7-ZdH">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wz0-dr-QD7">
+                        <rect key="frame" x="439" y="196" width="31" height="27"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="WGZ-eR-qcf">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="F60-ao-68o" name="value" keyPath="values.dialogSpacer" id="wU1-Ip-QuC"/>
+                        </connections>
+                    </textField>
                 </subviews>
             </view>
             <connections>

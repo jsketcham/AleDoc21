@@ -45,7 +45,7 @@ class AudioPlayerViewController: NSViewController{
     
     @IBAction func onVoiceCombo(_ sender: Any) {
         
-        self.sayTake("This is a test of the \(voiceCombo.stringValue) voice" as NSString)
+//        self.sayTake("This is a test of the \(voiceCombo.stringValue) voice" as NSString)
 
     }
     
