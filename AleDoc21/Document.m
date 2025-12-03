@@ -614,6 +614,10 @@ NSArray *noColTitles = @[
     //    [self cueSheetTitleFromWindow]; // our extra bit, the title is ready...
 }
 
++ (NSArray<NSString *> *)writableTypes{
+    return @[@"com.jsk.ale"];   // the only file type that 'save as' saves
+}
+
 #pragma mark -
 #pragma mark ------------------- url read/write -------------------------
 
@@ -678,7 +682,7 @@ NSArray *noColTitles = @[
 //        
 //    }
 //}
-bool urlDidChange = false;
+//bool urlDidChange = false;
 
 -(BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
     
@@ -686,7 +690,7 @@ bool urlDidChange = false;
 
     self.readTypeName = typeName;   // may need later, trying different encodings
     //self.readUrl = url;
-    urlDidChange = url != self.fileURL;
+    //urlDidChange = url != self.fileURL;
     self.fileURL = url; // 11/20/25, do this so that the write url is the most recent read url
     
     if([self readAle:url] == false){
@@ -704,6 +708,16 @@ bool urlDidChange = false;
         }
 
     }else{
+        // save .ale files only
+        NSString *extension = [self.fileURL pathExtension];
+        if(![[extension uppercaseString] isEqualToString:@"ALE"]){
+            
+            NSURL *urlWithoutExtension = [self.fileURL URLByDeletingPathExtension];
+            self.fileURL = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
+            
+            [self saveToURL:[self fileURL] ofType:[self fileType] forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:NULL];
+        }
+        
         return true;
     }
         
@@ -722,12 +736,20 @@ bool urlDidChange = false;
 
     NSString *extension = [url pathExtension];
     
-    if([[extension uppercaseString] isEqualToString:@"TAB"]){
-        
-        AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-        [delegate  alertErr:@"Do 'save as'" :@".tab overwrite error"];
-        return false;
-    }
+//    if([[extension uppercaseString] isEqualToString:@"TAB"]){
+//        
+//        NSURL *urlWithoutExtension = [url URLByDeletingPathExtension];
+//        // change .tab to .ale
+//        url = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
+//        NSLog(@"url path: %@",url.path);
+//        
+//        // fix fileUrl
+//        urlWithoutExtension = [self.fileURL URLByDeletingPathExtension];
+//        self.fileURL = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
+//        NSLog(@"fileURL path: %@",url.path);
+//
+//        extension = @"ale";
+//    }
     
     bool isAle = [[extension uppercaseString] isEqualToString:@"ALE"];
 
@@ -1205,9 +1227,9 @@ enum{
         [self selectRow:0];
         // AI overview, stop 'this document has been renamed' warning
         
-        if(urlDidChange){
-            [self saveToURL:[self fileURL] ofType:[self fileType] forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:NULL];
-        }
+//        if(urlDidChange){
+//            [self saveToURL:[self fileURL] ofType:[self fileType] forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:NULL];
+//        }
         
         [self readLog]; // get in sync with the log
         
