@@ -114,7 +114,7 @@ enum{
 // github
 // for our save after changes
 //@property (strong) NSURL *readUrl;
-@property (strong) NSString *readTypeName;
+//@property (strong) NSString *readTypeName;
 
 // streamer/punch/beeps on the control head
 //@property bool streamerEnable;

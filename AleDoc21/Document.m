@@ -624,10 +624,10 @@ NSArray *noColTitles = @[
     
     bool saveFileAfterChanges = [[NSUserDefaults standardUserDefaults] boolForKey:@"saveFileAfterChanges"];
     
-    if(saveFileAfterChanges && self.fileURL && _readTypeName) {
+    if(saveFileAfterChanges && self.fileURL) {
         
         //[self writeToURL:self.fileURL ofType:_readTypeName error:&outError];
-        [self saveToURL:self.fileURL ofType:_readTypeName forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:nil];
+        [self saveToURL:self.fileURL ofType:self.fileType forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:nil];
     }
 }
 
@@ -635,7 +635,8 @@ NSArray *noColTitles = @[
     
     NSError *error;
 
-    self.readTypeName = typeName;   // may need later, trying different encodings
+    //self.readTypeName = typeName;   // may need later, trying different encodings
+//    NSLog(@"%@ %@",typeName,self.fileType);
     //self.readUrl = url;
     //urlDidChange = url != self.fileURL;
     self.fileURL = url; // 11/20/25, do this so that the write url is the most recent read url
@@ -734,7 +735,7 @@ NSArray *noColTitles = @[
    }
 
     // write document to file
-    NSLog(@"aleString\n%@",aleString);
+    //NSLog(@"aleString\n%@",aleString);
     NSData *aleData = [aleString dataUsingEncoding:encoding];
     
     return [aleData writeToURL:url atomically:TRUE];
@@ -2006,7 +2007,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     encoding = ((NSString*)_encodings[encodingKey]).intValue;
     
     // re-try the same file with a different encoding
-    if(self.fileURL && _readTypeName){  // was self.readUrl
+    if(self.fileURL){  // was self.readUrl
         
 //        NSError *error;
         
