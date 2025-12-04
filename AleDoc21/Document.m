@@ -2012,7 +2012,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 //        NSError *error;
         
         [self readAle:self.fileURL];    // was self.readUrl
-        
+  // tickle
     }
 }
 -(NSString *)encodingKey{
