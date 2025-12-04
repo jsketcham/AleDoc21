@@ -917,8 +917,11 @@ NSTimer *motionZoneTimer;
 //    if(spacer.length > 1){
 //        spacer = [spacer substringToIndex:2];   // 1 character
 //    }
+    
+    // spacer can be added w/o character
+    cueID = [spacer stringByAppendingString:cueID];
 
-    if(doc.characterInTrackName) cueID = [NSString stringWithFormat:@"%@%@%@",character,spacer,cueID];  // 2.00.00 ' '
+    if(doc.characterInTrackName) cueID = [character stringByAppendingString:cueID];  // 2.00.00 ' '
     
     cueID = [_matrixWindowController sanitizeFileNameString:cueID]; // no @"/\\?%*|\"<>.^\r\n\t"
     
