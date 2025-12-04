@@ -613,9 +613,8 @@ NSArray *noColTitles = @[
     [super setFileURL:fileURL];
     //    [self cueSheetTitleFromWindow]; // our extra bit, the title is ready...
 }
-
 + (NSArray<NSString *> *)writableTypes{
-    return @[@"com.jsk.ale"];   // the only file type that 'save as' saves
+    return @[@"com.jsk.ale"];
 }
 
 #pragma mark -
@@ -623,66 +622,14 @@ NSArray *noColTitles = @[
 
 -(void)writeChanges{
     
-    NSError *outError;
-    
     bool saveFileAfterChanges = [[NSUserDefaults standardUserDefaults] boolForKey:@"saveFileAfterChanges"];
     
-    // if not a .ale, change extension to .ale
-    
-    //    if(saveFileAfterChanges && _readUrl && _readTypeName) [self writeToURL:_readUrl ofType:_readTypeName error:&outError];
-    
-    if(saveFileAfterChanges && self.fileURL/* && _readTypeName*/){  // was self.readUrl
+    if(saveFileAfterChanges && self.fileURL && _readTypeName) {
         
-        NSURL *writeURL = [self.fileURL URLByDeletingLastPathComponent];        // was self.readUrl
-        NSString *lastPathComponent = [self.fileURL lastPathComponent];         // was self.readUrl
-        NSString *extension = [lastPathComponent pathExtension];
-        NSRange range = [lastPathComponent rangeOfString:extension];
-        
-        if( [extension caseInsensitiveCompare:@"ale"] != NSOrderedSame ) {
-            
-            lastPathComponent = [lastPathComponent substringToIndex:range.location - 1];
-            lastPathComponent = [lastPathComponent stringByAppendingString:@".ale"];
-            
-        }
-        writeURL = [writeURL URLByAppendingPathComponent:lastPathComponent];
-        
-        [self writeToURL:writeURL ofType:_readTypeName error:&outError];
-        
-        if(outError){
-            NSLog(@"outError");
-            
-        }
-        
-        NSSaveOperationType saveOperation = NSSaveOperation;
-        id changeCountToken = [self changeCountTokenForSaveOperation:saveOperation];
-        
-        [ self updateChangeCountWithToken:changeCountToken forSaveOperation:saveOperation];
+        //[self writeToURL:self.fileURL ofType:_readTypeName error:&outError];
+        [self saveToURL:self.fileURL ofType:_readTypeName forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:nil];
     }
 }
-//-(void)timeCodeStartFromTableContents{
-//    
-//    // use the first timecode for the hours
-//    
-//    // if cue sheet is in timecode, set the timecode start from the first good "Start" item, hh:00:00:00
-//    
-//    for( NSMutableDictionary *item in _tableContents){
-//        
-//        NSString *t = [item objectForKey:[_headerDictionary objectForKey:START_KEY]];
-//        
-//        if([tcc isTc:t]){
-//            
-//            NSArray *array = [t componentsSeparatedByString:@":"];
-//            
-//            if(array.count)
-//                [self setTimeCodeStart:[NSString stringWithFormat:@"%@:00:00:00",array[0]]];
-//            
-//            break;
-//            
-//        }
-//        
-//    }
-//}
-//bool urlDidChange = false;
 
 -(BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
     
@@ -708,16 +655,6 @@ NSArray *noColTitles = @[
         }
 
     }else{
-        // save .ale files only
-        NSString *extension = [self.fileURL pathExtension];
-        if(![[extension uppercaseString] isEqualToString:@"ALE"]){
-            
-            NSURL *urlWithoutExtension = [self.fileURL URLByDeletingPathExtension];
-            self.fileURL = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
-            
-            [self saveToURL:[self fileURL] ofType:[self fileType] forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:NULL];
-        }
-        
         return true;
     }
         
@@ -726,63 +663,50 @@ NSArray *noColTitles = @[
 }
 -(void)saveToURL:(NSURL *)url ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation delegate:(id)delegate didSaveSelector:(SEL)didSaveSelector contextInfo:(void *)contextInfo{
     
+    NSString *extension = [url pathExtension];
+    if(![[extension uppercaseString] isEqualToString:@"ALE"]){
+        NSURL *urlWithoutExtension = [url URLByDeletingPathExtension];
+        url = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
+        typeName = @"com.jsk.ale";
+        self.fileURL = url;
+    }
+    NSLog(@"saveToURL ofType %@, file: %@",typeName,url.absoluteString);
+
     [super saveToURL:url ofType:typeName forSaveOperation:saveOperation delegate:delegate didSaveSelector:didSaveSelector contextInfo:contextInfo];
     
 }
 -(BOOL)writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
     
+    NSString *extension = [url pathExtension];
+    if(![[extension uppercaseString] isEqualToString:@"ALE"]){
+        NSURL *urlWithoutExtension = [url URLByDeletingPathExtension];
+        url = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
+        typeName = @"com.jsk.ale";
+        self.fileURL = url;
+    }
+    
     NSLog(@"writeToURL ofType %@, file: %@",typeName,url.absoluteString);
     if(_tableContents == nil || _tableContents.count == 0) return false;
 
-    NSString *extension = [url pathExtension];
-    
-//    if([[extension uppercaseString] isEqualToString:@"TAB"]){
-//        
-//        NSURL *urlWithoutExtension = [url URLByDeletingPathExtension];
-//        // change .tab to .ale
-//        url = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
-//        NSLog(@"url path: %@",url.path);
-//        
-//        // fix fileUrl
-//        urlWithoutExtension = [self.fileURL URLByDeletingPathExtension];
-//        self.fileURL = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
-//        NSLog(@"fileURL path: %@",url.path);
-//
-//        extension = @"ale";
-//    }
-    
-    bool isAle = [[extension uppercaseString] isEqualToString:@"ALE"];
+    //NSString *extension = [url pathExtension];
 
     NSString *aleString = @"";
     
-    if(isAle){
+    // export as .ale (with header)
+    aleString = [aleString stringByAppendingString:@"Header\n"];
+    
+    for(NSString  *key in [_headerDictionary allKeys]){
         
-        // export as .ale (with header)
-        aleString = [aleString stringByAppendingString:@"Header\n"];
+        aleString = [aleString stringByAppendingString:[NSString stringWithFormat:@"%@\t%@\n",key,[_headerDictionary objectForKey:key]]];
         
-        for(NSString  *key in [_headerDictionary allKeys]){
-            
-            aleString = [aleString stringByAppendingString:[NSString stringWithFormat:@"%@\t%@\n",key,[_headerDictionary objectForKey:key]]];
-            
-        }
-        
-        aleString = [aleString stringByAppendingString:@"Column\n"];
-        
-        // Name, Start, End (ALE style column names)
-        aleString = [aleString stringByAppendingString:[_colTitles componentsJoinedByString:@"\t"]];
-
-        aleString = [aleString stringByAppendingString:@"\nData\n"];
-
-    }else{
-        
-        // export as .txt or .tab (no header)
-        
-        // TODO: client column names
-        // change to _colTitles being a copy of _clientColTitles, replacing synonyms
-        aleString = [aleString stringByAppendingString:[_colTitles componentsJoinedByString:@"\t"]];
-        aleString = [aleString stringByAppendingString:@"\n"];
-
     }
+    
+    aleString = [aleString stringByAppendingString:@"Column\n"];
+    
+    // Name, Start, End (ALE style column names)
+    aleString = [aleString stringByAppendingString:[_colTitles componentsJoinedByString:@"\t"]];
+
+    aleString = [aleString stringByAppendingString:@"\nData\n"];
 
     for(int i = 0; i < _tableContents.count; i++){
         
@@ -818,220 +742,6 @@ NSArray *noColTitles = @[
     return false;
 }
 
-//-(BOOL)writeToURLxx:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
-//    
-//    NSLog(@"writeToURL ofType %@",typeName);
-//    if(_tableContents == nil || _tableContents.count == 0) return false;
-//
-//    NSString *extension = [url pathExtension];
-//    
-//    bool isAle = [[extension uppercaseString] isEqualToString:@"ALE"];
-//
-//    
-//    NSString *aleString = @"";
-//    
-//    if(isAle){
-//        
-//        // export as .ale (with header)
-//        aleString = [aleString stringByAppendingString:@"Header\n"];
-//        
-//        for(NSString  *key in [_headerDictionary allKeys]){
-//            
-//            aleString = [aleString stringByAppendingString:[NSString stringWithFormat:@"%@\t%@\n",key,[_headerDictionary objectForKey:key]]];
-//            
-//        }
-//        
-//        aleString = [aleString stringByAppendingString:@"Column\n"];
-//        
-//        for(int i= 0; i < _colTitles.count; i++){
-//            
-//            aleString = [aleString stringByAppendingString:_colTitles[i]];
-//            aleString = [aleString stringByAppendingString:@"\t"];
-//
-//        }
-//        
-//        aleString = [aleString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-//        aleString = [aleString stringByAppendingString:@"\n"];
-//
-//        aleString = [aleString stringByAppendingString:@"Data\n"];
-//
-//        for(int i = 0; i < _tableContents.count; i++){
-//            
-//            NSMutableDictionary *contents = _tableContents[i];
-//            
-//            for(int j = 0; j < _colTitles.count; j++){
-//                
-//                NSString *key = _colTitles[j];
-//                
-//                NSString *string = contents[key];
-//                if(string == nil) string = @"";
-//                
-//                // format Start and End cols as tc or ft+fr depending on display format
-//                if([key isEqualToString:@"Start"] || [key isEqualToString:@"End"]){
-//                    
-//                    string = [_tcFormatterTableView stringForObjectValue:string]; // tc or ft+fr
-//                }
-//                
-//                aleString = [aleString stringByAppendingString:string];
-//                aleString = [aleString stringByAppendingString:@"\t"];
-//                
-//            }
-//            
-//            aleString = [aleString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-//            aleString = [aleString stringByAppendingString:@"\n"];
-//        }
-//
-//    }else{
-//        
-//        // export as .txt or .tab (no header)
-//        // what about additional columns?
-//        NSLog(@"_clientColTitles.count %ld",_clientColTitles.count);
-//
-//        for(int i= 0; i < _clientColTitles.count; i++){
-//            
-//            aleString = [aleString stringByAppendingString:_clientColTitles[i]];
-//            aleString = [aleString stringByAppendingString:@"\t"];
-//            
-//        }
-//        
-//        // additional cols in table
-//        for(int i= (int)_clientColTitles.count; i < _colTitles.count; i++){
-//
-//            aleString = [aleString stringByAppendingString:_colTitles[i]];
-//            aleString = [aleString stringByAppendingString:@"\t"];
-//            
-//        }
-//        
-//        aleString = [aleString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-//        aleString = [aleString stringByAppendingString:@"\n"];
-//
-//        for(int i = 0; i < _tableContents.count; i++){
-//            
-//            NSMutableDictionary *contents = _tableContents[i];
-//            
-//            for(int j = 0; j < _colTitles.count; j++){
-//                                
-//                NSString *key = _colTitles[j];
-//                
-//                NSString *string = contents[key];
-//                if(string == nil) string = @"";
-//                
-//                // format Start and End cols as tc or ft+fr depending on display format
-//                if([key isEqualToString:@"Start"] || [key isEqualToString:@"End"]){
-//                    
-//                    string = [_tcFormatterTableView stringForObjectValue:string]; // tc or ft+fr
-//                }
-//                
-//                aleString = [aleString stringByAppendingString:string];
-//                aleString = [aleString stringByAppendingString:@"\t"];
-//
-//            }
-//            
-//            aleString = [aleString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-//            aleString = [aleString stringByAppendingString:@"\n"];
-//       }
-//
-//    }
-//    
-//    // write document to file
-//    /*
-//     at one point we had info.plist, exported type identifiers, com.jsk.aledoc with
-//     extensions 'tab' and 'ale'.
-//     we now have com.jsk.tab, extension 'tab', which shows up in the 'save as' as a choice
-//     using unix 'mdls' command to look at metadata of a 'tab' we wrote out, we see
-//     
-//     kMDItemContentType                 = "com.jsk.aledoc"
-//     kMDItemContentTypeTree             = (
-//         "com.jsk.aledoc",
-//         "public.data",
-//         "public.item"
-//     )
-//     
-//     so, we have an old definition stuck in a registry somewhere.
-//     We are fiddling with info.plist to see if we can read, write .ale, .txt, .tab files
-//     
-//     we want to a) remove the association of .ale and .tab with com.jsk.aleDoc
-//     b) remove Imported Type Identifiers/com.jsk.aleDoc
-//     c) run AdrDocument or AleDoc21 with the corrected info.plist, and get the association right
-//     
-//     we hope that Imported Type Identifiers/public.plain-text, extensions 'tab' and 'txt' works
-//     
-//     some clues:
-//     https://talk.macpowerusers.com/t/remove-association-of-file-extension-to-app-open-with-to-none/22595
-//     
-//     */
-//    NSLog(@"aleString\n%@",aleString);
-//    NSData *aleData = [aleString dataUsingEncoding:encoding];
-//    
-//    return [aleData writeToURL:url atomically:TRUE];
-//    
-//}
-//
-//-(BOOL)writeToURLx:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
-//    
-//    if(_tableContents == nil || _tableContents.count == 0) return false;
-//    
-//    NSString *aleString = @"Header\n";
-//    
-//    for(NSString  *key in [_headerDictionary allKeys]){
-//        
-//        aleString = [aleString stringByAppendingString:[NSString stringWithFormat:@"%@\t%@\n",key,[_headerDictionary objectForKey:key]]];
-//        
-//    }
-//    
-//    aleString = [aleString stringByAppendingString:@"Column\n"];
-//    
-//    NSArray *cols = [_tableView tableColumns];
-//    
-//    for(int i= 0; i < cols.count; i++){
-//        
-//        aleString = [aleString stringByAppendingString:[NSString stringWithFormat:@"%@%@",((NSTableColumn*)[cols objectAtIndex:i]).identifier, i == cols.count - 1 ? @"\n" : @"\t"]];
-//        
-//    }
-//    
-//    aleString = [aleString stringByAppendingString:@"Data\n"];
-//    
-//    for(int i = 0; i < _tableContents.count; i++){
-//        
-//        NSMutableDictionary *contents = _tableContents[i];
-//        
-//        for(int j = 0; j < cols.count; j++){
-//            
-//            NSString *key = ((NSTableColumn*)cols[j]).title;
-//            
-//            NSString *string = contents[key];
-//            if(string == nil) string = @"";
-//            
-//            // format Start and End cols as tc
-//            if([key isEqualToString:@"Start"] || [key isEqualToString:@"End"]){
-//                
-//                string = [tcf stringForObjectValue:string]; // tc vals in dictionary are not necessarily formatted as tc
-//            }
-//            
-//            aleString = [aleString stringByAppendingString:[NSString stringWithFormat:@"%@%@",string,j == cols.count - 1 ? @"\n" : @"\t"]];
-//            
-//        }
-//    }
-//    
-//    NSData *aleData = [aleString dataUsingEncoding:NSUTF8StringEncoding];
-//    
-//    // file extension has to be .ale
-//    NSString *extension = [url pathExtension];
-//    
-//    if(![[extension uppercaseString] isEqualToString:@"ALE"]){
-//        
-//        NSString *path = [url absoluteString];
-//        path = [path stringByDeletingPathExtension];
-//        path = [NSString stringWithFormat:@"%@.ale",path];
-//        url = [NSURL URLWithString:path];
-//    }
-//    
-//    [aleData writeToURL:url atomically:TRUE];
-//    
-//    //    [self cueSheetTitleFromWindow]; // so that when we rename cue sheets it appears TODO initial save on rename does not call this
-//    
-//    return true;   // ALE OUTPUT ONLY
-//}
 enum{
     ALE_STATE_IDLE,
     ALE_STATE_HEADER,
@@ -1082,6 +792,7 @@ enum{
 //    NSLog(@"fileContents:\n%@",fileContents);
     
     if(error){
+        
         return false;
     }
         
@@ -1225,12 +936,7 @@ enum{
         
         // drag/drop case, window is already open
         [self selectRow:0];
-        // AI overview, stop 'this document has been renamed' warning
-        
-//        if(urlDidChange){
-//            [self saveToURL:[self fileURL] ofType:[self fileType] forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:nil contextInfo:NULL];
-//        }
-        
+
         [self readLog]; // get in sync with the log
         
         return true;    // or we get the indication that it was rejected

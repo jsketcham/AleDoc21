@@ -62,7 +62,7 @@
                         </textFieldCell>
                     </textField>
                     <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="alf-6w-Tnd" customClass="EditorTextField">
-                        <rect key="frame" x="246" y="196" width="185" height="27"/>
+                        <rect key="frame" x="246" y="196" width="152" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="G8u-kG-G4K">
                             <font key="font" metaFont="system" size="18"/>
@@ -190,9 +190,9 @@
                         </textFieldCell>
                     </textField>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3pA-nK-Y17">
-                        <rect key="frame" x="316" y="225" width="115" height="18"/>
+                        <rect key="frame" x="316" y="225" width="99" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="In track name" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2Ry-xP-Iev">
+                        <buttonCell key="cell" type="check" title="In trk name" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2Ry-xP-Iev">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -628,20 +628,11 @@
                             <binding destination="F60-ao-68o" name="value" keyPath="values.incrTrack" id="OSA-Bn-CFb"/>
                         </connections>
                     </button>
-                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bTg-gQ-URA">
-                        <rect key="frame" x="433" y="226" width="47" height="16"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Spacer" id="9m9-Y7-ZdH">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wz0-dr-QD7">
-                        <rect key="frame" x="439" y="196" width="31" height="27"/>
+                        <rect key="frame" x="411" y="196" width="67" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="WGZ-eR-qcf">
-                            <font key="font" metaFont="system"/>
+                            <font key="font" metaFont="system" size="18"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -649,6 +640,17 @@
                             <binding destination="F60-ao-68o" name="value" keyPath="values.dialogSpacer" id="wU1-Ip-QuC"/>
                         </connections>
                     </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xAy-cG-xG7">
+                        <rect key="frame" x="409" y="226" width="69" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Spacer" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="keC-ct-UXy">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="F60-ao-68o" name="value" keyPath="values.spacerEnable" id="qVG-CD-hQf"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <connections>
