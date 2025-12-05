@@ -664,12 +664,13 @@ NSArray *noColTitles = @[
 }
 -(void)saveToURL:(NSURL *)url ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation delegate:(id)delegate didSaveSelector:(SEL)didSaveSelector contextInfo:(void *)contextInfo{
     
-    NSString *extension = [url pathExtension];
-    if(![[extension uppercaseString] isEqualToString:@"ALE"]){
-        NSURL *urlWithoutExtension = [url URLByDeletingPathExtension];
-        url = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
+    // cmd-s comes through here, only save .ale
+    if(![[[url pathExtension] uppercaseString] isEqualToString:@"ALE"]){
+        
+        url = [[url URLByDeletingPathExtension] URLByAppendingPathExtension:@"ale"];
         typeName = @"com.jsk.ale";
-        self.fileURL = url;
+        self.fileURL = url;         // so that we don't delete the .tab file
+        self.fileType = typeName;   //
     }
     NSLog(@"saveToURL ofType %@, file: %@",typeName,url.absoluteString);
 
@@ -678,19 +679,24 @@ NSArray *noColTitles = @[
 }
 -(BOOL)writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError *__autoreleasing *)outError{
     
-    NSString *extension = [url pathExtension];
-    if(![[extension uppercaseString] isEqualToString:@"ALE"]){
-        NSURL *urlWithoutExtension = [url URLByDeletingPathExtension];
-        url = [urlWithoutExtension URLByAppendingPathExtension:@"ale"];
-        typeName = @"com.jsk.ale";
-        self.fileURL = url;
+    if(![[[self.fileURL pathExtension] lowercaseString] isEqualToString:@"ale"]){
+        self.fileType = @"com.jsk.ale";
+        self.fileURL = [[self.fileURL URLByDeletingPathExtension] URLByAppendingPathExtension:@"ale"]; // so that we don't delete the .tab file
+    }
+
+    NSLog(@"writeToURL ofType %@, file: %@",typeName,url.absoluteString);
+    NSLog(@"fileURL ofType %@, file: %@",self.fileType,self.fileURL.absoluteString);
+
+    // write only ale files,
+    // saveToURL() will have changed .txt and .tab files to .ale
+    // writableTypes will allow only .ale
+    if(_tableContents == nil ||
+       _tableContents.count == 0 ||
+       ![[[url pathExtension] uppercaseString] isEqualToString:@"ALE"] ||
+       ![typeName isEqualToString:@"com.jsk.ale"]){
+        return false;   // TODO: alert?
     }
     
-    NSLog(@"writeToURL ofType %@, file: %@",typeName,url.absoluteString);
-    if(_tableContents == nil || _tableContents.count == 0) return false;
-
-    //NSString *extension = [url pathExtension];
-
     NSString *aleString = @"";
     
     // export as .ale (with header)
