@@ -685,7 +685,7 @@ NSArray *noColTitles = @[
     }
 
     NSLog(@"writeToURL ofType %@, file: %@",typeName,url.absoluteString);
-    NSLog(@"fileURL ofType %@, file: %@",self.fileType,self.fileURL.absoluteString);
+    //NSLog(@"fileURL ofType %@, file: %@",self.fileType,self.fileURL.absoluteString);
 
     // write only ale files,
     // saveToURL() will have changed .txt and .tab files to .ale

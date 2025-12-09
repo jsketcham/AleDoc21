@@ -1178,7 +1178,7 @@ NSTimer *monitorSwitchingDelayTimer;
 }
 -(void)renameLastTrack:(NSArray*)msgArray{
     
-    // renameLastTrack	nada 	0	nada2	 2.085
+    // renameLastTrack	0	nada	 2.085
     // 0 switch
     // 1 old name if no error, name that failed if error
     // 2 t
