@@ -3105,6 +3105,20 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     //
     NSString *take = [self takeForDictionary:dict];
     NSString *cueID = [self cueIDForDictionary:dict];
+    
+    //
+    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
+    // 12/09/25 show it on screen
+    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+    
+    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
+//    if(spacer.length > 1){
+//        spacer = [spacer substringToIndex:2];   // 1 character
+//    }
+    
+    // spacer can be added w/o character
+    cueID = [spacer stringByAppendingString:cueID];
+
     if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",[self actorForDictionary],cueID];   // 2.00.00 ' '
 
     NSString *msg = [NSString stringWithFormat:@"%@ Last take: %@ ",cueID,take];

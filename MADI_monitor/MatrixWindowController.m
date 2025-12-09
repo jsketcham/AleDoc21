@@ -594,6 +594,21 @@ SEND_CROSSPOINTS lastSendCrosspoint;
     NSString *character;
     
     cueID = [doc cueIDForDictionary];
+    
+    //
+    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
+    // 12/09/25 show it on screen
+    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+    
+    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
+//    if(spacer.length > 1){
+//        spacer = [spacer substringToIndex:2];   // 1 character
+//    }
+    
+    // spacer can be added w/o character
+    cueID = [spacer stringByAppendingString:cueID];
+    
+    //
     character = [doc actorForDictionary];
     if(doc.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",character,cueID];   // 2.00.00 ' '
     
