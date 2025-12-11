@@ -260,7 +260,9 @@ NSArray *noColTitles = @[
 //                [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spacerDidChange:) name:@"displayFmtDidChange" object:nil];
         
         [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"dialogSpacer" options:0 context:nil];
-        
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"spacerEnable" options:0 context:nil];
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"characterInTrackName" options:0 context:nil];
+
         self.encodings = @{@"UTF-8":@"4",
                            @"Mac OS Roman":@"30",
                            @"Latin 1":@"5",
@@ -286,8 +288,11 @@ NSArray *noColTitles = @[
     [self didChangeValueForKey:@"dialogSpacer"];
 
 }
+
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     
+    __weak typeof(self) weakSelf = self;
+
     if([keyPath isEqualToString:@"dialogSpacer"]){
         
         NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
@@ -297,20 +302,29 @@ NSArray *noColTitles = @[
         NSString *illegalChars = @"/\\?%*|\"<>.^";
         
         NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:illegalChars];
-        
+
         if([spacer rangeOfCharacterFromSet:set].location != NSNotFound){
             
             [aleDelegate alertErr:@"do not use the following chars as spacers (can't be in a file name)" :illegalChars];
             
-            __weak typeof(self) weakSelf = self;
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf setDefaultSpacer];    // at GUI level, fix the spacer char
+                [weakSelf sendTakeToStreamerForDictionary];    // refresh screen
             });
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf sendTakeToStreamerForDictionary];     // refresh screen
+        });
 
         
     }
+    if([keyPath isEqualToString:@"spacerEnable"] || [keyPath isEqualToString:@"characterInTrackName"]){
+                
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf sendTakeToStreamerForDictionary];     // refresh screen
+        });
+   }
     
     
 }
@@ -3102,9 +3116,17 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
         delegate.overlayWindowController.viewController.cueIdTextView.text = @"";
         return;    // no dictionary
     }
+//    for(NSString *key in [dict allKeys]){
+//        
+//        NSLog(@"dict[%@]: %@",key,dict[key]);
+//        
+//    }
     //
     NSString *take = [self takeForDictionary:dict];
     NSString *cueID = [self cueIDForDictionary:dict];
+    NSString *actor = [self actorForDictionary:dict];
+    
+    //NSLog(@"cueID,actor,take: %@ %@ %@",cueID,actor,take);
     
     //
     // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
@@ -3119,7 +3141,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     // spacer can be added w/o character
     cueID = [spacer stringByAppendingString:cueID];
 
-    if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",[self actorForDictionary],cueID];   // 2.00.00 ' '
+    if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",actor,cueID];   // 2.00.00 ' '
 
     NSString *msg = [NSString stringWithFormat:@"%@ Last take: %@ ",cueID,take];
     if(delegate.cycleMotion != CYCLE_MOTION_IDLE && (delegate.matrixWindowController.rehRecPb % 4) == MODE_CONTROL_RECORD)
@@ -3176,9 +3198,13 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 //}
 -(NSString*)actorForDictionary{
     
-    if(_recordCycleDictionary && _recordCycleDictionary[@"Character"]){
+    return [self actorForDictionary:_recordCycleDictionary];
+}
+-(NSString*)actorForDictionary:(NSDictionary*)dict{
+    
+    if(dict && dict[@"Character"]){
         
-        return _recordCycleDictionary[@"Character"];
+        return dict[@"Character"];
     }else{
         
         return @"";
@@ -3186,6 +3212,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     }
     
 }
+
 -(NSString*)takeForDictionary{
     
     return [self takeForDictionary:_recordCycleDictionary];
