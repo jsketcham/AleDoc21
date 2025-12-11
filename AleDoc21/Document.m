@@ -3141,7 +3141,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     // spacer can be added w/o character
     cueID = [spacer stringByAppendingString:cueID];
 
-    if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",actor,cueID];   // 2.00.00 ' '
+    //if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",actor,cueID];   // 2.00.00 ' '
+    if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@%@",actor,cueID];   // 2.00.00 ' '
 
     NSString *msg = [NSString stringWithFormat:@"%@ Last take: %@ ",cueID,take];
     if(delegate.cycleMotion != CYCLE_MOTION_IDLE && (delegate.matrixWindowController.rehRecPb % 4) == MODE_CONTROL_RECORD)
