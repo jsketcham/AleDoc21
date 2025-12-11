@@ -309,4 +309,5 @@ enum{
 -(void)actorDirect:(NSString*)key;
 -(void)dialAccessoryRefresh;
 -(void)foleyClipCapture;
+-(NSString*)trackName;
 @end

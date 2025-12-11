@@ -903,7 +903,7 @@ NSTimer *motionZoneTimer;
             break;
     }
 }
--(void)renameLastTrack{
+-(NSString*)trackName{
     
     Document *doc = [self topDocument];
     
@@ -914,16 +914,36 @@ NSTimer *motionZoneTimer;
     NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
     
     if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
-//    if(spacer.length > 1){
-//        spacer = [spacer substringToIndex:2];   // 1 character
-//    }
     
     // spacer can be added w/o character
     cueID = [spacer stringByAppendingString:cueID];
 
     if(doc.characterInTrackName) cueID = [character stringByAppendingString:cueID];  // 2.00.00 ' '
+
+    return [_matrixWindowController sanitizeFileNameString:cueID]; // no @"/\\?%*|\"<>.^\r\n\t"
+}
+
+-(void)renameLastTrack{
     
-    cueID = [_matrixWindowController sanitizeFileNameString:cueID]; // no @"/\\?%*|\"<>.^\r\n\t"
+//    Document *doc = [self topDocument];
+//    
+//    NSString *cueID = [doc cueIDForDictionary];
+//    NSString *character = [doc actorForDictionary];
+//    
+//    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
+//    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+//    
+//    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
+////    if(spacer.length > 1){
+////        spacer = [spacer substringToIndex:2];   // 1 character
+////    }
+//    
+//    // spacer can be added w/o character
+//    cueID = [spacer stringByAppendingString:cueID];
+
+//    if(doc.characterInTrackName) cueID = [character stringByAppendingString:cueID];  // 2.00.00 ' '
+    
+    NSString *trackName = [self trackName]; // no @"/\\?%*|\"<>.^\r\n\t"
     
     // maybe add some extra text to the cue ID
     NSString *nameNote = [_editorWindowController nameNote];
@@ -933,15 +953,15 @@ NSTimer *motionZoneTimer;
         
         switch (beforeAfterTag) {
             case NAME_BEFORE_TAG:
-                nameNote = [NSString stringWithFormat:@"%@ %@",nameNote,cueID]; // 2.00.00 ' '
+                nameNote = [NSString stringWithFormat:@"%@ %@",nameNote,trackName]; // 2.00.00 ' '
                 break;
                 
             default:
-                nameNote = [NSString stringWithFormat:@"%@ %@",cueID,nameNote]; // 2.00.00 ' '
+                nameNote = [NSString stringWithFormat:@"%@ %@",trackName,nameNote]; // 2.00.00 ' '
                 break;
         }
         
-    }else nameNote = cueID;
+    }else nameNote = trackName;
     
     nameNote = [_matrixWindowController sanitizeFileNameString:nameNote];
     

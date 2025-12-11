@@ -2175,8 +2175,21 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     // 2.10.00 TODO: see aleDelegate.setRecordCycleDictionary for additional logic
     // case where selection is increased or decreased, or following tc
     // before gate keeper
-    [self sendDialogToStreamerForDictionary:recordCycleDictionary];   // dialog overlay
-    [self sendTakeToStreamerForDictionary:recordCycleDictionary];   // dialog overlay
+    
+    // 12/11/25, re-ordered so that _recordCycleDictionary is set before
+    // we try to put text on screen
+    bool didChange = _recordCycleDictionary != recordCycleDictionary;
+    _recordCycleDictionary = recordCycleDictionary;
+    
+    if(!_recordCycleDictionary){
+        
+        [_tableView deselectAll:nil];   // new ALE, nothing selected
+        return;
+
+    }
+
+    [self sendDialogToStreamerForDictionary:_recordCycleDictionary];   // dialog overlay
+    [self sendTakeToStreamerForDictionary:_recordCycleDictionary];   // dialog overlay
     // gate keeper
     AleDelegate *delegate = NSApp.delegate;
     switch(delegate.cycleMotion){
@@ -2189,22 +2202,13 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
             break;
     }
 
-    [self bindEditorWindowFields:recordCycleDictionary];              // bind to editor window
+    [self bindEditorWindowFields:_recordCycleDictionary];              // bind to editor window
 
-    if(_recordCycleDictionary == recordCycleDictionary){
+    if(!didChange){
         return;
     }
-
-    _recordCycleDictionary = recordCycleDictionary;
     
     [delegate.lpMini micSet:@"90787f" :false];  // fill button off 2.10.02
-
-    if(!_recordCycleDictionary){
-        
-        [_tableView deselectAll:nil];   // new ALE, nothing selected
-        return;
-
-    }
     
     // 2.10.02 set streamer indicators
     NSString *s1 = [_recordCycleDictionary objectForKey:@"streamer1"];
@@ -3122,31 +3126,33 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 //        
 //    }
     //
+//    NSString *cueID = [self cueIDForDictionary:dict];
+//    NSString *actor = [self actorForDictionary:dict];
+//    
+//    //NSLog(@"cueID,actor,take: %@ %@ %@",cueID,actor,take);
+//    
+//    //
+//    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
+//    // 12/09/25 show it on screen
+//    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+//    
+//    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
+////    if(spacer.length > 1){
+////        spacer = [spacer substringToIndex:2];   // 1 character
+////    }
+//    
+//    // spacer can be added w/o character
+//    cueID = [spacer stringByAppendingString:cueID];
+//
+//    //if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",actor,cueID];   // 2.00.00 ' '
+//    if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@%@",actor,cueID];   // 2.00.00 ' '
+    
+    NSString *trackName = [delegate trackName];
     NSString *take = [self takeForDictionary:dict];
-    NSString *cueID = [self cueIDForDictionary:dict];
-    NSString *actor = [self actorForDictionary:dict];
-    
-    //NSLog(@"cueID,actor,take: %@ %@ %@",cueID,actor,take);
-    
-    //
-    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
-    // 12/09/25 show it on screen
-    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
-    
-    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
-//    if(spacer.length > 1){
-//        spacer = [spacer substringToIndex:2];   // 1 character
-//    }
-    
-    // spacer can be added w/o character
-    cueID = [spacer stringByAppendingString:cueID];
 
-    //if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",actor,cueID];   // 2.00.00 ' '
-    if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@%@",actor,cueID];   // 2.00.00 ' '
-
-    NSString *msg = [NSString stringWithFormat:@"%@ Last take: %@ ",cueID,take];
+    NSString *msg = [NSString stringWithFormat:@"%@ Last take: %@ ",trackName,take];
     if(delegate.cycleMotion != CYCLE_MOTION_IDLE && (delegate.matrixWindowController.rehRecPb % 4) == MODE_CONTROL_RECORD)
-        msg = [NSString stringWithFormat:@"%@ Recording take: %@ ",cueID,take];  // 2.00.00
+        msg = [NSString stringWithFormat:@"%@ Recording take: %@ ",trackName,take];  // 2.00.00
     
     switch (delegate.matrixWindowController.rehRecPb % 4) {
         case MODE_CONTROL_PLAYBACK:
@@ -3159,7 +3165,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
                 if(take.length == 0) msg = @"";   // take checkbox is off
                 else if([take isEqualToString:@"0"]){
                     
-                    msg = [NSString stringWithFormat:@"%@ no takes ",cueID];
+                    msg = [NSString stringWithFormat:@"%@ no takes ",trackName];
                 }
             }
             break;
