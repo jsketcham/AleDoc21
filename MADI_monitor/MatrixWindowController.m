@@ -570,7 +570,19 @@ SEND_CROSSPOINTS lastSendCrosspoint;
     NSString *take = [NSString stringWithFormat:@"Take %@",[doc take]];
     
     if(delegate.cueIdInSlate){
-        take = [NSString stringWithFormat:@"%@ %@",[doc cueIDForDictionary],take];
+        NSString *cueID = [doc cueIDForDictionary];
+        
+        //
+        // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
+        // 12/09/25 show it on screen
+        NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+        
+        if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
+        
+        // spacer can be added w/o character
+        cueID = [spacer stringByAppendingString:cueID];
+        
+        take = [NSString stringWithFormat:@"%@ %@",cueID,take];
     }
     
     [delegate.audioPlayerWindowController sayTake:take];    // V1.00.18
@@ -607,7 +619,6 @@ SEND_CROSSPOINTS lastSendCrosspoint;
     
     // spacer can be added w/o character
     cueID = [spacer stringByAppendingString:cueID];
-    
     //
     character = [doc actorForDictionary];
     if(doc.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",character,cueID];   // 2.00.00 ' '

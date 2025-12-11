@@ -100,6 +100,7 @@
 		327EDD6D2AAA2164001AEEBE /* DialMidiWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 327EDD6B2AAA2164001AEEBE /* DialMidiWindowController.xib */; };
 		327EDD6F2AAA22F8001AEEBE /* DialMidiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327EDD6E2AAA22F8001AEEBE /* DialMidiViewController.swift */; };
 		327EDD712AAA77C9001AEEBE /* dialMidi.plist in Resources */ = {isa = PBXBuildFile; fileRef = 327EDD702AAA77C9001AEEBE /* dialMidi.plist */; };
+		3287F2A02EE8F5BD002D78B9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3287F29F2EE8F5BD002D78B9 /* CoreGraphics.framework */; };
 		32892D392A701B0E00971C95 /* AudioPlayerWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32892D372A701B0E00971C95 /* AudioPlayerWindowController.swift */; };
 		32892D3A2A701B0E00971C95 /* AudioPlayerWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32892D382A701B0E00971C95 /* AudioPlayerWindowController.xib */; };
 		32892D3C2A701DA800971C95 /* AudioPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32892D3B2A701DA800971C95 /* AudioPlayerViewController.swift */; };
@@ -302,6 +303,7 @@
 		327EDD6B2AAA2164001AEEBE /* DialMidiWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DialMidiWindowController.xib; sourceTree = "<group>"; };
 		327EDD6E2AAA22F8001AEEBE /* DialMidiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialMidiViewController.swift; sourceTree = "<group>"; };
 		327EDD702AAA77C9001AEEBE /* dialMidi.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = dialMidi.plist; sourceTree = "<group>"; };
+		3287F29F2EE8F5BD002D78B9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32892D372A701B0E00971C95 /* AudioPlayerWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerWindowController.swift; sourceTree = "<group>"; };
 		32892D382A701B0E00971C95 /* AudioPlayerWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AudioPlayerWindowController.xib; sourceTree = "<group>"; };
 		32892D3B2A701DA800971C95 /* AudioPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewController.swift; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3287F2A02EE8F5BD002D78B9 /* CoreGraphics.framework in Frameworks */,
 				326E3BF12DF0DFE4000C1ECA /* AppKit.framework in Frameworks */,
 				32DB426B297353F900573A3B /* MetalKit.framework in Frameworks */,
 				32DB4261297353C000573A3B /* Cocoa.framework in Frameworks */,
@@ -812,6 +815,7 @@
 		32DB4259297353A400573A3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3287F29F2EE8F5BD002D78B9 /* CoreGraphics.framework */,
 				326E3BF02DF0DFE4000C1ECA /* AppKit.framework */,
 				32DB426A297353F900573A3B /* MetalKit.framework */,
 				32DB4266297353DC00573A3B /* Foundation.framework */,
