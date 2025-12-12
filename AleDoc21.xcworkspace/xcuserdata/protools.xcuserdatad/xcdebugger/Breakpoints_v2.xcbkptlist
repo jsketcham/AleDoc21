@@ -52,53 +52,5 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "483B7088-6C44-49FC-B9AF-2CE347C7580A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AleDoc21/Document.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1196"
-            endingLineNumber = "1196"
-            landmarkName = "-tableViewSelectionDidChange:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "483B7088-6C44-49FC-B9AF-2CE347C7580A - d18e8d47e5ebe6e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[Document tableViewSelectionDidChange:]"
-                  moduleName = "AleDoc21"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/protools/src/xcodeProjects/AleDoc21/AleDoc21/Document.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1196"
-                  endingLineNumber = "1196"
-                  offsetFromSymbolStart = "312">
-               </Location>
-               <Location
-                  uuid = "483B7088-6C44-49FC-B9AF-2CE347C7580A - d18e8d47e5ebe6e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[Document tableViewSelectionDidChange:]"
-                  moduleName = "AleDoc21"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/protools/src/xcodeProjects/AleDoc21/AleDoc21/Document.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1196"
-                  endingLineNumber = "1196"
-                  offsetFromSymbolStart = "292">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

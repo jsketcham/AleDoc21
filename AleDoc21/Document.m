@@ -964,7 +964,7 @@ enum{
         [self selectRow:0];
         self.recordCycleDictionary = [_tableContents objectAtIndex:0];
 
-        [delegate getSession:nil]; // get in sync with the log
+        //[delegate getSession:nil]; // get in sync with the log
         
         return true;    // or we get the indication that it was rejected
     }
@@ -1918,12 +1918,13 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     // clear takes and tracks for _tableContents, will get filled in if there is a log entry
     
-    for(NSMutableDictionary *dict in _tableContents){
-        
-        [dict setObject:@"0" forKey:@"Take"]; //NSLog(@"KEY  9");
-        [dict setObject:@"1" forKey:@"Track"];
-        
-    }
+    // 12/12/25 leave items not in the log, alone
+//    for(NSMutableDictionary *dict in _tableContents){
+//        
+//        [dict setObject:@"0" forKey:@"Take"]; //NSLog(@"KEY  9");
+//        [dict setObject:@"1" forKey:@"Track"];
+//        
+//    }
     
     if(![mgr fileExistsAtPath:pathToLog isDirectory:&isDir]){
         
