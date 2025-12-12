@@ -620,7 +620,7 @@ SEND_CROSSPOINTS lastSendCrosspoint;
     // spacer can be added w/o character
     cueID = [spacer stringByAppendingString:cueID];
     //
-    character = [doc actorForDictionary];
+    character = [doc characterForDictionary];
     if(doc.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",character,cueID];   // 2.00.00 ' '
     
     // maybe add some extra text to the cue ID
@@ -2369,7 +2369,7 @@ NSTimer *rehRecPbOneshotTimer;
     
     Document *doc = [_aleDelegate topDocument];
     
-    if(doc && doc.recordCycleDictionaryState == RECORD_CYCLE_DICTIONARY_IDLE){
+    if(doc /*&& doc.recordCycleDictionaryState == RECORD_CYCLE_DICTIONARY_IDLE*/){
         [doc sendDialogToStreamerForDictionary]; // for case where we had been in playback
         [doc sendTakeToStreamerForDictionary];
     }
@@ -2655,20 +2655,20 @@ bool isFirstNumRecTracksTag = true;
 -(NSInteger)adrClientState{
     return _protoolsAnnunciator.state;
 }
-- (NSString *)sanitizeFileNameString:(NSString *)fileName {
-    NSCharacterSet* illegalFileNameCharacters = [NSCharacterSet characterSetWithCharactersInString:@"/\\?%*|\"<>.^\r\n\t"];   // added '^' 10/12/15 per Evan
-    // 12/7/23 replace instances of \\r with \n
-    // see sample:
-    // /Users/protools/FooFolder/CLR Tom Adam Scott 120523.txt
-    NSString *fName = [[fileName componentsSeparatedByCharactersInSet:illegalFileNameCharacters] componentsJoinedByString:@" "];
-    
-    // 07/02/25 replace double blanks with a single blank
-    // two blanks appear as '. ' in the filename (Jason noticed)
-    fName = [fName stringByReplacingOccurrencesOfString:@"  "
-                                         withString:@" "];
-    
-    return fName;
-}
+//- (NSString *)sanitizeFileNameString:(NSString *)fileName {
+//    NSCharacterSet* illegalFileNameCharacters = [NSCharacterSet characterSetWithCharactersInString:@"/\\?%*|\"<>.^\r\n\t"];   // added '^' 10/12/15 per Evan
+//    // 12/7/23 replace instances of \\r with \n
+//    // see sample:
+//    // /Users/protools/FooFolder/CLR Tom Adam Scott 120523.txt
+//    NSString *fName = [[fileName componentsSeparatedByCharactersInSet:illegalFileNameCharacters] componentsJoinedByString:@" "];
+//    
+//    // 07/02/25 replace double blanks with a single blank
+//    // two blanks appear as '. ' in the filename (Jason noticed)
+//    fName = [fName stringByReplacingOccurrencesOfString:@"  "
+//                                         withString:@" "];
+//    
+//    return fName;
+//}
 //-(void)finalizeRecord:(bool)cutAndPaste{
 //
 //    NSLog(@"finalizeRecord cutAndPaste %d",cutAndPaste);
@@ -2824,8 +2824,8 @@ bool isFirstNumRecTracksTag = true;
     
     if(dlg.length > DIALOG_CLIP_LENGTH) dlg = [dlg substringToIndex:DIALOG_CLIP_LENGTH];
     
-    dlg = [self sanitizeFileNameString:dlg];
-    notes = [self sanitizeFileNameString:notes];
+    dlg = [doc sanitizeFileNameString:dlg];
+    notes = [doc sanitizeFileNameString:notes];
     
     // 2.00.00 if we are showing 16 tracks, we have to move up some tracks to copy the clip
     // 2.10.02 track selector can change during RECORD cycle

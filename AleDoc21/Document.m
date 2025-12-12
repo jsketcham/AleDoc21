@@ -134,7 +134,7 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
 @synthesize clientTableContents = _clientTableContents;
 @synthesize clientColTitles = _clientColTitles;
 @synthesize encodings = _encodings;
-@synthesize recordCycleDictionaryState = _recordCycleDictionaryState;
+//@synthesize recordCycleDictionaryState = _recordCycleDictionaryState;
 
 @synthesize tcFormatterTableView = _tcFormatterTableView;
 @synthesize encodingKey = _encodingKey;
@@ -286,43 +286,47 @@ NSArray *noColTitles = @[
     [self willChangeValueForKey:@"dialogSpacer"];
     [[NSUserDefaults standardUserDefaults] setValue:@"_" forKey:@"dialogSpacer"];
     [self didChangeValueForKey:@"dialogSpacer"];
-
+    
+    [self sendTakeToStreamerForDictionary];
+    
+    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    [delegate alertErr:@"do not use the following chars as spacers (can't be in a file name)" :@"/\\?%*|\"<>.^"];
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     
+    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    
+    if(delegate.topDocument != self){return;}   // screen belongs to top document
+
     __weak typeof(self) weakSelf = self;
+    
+    NSLog(@"keyPath %@",keyPath);
 
     if([keyPath isEqualToString:@"dialogSpacer"]){
         
         NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
-        NSLog(@"dialogSpacer %@",spacer);
         
-        AleDelegate *aleDelegate = (AleDelegate*)[NSApp delegate];
-        NSString *illegalChars = @"/\\?%*|\"<>.^";
+        NSString *sanitized = [self sanitizeFileNameString: spacer];
         
-        NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:illegalChars];
-
-        if([spacer rangeOfCharacterFromSet:set].location != NSNotFound){
+        if(![spacer isEqualToString:sanitized]){
             
-            [aleDelegate alertErr:@"do not use the following chars as spacers (can't be in a file name)" :illegalChars];
-            
-
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf sendTakeToStreamerForDictionary];    // refresh screen
+                [weakSelf setDefaultSpacer];    // warn about illegal filename chars
             });
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf sendTakeToStreamerForDictionary];     // refresh screen
-        });
+            
+            return;
 
-        
+        }
     }
-    if([keyPath isEqualToString:@"spacerEnable"] || [keyPath isEqualToString:@"characterInTrackName"]){
+    
+    if([keyPath isEqualToString:@"spacerEnable"] || 
+       [keyPath isEqualToString:@"characterInTrackName"] ||
+       [keyPath isEqualToString:@"dialogSpacer"]){
                 
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf sendTakeToStreamerForDictionary];     // refresh screen
+            [weakSelf readLog]; // refresh takes
         });
    }
     
@@ -560,7 +564,7 @@ NSArray *noColTitles = @[
 
 -(NSString*)actor{
     
-    return [self actorForDictionary];
+    return [self characterForDictionary];
     
 }
 -(NSString*)take{
@@ -957,6 +961,7 @@ enum{
         
         // drag/drop case, window is already open
         [self selectRow:0];
+        self.recordCycleDictionary = [_tableContents objectAtIndex:0];
 
         [self readLog]; // get in sync with the log
         
@@ -1823,12 +1828,14 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     // http://stackoverflow.com/questions/11106584/appending-to-the-end-of-a-file-with-nsmutablestring
     
-    NSString *cueId = [self cueIDForDictionary];
+    // 12/12/25 PT uses trackName for the file names, we must match that when recovering log
+    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    NSString *cueId = [self trackName];//[self cueIDForDictionary];
     NSString *start = [self startForDictionary:_recordCycleDictionary];//[self startTcForDictionary:recordCycleDictionary];
     start = _tableContentsDisplayFormat == DISPLAY_FMT_TC ? [tcf formatAsTc:start] : [tcf formatAsFeet:start];
     NSString *take = [self takeForDictionary];
     NSString *track = [self trackForDictionary];
-    NSString *actor = [self actorForDictionary];
+    NSString *actor = [self characterForDictionary];
     NSString *dialog = [self dialogForDictionary];
     
     NSString *streamer1 = [_recordCycleDictionary objectForKey:@"streamer1"]; if(!streamer1) streamer1 = @"";
@@ -1842,7 +1849,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     if(cueNote == nil) cueNote = @"";
     NSString *notes = [self notesForDictionary];
     
-    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    //AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
     NSString *numRecTracks = [NSString stringWithFormat:@"%ld",[delegate.matrixWindowController numRecTracksTag]];
     _recordCycleDictionary[@"numRecTracks"] = numRecTracks;  // 2.00.00
     
@@ -1944,7 +1951,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     for(NSMutableDictionary *dict in _tableContents){
         
-        NSString *cueId = [self cueIDForDictionary:dict];
+        // 12/12/25 match the pt file name, which depends on spacer and character name
+        NSString *trackName = [self trackName:dict];
         
         for(NSInteger i = logItems.count; i > 0;){
             
@@ -1957,7 +1965,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
             // 2.00.00 we don't see why mono and multi track have separate cases
             // 2.00.00 add numRecTracks to dict so we can set the monitor when we change cues
 //            NSLog(@"%@ %@",cueId,[logItemArray objectAtIndex:0]);
-            if([cueId isEqualToString:[logItemArray objectAtIndex:0]]){ // TODO match the monitor format to the current format
+            if([trackName isEqualToString:[logItemArray objectAtIndex:0]]){ // TODO match the monitor format to the current format
                 
                 dict[@"streamer1"] = [logItemArray objectAtIndex:9];
                 dict[@"streamer2"] = [logItemArray objectAtIndex:10];
@@ -2046,12 +2054,12 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 -(TCFormatter *)tcFormatterTableView{
     return _tcFormatterTableView;
 }
--(void)setRecordCycleDictionaryState:(NSInteger)recordCycleDictionaryState{
-    _recordCycleDictionaryState = recordCycleDictionaryState;
-}
--(NSInteger)recordCycleDictionaryState{
-    return _recordCycleDictionaryState;
-}
+//-(void)setRecordCycleDictionaryState:(NSInteger)recordCycleDictionaryState{
+//    _recordCycleDictionaryState = recordCycleDictionaryState;
+//}
+//-(NSInteger)recordCycleDictionaryState{
+//    return _recordCycleDictionaryState;
+//}
 -(void)setClientTableContents:(NSArray *)clientTableContents{
     _clientTableContents = clientTableContents;
         
@@ -2148,7 +2156,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 
 -(void)recCycleTimerService{
     
-    self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;
+//    self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;
     
     AleDelegate *delegate = NSApp.delegate;
     
@@ -2176,20 +2184,61 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     // case where selection is increased or decreased, or following tc
     // before gate keeper
     
-    // 12/11/25, re-ordered so that _recordCycleDictionary is set before
-    // we try to put text on screen
-    bool didChange = _recordCycleDictionary != recordCycleDictionary;
+    // 12/11/25, DO NOT call setRecordCycleDictionary when following timecode
+    
     _recordCycleDictionary = recordCycleDictionary;
     
+//    self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;    // TODO: justify, or get rid of, recordCycleDictionaryState
+    
     if(!_recordCycleDictionary){
-        
-        [_tableView deselectAll:nil];   // new ALE, nothing selected
         return;
-
     }
 
     [self sendDialogToStreamerForDictionary:_recordCycleDictionary];   // dialog overlay
     [self sendTakeToStreamerForDictionary:_recordCycleDictionary];   // dialog overlay
+    [self bindEditorWindowFields:_recordCycleDictionary];              // bind to editor window
+    
+    AleDelegate *delegate = NSApp.delegate;
+    [delegate.lpMini micSet:@"90787f" :false];  // fill button off 2.10.02
+    
+    // 2.10.02 set streamer indicators
+    NSString *s1 = [_recordCycleDictionary objectForKey:@"streamer1"];
+    NSString *s2 = [_recordCycleDictionary objectForKey:@"streamer2"];
+    NSString *s3 = [_recordCycleDictionary objectForKey:@"streamer3"];
+    NSString *s4 = [_recordCycleDictionary objectForKey:@"streamer4"];
+    NSString *s5 = [_recordCycleDictionary objectForKey:@"streamer5"];
+    NSString *s6 = [_recordCycleDictionary objectForKey:@"streamer6"];
+
+    [delegate txOsc:[NSString stringWithFormat:@"led 8,41,%@", (!s1 || [s1 isEqualToString:@""] ? @"false" : @"true")]];
+    [delegate txOsc:[NSString stringWithFormat:@"led 8,49,%@", (!s2 || [s2 isEqualToString:@""] ? @"false" : @"true")]];
+    [delegate txOsc:[NSString stringWithFormat:@"led 8,57,%@", (!s3 || [s3 isEqualToString:@""] ? @"false" : @"true")]];
+    [delegate txOsc:[NSString stringWithFormat:@"led 8,42,%@", (!s4 || [s4 isEqualToString:@""] ? @"false" : @"true")]];
+    [delegate txOsc:[NSString stringWithFormat:@"led 8,50,%@", (!s5 || [s5 isEqualToString:@""] ? @"false" : @"true")]];
+    [delegate txOsc:[NSString stringWithFormat:@"led 8,58,%@", (!s6 || [s6 isEqualToString:@""] ? @"false" : @"true")]];
+    
+    // dialog is following timecode, don't cue
+    if(delegate.ptHui.isPlay){
+        return;
+    }
+
+    // use a timer to delay these actions
+    // this lets 'prev cue' and 'next cue' be quickly pressed
+    // w/o cueing up for each one
+    if(_recCycleTimer){[_recCycleTimer invalidate];}
+    [self setRecCycleTimer:[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(recCycleTimerService) userInfo:nil repeats:NO]];
+
+}
+/*
+// the version where we got out of sync on screen when doing NEXT, PREV
+// check recordCycleDictionaryState, what is that about?
+// it looks like this is a (not very good?) way of dialog following mtc
+-(void)setRecordCycleDictionaryx:(NSMutableDictionary *)recordCycleDictionary{
+    
+    // 2.10.00 TODO: see aleDelegate.setRecordCycleDictionary for additional logic
+    // case where selection is increased or decreased, or following tc
+    // before gate keeper
+    [self sendDialogToStreamerForDictionary:recordCycleDictionary];   // dialog overlay
+    [self sendTakeToStreamerForDictionary:recordCycleDictionary];   // dialog overlay
     // gate keeper
     AleDelegate *delegate = NSApp.delegate;
     switch(delegate.cycleMotion){
@@ -2202,11 +2251,13 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
             break;
     }
 
-    [self bindEditorWindowFields:_recordCycleDictionary];              // bind to editor window
+    [self bindEditorWindowFields:recordCycleDictionary];              // bind to editor window
 
-    if(!didChange){
+    if(_recordCycleDictionary == recordCycleDictionary){
         return;
     }
+
+    _recordCycleDictionary = recordCycleDictionary;
     
     [delegate.lpMini micSet:@"90787f" :false];  // fill button off 2.10.02
     
@@ -2240,6 +2291,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     [self setRecCycleTimer:[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(recCycleTimerService) userInfo:nil repeats:NO]];
 
 }
+*/
 -(NSDictionary*)recordCycleDictionary{
     return _recordCycleDictionary;
 }
@@ -2941,7 +2993,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     dict[@"Start"] = start;
     [_arrayController addObject:dict];
     
-    self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;
+//    self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;
 
     // scroll to last row
     // http://stackoverflow.com/questions/1799728/how-to-make-nstableview-scroll-to-most-recently-added-row
@@ -3037,6 +3089,43 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 }
 #pragma mark -
 #pragma mark --------- helper fns for recordCycleDictionary -----------
+- (NSString *)sanitizeFileNameString:(NSString *)fileName {
+    NSCharacterSet* illegalFileNameCharacters = [NSCharacterSet characterSetWithCharactersInString:@"/\\?%*|\"<>.^\r\n\t"];   // added '^' 10/12/15 per Evan
+    // 12/7/23 replace instances of \\r with \n
+    // see sample:
+    // /Users/protools/FooFolder/CLR Tom Adam Scott 120523.txt
+    NSString *fName = [[fileName componentsSeparatedByCharactersInSet:illegalFileNameCharacters] componentsJoinedByString:@" "];
+    
+    // 07/02/25 replace double blanks with a single blank
+    // two blanks appear as '. ' in the filename (Jason noticed)
+    fName = [fName stringByReplacingOccurrencesOfString:@"  "
+                                         withString:@" "];
+    
+    return fName;
+}
+
+-(NSString*)trackName:(NSDictionary*) dict{
+    
+    NSString *cueID = [self cueIDForDictionary:dict];
+    NSString *character = [self characterForDictionary:dict];
+    
+    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
+    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+    
+    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
+    
+    // spacer can be added w/o character
+    cueID = [spacer stringByAppendingString:cueID];
+
+    if(self.characterInTrackName) cueID = [character stringByAppendingString:cueID];  // 2.00.00 ' '
+
+    return [self sanitizeFileNameString:cueID]; //
+}
+-(NSString*)trackName{
+    
+    return [self trackName:_recordCycleDictionary];
+}
+
 -(void)sendDialogToStreamerForDictionary{
     
     [self sendDialogToStreamerForDictionary:_recordCycleDictionary];
@@ -3127,7 +3216,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 //    }
     //
 //    NSString *cueID = [self cueIDForDictionary:dict];
-//    NSString *actor = [self actorForDictionary:dict];
+//    NSString *actor = [self characterForDictionary:dict];
 //    
 //    //NSLog(@"cueID,actor,take: %@ %@ %@",cueID,actor,take);
 //    
@@ -3147,7 +3236,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 //    //if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@ %@",actor,cueID];   // 2.00.00 ' '
 //    if(self.characterInTrackName) cueID = [NSString stringWithFormat:@"%@%@",actor,cueID];   // 2.00.00 ' '
     
-    NSString *trackName = [delegate trackName];
+    NSString *trackName = [self trackName];
     NSString *take = [self takeForDictionary:dict];
 
     NSString *msg = [NSString stringWithFormat:@"%@ Last take: %@ ",trackName,take];
@@ -3173,6 +3262,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     bool show = [[NSUserDefaults standardUserDefaults] boolForKey:@"showTake"];
     delegate.overlayWindowController.viewController.cueIdTextView.text = show ? msg : @"";
+    NSLog(@"sendTakeToStreamerForDictionary show: %d msg: %@",show,msg);
     
     // 2.10.02 don't do this, leave monitor format to mixer, cue can have different formats on different takes
     // 2.00.00 change monitor format, different cues can have different monitor formats
@@ -3185,7 +3275,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 }
 -(NSString*)clipNameForDictionary{
     
-    NSString *actor = [self actorForDictionary];
+    NSString *actor = [self characterForDictionary];
     NSString *take = [self takeForDictionary]; if(take.length < 2) take = [@"0" stringByAppendingString:take];
     NSString *cueID = [self cueIDForDictionary:_recordCycleDictionary];
     
@@ -3203,11 +3293,11 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 //    
 //    return -1;  // failure
 //}
--(NSString*)actorForDictionary{
+-(NSString*)characterForDictionary{
     
-    return [self actorForDictionary:_recordCycleDictionary];
+    return [self characterForDictionary:_recordCycleDictionary];
 }
--(NSString*)actorForDictionary:(NSDictionary*)dict{
+-(NSString*)characterForDictionary:(NSDictionary*)dict{
     
     if(dict && dict[@"Character"]){
         
@@ -3369,7 +3459,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     @autoreleasepool {
         
-        NSString *actor = [self actorForDictionary];
+        NSString *actor = [self characterForDictionary];
         NSString *take = [self takeForDictionary];
         NSString *cueID = [self cueIDForDictionary];
         NSString *dlg = [self dialogForDictionary];

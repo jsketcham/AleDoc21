@@ -677,7 +677,10 @@ NSTimer *motionZoneTimer;
 -(void)previousCue{
     
     // it takes too long to check the front window, don't  do it here
-    
+    if(self.cycleMotion == CYCLE_MOTION_ACTIVE){
+        return;
+    }
+
 //    [_editorWindowController setPrerollToHere:nil];
     //    [self setStartFromPrerollTc:nil];
     Document *doc = [self topDocument];
@@ -688,8 +691,11 @@ NSTimer *motionZoneTimer;
 -(void)nextCue{
     
     // it takes too long to check the front window, don't  do it here
-
-//    [self setStartFromPrerollTc:nil];
+    
+    if(self.cycleMotion == CYCLE_MOTION_ACTIVE){
+        return;
+    }
+    
     Document *doc = [self topDocument];
     if(doc)[doc nextCue];
     self.prerollIndex = self.prerollIndex;  // reset from 'preroll to here'
@@ -838,12 +844,12 @@ NSTimer *motionZoneTimer;
         return;
     }
     
-    if(doc.recordCycleDictionaryState == RECORD_CYCLE_DICTIONARY_ACTIVE){
-        // setup for a new recordCycleDictionary is in progress, wait for it to complete
-        self.cycleMotion = CYCLE_MOTION_PENDING;
-        return;
-        
-    }
+//    if(doc.recordCycleDictionaryState == RECORD_CYCLE_DICTIONARY_ACTIVE){
+//        // setup for a new recordCycleDictionary is in progress, wait for it to complete
+//        self.cycleMotion = CYCLE_MOTION_PENDING;
+//        return;
+//        
+//    }
 
     // 10/11/22 a state machine that ignores button pushes for in-between states
     [_ptHui onStop];
@@ -903,32 +909,36 @@ NSTimer *motionZoneTimer;
             break;
     }
 }
--(NSString*)trackName{
-    
-    Document *doc = [self topDocument];
-    
-    NSString *cueID = [doc cueIDForDictionary];
-    NSString *character = [doc actorForDictionary];
-    
-    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
-    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
-    
-    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
-    
-    // spacer can be added w/o character
-    cueID = [spacer stringByAppendingString:cueID];
 
-    if(doc.characterInTrackName) cueID = [character stringByAppendingString:cueID];  // 2.00.00 ' '
-
-    return [_matrixWindowController sanitizeFileNameString:cueID]; // no @"/\\?%*|\"<>.^\r\n\t"
-}
-
--(void)renameLastTrack{
-    
+//-(NSString*)trackName:(NSDictionary*) dict{
+//    
 //    Document *doc = [self topDocument];
 //    
+//    NSString *cueID = [doc cueIDForDictionary:dict];
+//    NSString *character = [doc characterForDictionary:dict];
+//    
+//    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
+//    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+//    
+//    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
+//    
+//    // spacer can be added w/o character
+//    cueID = [spacer stringByAppendingString:cueID];
+//
+//    if(doc.characterInTrackName) cueID = [character stringByAppendingString:cueID];  // 2.00.00 ' '
+//
+//    return [_matrixWindowController sanitizeFileNameString:cueID]; //
+//}
+//-(NSString*)trackName{
+//    
+//    return [self trackName:_recordCycleDictionary];
+//}
+-(void)renameLastTrack{
+    
+    Document *doc = [self topDocument];
+//    
 //    NSString *cueID = [doc cueIDForDictionary];
-//    NSString *character = [doc actorForDictionary];
+//    NSString *character = [doc characterForDictionary];
 //    
 //    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
 //    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
@@ -943,7 +953,7 @@ NSTimer *motionZoneTimer;
 
 //    if(doc.characterInTrackName) cueID = [character stringByAppendingString:cueID];  // 2.00.00 ' '
     
-    NSString *trackName = [self trackName]; // no @"/\\?%*|\"<>.^\r\n\t"
+    NSString *trackName = [doc trackName]; // no @"/\\?%*|\"<>.^\r\n\t"
     
     // maybe add some extra text to the cue ID
     NSString *nameNote = [_editorWindowController nameNote];
@@ -963,7 +973,7 @@ NSTimer *motionZoneTimer;
         
     }else nameNote = trackName;
     
-    nameNote = [_matrixWindowController sanitizeFileNameString:nameNote];
+    nameNote = [doc sanitizeFileNameString:nameNote];
     
     // always call renameLastTrack, it checks for name not changing
     // otherwise you can manually change the name to some bogus value
@@ -1015,7 +1025,7 @@ NSTimer *motionZoneTimer;
 -(void)cycleStart{
     
     Document *doc = [self topDocument];
-    doc.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;    // this blocks cycle button
+//    doc.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;    // this blocks cycle button
 
     // TODO: 2.00.00 cycleStart
     if(_cycleMotion != CYCLE_MOTION_STARTING){

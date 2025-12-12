@@ -129,7 +129,7 @@ enum{
 @property NSString *cueID;
 @property NSString *notes;
 @property NSMutableDictionary *recordCycleDictionary;  // 2.10.00
-@property NSInteger recordCycleDictionaryState;
+//@property NSInteger recordCycleDictionaryState;
 
 //@property NSString *session;
 
@@ -204,7 +204,7 @@ enum{
 -(NSString*)clipNameForDictionary;  // 2.10.00
 -(NSString*) dialogForDictionary;   // 2.10.00
 -(NSString*) dialogForDictionary:(NSDictionary*)dict;   // for didCueToTrimFrames
--(NSString*)actorForDictionary;     // 2.10.00
+-(NSString*)characterForDictionary;     // 2.10.00
 -(NSString*)cueIDForDictionary;     // 2.10.00
 -(NSString*)cueIDForDictionary:(NSDictionary*)dict; // for readLog
 -(void)incrementTakeForDictionary;  // 2.10.00
@@ -249,6 +249,9 @@ enum{
 -(void)locateOrAddCue:(NSString*)cueID :(NSString*)start;
 -(void)addCueWithDialogAndStart:(NSString*) dialog :(NSString*)start;   // 2.10.02
 -(void)addCueWithTrackNameStartEnd:(NSString*)track : (NSString*)name :(NSString*)start :(NSString*)end;   // Foley
+-(NSString*)trackName:(NSDictionary*) dict;
+-(NSString*)trackName;
+-(NSString *)sanitizeFileNameString:(NSString *)fileName;
 
 #pragma mark -
 #pragma mark ---------------- additions for start/end dropdowns -----------------------
