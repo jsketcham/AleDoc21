@@ -1918,7 +1918,6 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     // clear takes and tracks for _tableContents, will get filled in if there is a log entry
     
-    // 12/12/25 leave items not in the log, alone
     for(NSMutableDictionary *dict in _tableContents){
         
         [dict setObject:@"0" forKey:@"Take"]; //NSLog(@"KEY  9");
