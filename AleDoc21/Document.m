@@ -1926,9 +1926,12 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
         
     }
     
+    // keep take display in sync for the case where there is no log file
+    if(_recordCycleDictionary){
+        [self sendTakeToStreamerForDictionary];
+    }
+
     if(![mgr fileExistsAtPath:pathToLog isDirectory:&isDir]){
-        
-        // clear the take and track
         
         return; // there is not a log file yet, don't try to read it
         
@@ -1983,12 +1986,13 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
             }
         }
     }
-    [_tableView reloadData];
 
     if(_recordCycleDictionary){
         [self sendTakeToStreamerForDictionary];
         [delegate setCurrentTrack:[[_recordCycleDictionary objectForKey:@"Track"] integerValue] - 1];
     }
+    
+    [_tableView reloadData];
 }
 #pragma mark -
 #pragma mark ---------------- helper fns ----------------
