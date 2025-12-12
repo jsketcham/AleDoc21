@@ -1196,13 +1196,11 @@ enum{
         self.recordCycleDictionary = nil;
         return;
     }
-    
-    // when 
-    if(self.recordCycleDictionary != [_tableContents objectAtIndex:set.firstIndex]){
         
-    }
-    
     self.recordCycleDictionary = [_tableContents objectAtIndex:set.firstIndex];
+    
+    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    [delegate getSession:nil];
 
 }
 - (IBAction)onColumnSelectorChanged:(id)sender {
