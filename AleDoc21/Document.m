@@ -964,7 +964,7 @@ enum{
         [self selectRow:0];
         self.recordCycleDictionary = [_tableContents objectAtIndex:0];
 
-        [self readLog]; // get in sync with the log
+        [delegate getSession:nil]; // get in sync with the log
         
         return true;    // or we get the indication that it was rejected
     }
