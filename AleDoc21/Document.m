@@ -326,7 +326,8 @@ NSArray *noColTitles = @[
                 
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf sendTakeToStreamerForDictionary];     // refresh screen
-            [weakSelf readLog]; // refresh takes
+            [delegate getSession:nil];  // gets log
+            //[weakSelf readLog]; // refresh takes
         });
    }
     
