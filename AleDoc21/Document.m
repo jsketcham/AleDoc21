@@ -1199,6 +1199,8 @@ enum{
         
     self.recordCycleDictionary = [_tableContents objectAtIndex:set.firstIndex];
     
+    // adrClientWindowController.armLastTrack() does a setSession
+    // this is to keep the display in sync
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
     [delegate getSession:nil];
 
@@ -3265,7 +3267,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     bool show = [[NSUserDefaults standardUserDefaults] boolForKey:@"showTake"];
     delegate.overlayWindowController.viewController.cueIdTextView.text = show ? msg : @"";
-    NSLog(@"sendTakeToStreamerForDictionary show: %d msg: %@",show,msg);
+    //NSLog(@"sendTakeToStreamerForDictionary show: %d msg: %@",show,msg);
     
     // 2.10.02 don't do this, leave monitor format to mixer, cue can have different formats on different takes
     // 2.00.00 change monitor format, different cues can have different monitor formats

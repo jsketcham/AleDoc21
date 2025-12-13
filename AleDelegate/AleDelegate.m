@@ -5132,6 +5132,8 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     
     if(session != nil && ![_session isEqualToString:session]){
         
+        NSLog(@"session changed: %@",session);
+
         _session = session;
         [self selectCurrentSixteenTrackMemory];
 //        [self sendToMicAccessoryForKeys:nil];    // defaults to all keys. micTimerService says we need to do this on new session, why?
