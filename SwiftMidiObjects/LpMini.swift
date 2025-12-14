@@ -47,7 +47,7 @@ let COLOR_RED_BLINK = UInt8(0xb)
 
 @objc class LpMini: NSObject {
     
-    let MIC_DICTIONARY_KEY = "micDictionary2"   // 2, because we changed dictionary formats
+    let MIC_DICTIONARY_KEY = "micDictionary3"   // 2, because we changed dictionary formats
     
     var delegate : LpMiniDelegate?
     var swiftMidi : SwiftMidi?
@@ -104,6 +104,7 @@ let COLOR_RED_BLINK = UInt8(0xb)
         do{
             let data = UserDefaults.standard.data(forKey: MIC_DICTIONARY_KEY)
             micDictionary = try NSKeyedUnarchiver.unarchivedObject(ofClasses: set as! Set<AnyHashable>, from: data!) as! [String : NSNumber]
+            
         }catch{
             
             print("failed to unarchive micDictionary, old format?")
@@ -215,9 +216,12 @@ let COLOR_RED_BLINK = UInt8(0xb)
         let bytes : [UInt8] = [0x90,UInt8((value >> 8) & 0xff),color]
 
         // indicators
-        // LP Mini wants a separate message for each note
-        let data = NSData(bytes: bytes, length: bytes.count)
-        lpMidiTx(data as NSData)
+        // don't send mic5-8, bus5-8 (top byte is 0x91)
+        if (value >> 16) == 0x90{
+            // LP Mini wants a separate message for each note
+            let data = NSData(bytes: bytes, length: bytes.count)
+            lpMidiTx(data as NSData)
+        }
         
         // StreamDeck
         let str = String(format: "lpMini %@,%02x", key,color)
@@ -342,32 +346,58 @@ let COLOR_RED_BLINK = UInt8(0xb)
     // table ends with 119, 26 entries -> table starts at 94
     
     var micToAccDictionary: Dictionary<String, UInt8> = [
-                        "50":94
-                        ,"51":95
-                        ,"52":96
-                        ,"53":97
-                        ,"54":98
-                        ,"55":99
-                        ,"56":100
-                        ,"57":101
-                        ,"58":118
-                        ,"60":102
-                        ,"61":103
-                        ,"62":104
-                        ,"63":105
-                        ,"64":106
-                        ,"65":107
-                        ,"66":108
-                        ,"67":109
-                        ,"68":119
-                        ,"70":110
-                        ,"71":111
-                        ,"72":112
-                        ,"73":113
-                        ,"74":114
-                        ,"75":115
-                        ,"76":116
-                        ,"77":117
+                        "9050":94
+                        ,"9051":95
+                        ,"9052":96
+                        ,"9053":97
+                        ,"9054":98
+                        ,"9055":99
+                        ,"9056":100
+                        ,"9057":101
+                        ,"9058":118
+                        ,"9060":102
+                        ,"9061":103
+                        ,"9062":104
+                        ,"9063":105
+                        ,"9064":106
+                        ,"9065":107
+                        ,"9066":108
+                        ,"9067":109
+                        ,"9068":119
+                        ,"9070":110
+                        ,"9071":111
+                        ,"9072":112
+                        ,"9073":113
+                        ,"9074":114
+                        ,"9075":115
+                        ,"9076":116
+                        ,"9077":117
+                        
+                        // mic 5-8, bus 5-8, 12/14/25
+                        ,"9150":27
+                        ,"9151":28
+                        ,"9152":29
+                        ,"9153":30
+                        ,"9154":31
+                        ,"9155":32
+                        ,"9156":33
+                        ,"9157":34
+                        ,"9160":35
+                        ,"9161":36
+                        ,"9162":37
+                        ,"9163":38
+                        ,"9164":39
+                        ,"9165":40
+                        ,"9166":41
+                        ,"9167":42
+                        ,"9170":43
+                        ,"9171":44
+                        ,"9172":45
+                        ,"9173":46
+                        ,"9174":47
+                        ,"9175":48
+                        ,"9176":49
+                        ,"9177":50
                     ]
 
     @objc func micSendToAcc(_ key : String){
@@ -376,8 +406,8 @@ let COLOR_RED_BLINK = UInt8(0xb)
         // 2.10.02 cross ref table: mics are cc 94-117, pb futz 118, cp futz 119
         
         let endIndex = key.index(key.endIndex, offsetBy: -2)
-        let startIndex = key.index(key.startIndex, offsetBy: 2)
-        let subStr = String(key[startIndex..<endIndex])
+        let startIndex = key.index(key.startIndex, offsetBy: 0)
+        let subStr = String(key[startIndex..<endIndex]) // like "9050" or "9150"
         //print("\(subStr)")
         
         // only the last 3 rows send to accessory
@@ -520,7 +550,35 @@ let COLOR_RED_BLINK = UInt8(0xb)
         ,"90757f"   :   #selector(micToggle(_:))    // mic toggler
         ,"90767f"   :   #selector(micToggle(_:))    // mic toggler
         ,"90777f"   :   #selector(micToggle(_:))    // mic toggler
+ 
+        // mic 5-8, bus 5-8 12/25/25
+        ,"91507f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91517f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91527f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91537f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91547f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91557f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91567f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91577f"   :   #selector(micToggle(_:))    // mic toggler
         
+        ,"91607f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91617f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91627f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91637f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91647f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91657f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91667f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91677f"   :   #selector(micToggle(_:))    // mic toggler
+        
+        ,"91707f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91717f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91727f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91737f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91747f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91757f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91767f"   :   #selector(micToggle(_:))    // mic toggler
+        ,"91777f"   :   #selector(micToggle(_:))    // mic toggler
+
         // additions for Stream Deck, every AIP state
         
         ,"0_0"     :   #selector(aipToggle2(_:))
@@ -670,6 +728,33 @@ let COLOR_RED_BLINK = UInt8(0xb)
         ,"90757f" : NSNumber(booleanLiteral: false)
         ,"90767f" : NSNumber(booleanLiteral: false)
         ,"90777f" : NSNumber(booleanLiteral: false)
+        
+        // mic 5-8, bus 5-8, 12/2525
+        ,"91507f" : NSNumber(booleanLiteral: false)
+        ,"91517f" : NSNumber(booleanLiteral: false)
+        ,"91527f" : NSNumber(booleanLiteral: false)
+        ,"91537f" : NSNumber(booleanLiteral: false)
+        ,"91547f" : NSNumber(booleanLiteral: false)
+        ,"91557f" : NSNumber(booleanLiteral: false)
+        ,"91567f" : NSNumber(booleanLiteral: false)
+        ,"91577f" : NSNumber(booleanLiteral: false)
+        ,"91607f" : NSNumber(booleanLiteral: false)
+        ,"91617f" : NSNumber(booleanLiteral: false)
+        ,"91627f" : NSNumber(booleanLiteral: false)
+        ,"91637f" : NSNumber(booleanLiteral: false)
+        ,"91647f" : NSNumber(booleanLiteral: false)
+        ,"91657f" : NSNumber(booleanLiteral: false)
+        ,"91667f" : NSNumber(booleanLiteral: false)
+        ,"91677f" : NSNumber(booleanLiteral: false)
+        ,"91707f" : NSNumber(booleanLiteral: false)
+        ,"91717f" : NSNumber(booleanLiteral: false)
+        ,"91727f" : NSNumber(booleanLiteral: false)
+        ,"91737f" : NSNumber(booleanLiteral: false)
+        ,"91747f" : NSNumber(booleanLiteral: false)
+        ,"91757f" : NSNumber(booleanLiteral: false)
+        ,"91767f" : NSNumber(booleanLiteral: false)
+        ,"91777f" : NSNumber(booleanLiteral: false)
+
     ]
     
     var oscToAipDictionary : [NSNumber : [String : String]] = [
