@@ -14,13 +14,13 @@
             filePath = "AleDoc21/Document.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "527"
-            endingLineNumber = "527"
+            startingLineNumber = "528"
+            endingLineNumber = "528"
             landmarkName = "-onClearScreen:"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "C60DC930-D213-4A81-96F2-61CE4B912D39 - 27b54fcd4d4aa851"
+                  uuid = "C60DC930-D213-4A81-96F2-61CE4B912D39 - 27b54fcd4d4aa8b0"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -30,12 +30,12 @@
                   urlString = "file:///Users/protools/src/xcodeProjects/AleDoc21/AleDoc21/Document.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "527"
-                  endingLineNumber = "527"
+                  startingLineNumber = "528"
+                  endingLineNumber = "528"
                   offsetFromSymbolStart = "320">
                </Location>
                <Location
-                  uuid = "C60DC930-D213-4A81-96F2-61CE4B912D39 - 27b54fcd4d4aa851"
+                  uuid = "C60DC930-D213-4A81-96F2-61CE4B912D39 - 27b54fcd4d4aa8b0"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -45,8 +45,8 @@
                   urlString = "file:///Users/protools/src/xcodeProjects/AleDoc21/AleDoc21/Document.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "527"
-                  endingLineNumber = "527"
+                  startingLineNumber = "528"
+                  endingLineNumber = "528"
                   offsetFromSymbolStart = "220">
                </Location>
             </Locations>

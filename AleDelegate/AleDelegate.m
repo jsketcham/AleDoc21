@@ -1393,12 +1393,17 @@ NSTimer *motionZoneTimer;
     // read the log for all open document windows
     // we do this because it is possible to have an empty document in front,
     // and we want to read the log for the window behind
+    
+    // 12/16/25 only top document does readLog, otherwise we get bogus on screen stuff
+    // from cue sheets in the background
+    
     for (NSWindow *window in [NSApp windows] ){
         
         if(window && [window isKindOfClass:[DocWindow class]]){
             Document *doc = (Document*)[window delegate];
-            [doc readLog];
-
+            if(doc == self.topDocument){
+                [doc readLog];
+            }
         }
     }
 }

@@ -422,8 +422,9 @@ NSArray *noColTitles = @[
     [self selectRow:0];
     
     // 11/21/25 we would like to know when we become main, so that we can set dialog, take number, etc
-//    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector (windowDidBecomeMain:)
-//                                                 name: NSWindowDidBecomeMainNotification object: nil];
+    // however, we don't get a notification from the top
+//    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector (windowDidBecomeMain:) name: NSWindowDidBecomeMainNotification object: nil];
+//    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector (windowDidBecomeKey:) name: NSWindowDidBecomeKeyNotification object: nil];
 
 }
 
@@ -1179,10 +1180,23 @@ enum{
         // select the first cue, if any
         [self cueWithRowIndex:0];
     }
+    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    [self readLog];
     // TODO: maybe set on-screen cue name, dialog, take number
     //    [self cueSheetTitleFromWindow];
 //    [self enablesFromStreamer];
 }
+//- (void)windowDidBecomeKey:(NSNotification *)notification{
+//    
+//    NSLog(@"windowDidBecomeKey %@",self.docWindow.title);
+//    if(!self.recordCycleDictionary){
+//        // select the first cue, if any
+//        [self cueWithRowIndex:0];
+//    }
+//    // TODO: maybe set on-screen cue name, dialog, take number
+//    //    [self cueSheetTitleFromWindow];
+////    [self enablesFromStreamer];
+//}
 
 
 #pragma mark -
@@ -1201,8 +1215,8 @@ enum{
     
     // adrClientWindowController.armLastTrack() does a setSession
     // this is to keep the display in sync
-    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    [delegate getSession:nil];
+    //AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    //[delegate getSession:nil];
 
 }
 - (IBAction)onColumnSelectorChanged:(id)sender {
@@ -2194,6 +2208,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     _recordCycleDictionary = recordCycleDictionary;
     
 //    self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;    // TODO: justify, or get rid of, recordCycleDictionaryState
+    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
     
     if(!_recordCycleDictionary){
         return;
@@ -2203,7 +2218,6 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     [self sendTakeToStreamerForDictionary:_recordCycleDictionary];   // dialog overlay
     [self bindEditorWindowFields:_recordCycleDictionary];              // bind to editor window
     
-    AleDelegate *delegate = NSApp.delegate;
     [delegate.lpMini micSet:@"90787f" :false];  // fill button off 2.10.02
     
     // 2.10.02 set streamer indicators
