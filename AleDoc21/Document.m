@@ -965,7 +965,7 @@ enum{
         [self selectRow:0];
         self.recordCycleDictionary = [_tableContents objectAtIndex:0];
 
-        //[delegate getSession:nil]; // get in sync with the log
+        [self readLog]; // get most recent values for this cue sheet
         
         return true;    // or we get the indication that it was rejected
     }
@@ -1180,8 +1180,11 @@ enum{
         // select the first cue, if any
         [self cueWithRowIndex:0];
     }
-    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
     [self readLog];
+    // can't do getSession, because it brings PT to the front, AleDoc can't get focus
+    //AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    //[delegate getSession:nil]; // get in sync with the log
+
     // TODO: maybe set on-screen cue name, dialog, take number
     //    [self cueSheetTitleFromWindow];
 //    [self enablesFromStreamer];
