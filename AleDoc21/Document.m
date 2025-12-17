@@ -2005,10 +2005,10 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
         }
     }
 
-    if(_recordCycleDictionary){
-        [self sendTakeToStreamerForDictionary];
-        [delegate setCurrentTrack:[[_recordCycleDictionary objectForKey:@"Track"] integerValue] - 1];
-    }
+//    if(_recordCycleDictionary){
+//        [self sendTakeToStreamerForDictionary];
+//        [delegate setCurrentTrack:[[_recordCycleDictionary objectForKey:@"Track"] integerValue] - 1];
+//    }
     
     [_tableView reloadData];
 }
