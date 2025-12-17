@@ -1180,14 +1180,7 @@ enum{
         // select the first cue, if any
         [self cueWithRowIndex:0];
     }
-//    [self readLog];
-    // can't do getSession, because it brings PT to the front, AleDoc can't get focus
-    //AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    //[delegate getSession:nil]; // get in sync with the log
-
-    // TODO: maybe set on-screen cue name, dialog, take number
-    //    [self cueSheetTitleFromWindow];
-//    [self enablesFromStreamer];
+    [self sendTakeToStreamerForDictionary]; // this is topDocment
 }
 //- (void)windowDidBecomeKey:(NSNotification *)notification{
 //    
@@ -2005,10 +1998,10 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
         }
     }
 
-    if(_recordCycleDictionary){
-        [self sendTakeToStreamerForDictionary];
-        [delegate setCurrentTrack:[[_recordCycleDictionary objectForKey:@"Track"] integerValue] - 1];
-    }
+//    if(_recordCycleDictionary){
+//        [self sendTakeToStreamerForDictionary];
+//        [delegate setCurrentTrack:[[_recordCycleDictionary objectForKey:@"Track"] integerValue] - 1];
+//    }
     
     [_tableView reloadData];
 }

@@ -1391,21 +1391,16 @@ NSTimer *motionZoneTimer;
 -(void)readLog{
     
     // read the log for all open document windows
-    // we do this because it is possible to have an empty document in front,
-    // and we want to read the log for the window behind
-    
-    // 12/16/25 only top document does readLog, otherwise we get bogus on screen stuff
-    // from cue sheets in the background
     
     for (NSWindow *window in [NSApp windows] ){
         
         if(window && [window isKindOfClass:[DocWindow class]]){
             Document *doc = (Document*)[window delegate];
-            if(doc == self.topDocument){
-                [doc readLog];
-            }
+                [doc readLog];  // 12/17/25 does not send to screen
         }
     }
+    // 12/17/25 send top document to screen (avoids flashing text)
+    [self.topDocument sendTakeToStreamerForDictionary];
 }
 
 // MARK: ------------ video rec delay routines -------------
@@ -5143,10 +5138,9 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
         [self selectCurrentSixteenTrackMemory];
 //        [self sendToMicAccessoryForKeys:nil];    // defaults to all keys. micTimerService says we need to do this on new session, why?
         [self readLog]; // reads the log for all open document windows
-        
-        // get the video delay
-        // jxaGetVideoSyncOffset
-//        [_adrClientWindowController txMsg:@"jxaGetVideoSyncOffset"];
+        [_adrClientWindowController deleteAdrClientLog];  // fresh session, fresh log
+        [_adrClientWindowController appendToAdrClientLog:session];   // first log item is session
+
     }
 }
 -(NSString *)session{

@@ -1136,6 +1136,11 @@ bool bInitializePtCtr = false;
         delegate.matrixWindowController.sampleRateTag = 0;
         
     }
+    
+    // 12/17/25 [1] is session
+    if(msgArray.count > 1){
+        delegate.session = [msgArray objectAtIndex:1];
+    }
 }
 -(void)getSession:(NSArray*)msgArray{
     
@@ -1149,25 +1154,23 @@ bool bInitializePtCtr = false;
  //   [delegate selectCurrentSixteenTrackMemory]; // sync what we see with _currentTrack, for capturing Foley clips
 
     delegate.session = [msgArray objectAtIndex:0];    // loads the log when session changes
-    [self deleteAdrClientLog];  // fresh session, fresh log
-    [self appendToAdrClientLog:delegate.session];   // first log item is session 
 
-    // 2.10.02 jxaGetSession gets the sample rate
-    
-    if(msgArray.count > 2){
-        
-        if([msgArray[1] containsString:@"192"] || [msgArray[1] containsString:@"176"]){
-            
-            delegate.matrixWindowController.sampleRateTag = 2;
-            
-        }else if([msgArray[1] containsString:@"96"] || [msgArray[1] containsString:@"88"]){
-            
-            delegate.matrixWindowController.sampleRateTag = 1;
-        }else{
-            
-            delegate.matrixWindowController.sampleRateTag = 0;
-        }
-    }
+//    // 2.10.02 jxaGetSession gets the sample rate
+//    
+//    if(msgArray.count > 2){
+//        
+//        if([msgArray[1] containsString:@"192"] || [msgArray[1] containsString:@"176"]){
+//            
+//            delegate.matrixWindowController.sampleRateTag = 2;
+//            
+//        }else if([msgArray[1] containsString:@"96"] || [msgArray[1] containsString:@"88"]){
+//            
+//            delegate.matrixWindowController.sampleRateTag = 1;
+//        }else{
+//            
+//            delegate.matrixWindowController.sampleRateTag = 0;
+//        }
+//    }
 }
 // wait 1 second before selecting the new monitor format display
 NSTimer *monitorSwitchingDelayTimer;

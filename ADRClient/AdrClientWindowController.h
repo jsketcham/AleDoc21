@@ -74,5 +74,6 @@
 -(NSInteger)getIndexForYPos:(NSString*)yPos;
 -(void)appendToLog:(NSString*)msg;
 -(void)deleteAdrClientLog;
+-(void)appendToAdrClientLog:(NSString *)msg;
 //-(NSInteger)yIndexForYPos;
 @end
