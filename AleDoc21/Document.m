@@ -1179,7 +1179,9 @@ enum{
     if(!self.recordCycleDictionary){
         // select the first cue, if any
         [self cueWithRowIndex:0];
+        
     }
+    [self readLog]; // why not?
     [self sendTakeToStreamerForDictionary:self.recordCycleDictionary]; // this is topDocment
     [self sendDialogToStreamerForDictionary:self.recordCycleDictionary]; // this is topDocment
     
