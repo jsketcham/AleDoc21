@@ -1977,9 +1977,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
             if(logItemArray.count < NUM_ITEMS_IN_LOG_ENTRY) continue;    // not enough items
             
             // 2.00.00 we don't see why mono and multi track have separate cases
-            // 2.00.00 add numRecTracks to dict so we can set the monitor when we change cues
 //            NSLog(@"%@ %@",cueId,[logItemArray objectAtIndex:0]);
-            if([trackName isEqualToString:[logItemArray objectAtIndex:0]]){ // TODO match the monitor format to the current format
+            if([trackName isEqualToString:[logItemArray objectAtIndex:0]]){
                 
                 dict[@"streamer1"] = [logItemArray objectAtIndex:9];
                 dict[@"streamer2"] = [logItemArray objectAtIndex:10];
@@ -1997,11 +1996,6 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
             }
         }
     }
-
-//    if(_recordCycleDictionary){
-//        [self sendTakeToStreamerForDictionary];
-//        [delegate setCurrentTrack:[[_recordCycleDictionary objectForKey:@"Track"] integerValue] - 1];
-//    }
     
     [_tableView reloadData];
 }

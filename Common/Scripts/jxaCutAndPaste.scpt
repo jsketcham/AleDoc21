@@ -1,4 +1,4 @@
-JsOsaDAS1.001.00bplist00ÑVscript_*H// to run in Terminal:
+JsOsaDAS1.001.00bplist00ÑVscript_+ä// to run in Terminal:
 // % cd /Users/protools/Desktop/testScripts
 // % osascript -l JavaScript jxaCutAndPaste.scpt foobar 1 1
 
@@ -110,7 +110,7 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 				app.keystroke('R', { using: ['command down','option down','shift down'] });
 				
 				// wait for the name dialog to appear
-			let status = waitForDialogWindow(pt,'Name',true);
+			let status = waitForWindowTitle('Name',true)	//waitForDialogWindow(pt,'Name',true);
 							
 				if(status != 0){
 				
@@ -149,7 +149,7 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 				app.keystroke('\r');
 								
 				// wait for the name dialog to close
-				status = waitForDialogWindow(pt,'Name',false);
+				status = waitForWindowTitle('Name',false)	//waitForDialogWindow(pt,'Name',false);
 				// it is likely that we have an error dialog up, duplicate clip name
 				if(status != 0){
 					console.log('duplicate track name?');
@@ -410,4 +410,25 @@ function setCursorToolCluster(){
 return 0
 }
 
-                              *^jscr  úÞÞ­
+function waitForWindowTitle(title,onOff){
+
+	const app = Application('System Events');
+  	const pt = app.processes['Pro Tools'];
+	
+	for(let i = 0; i < 100; i++){
+
+	try{
+			var names = pt.windows.name()
+			if (names.includes(title)==onOff){return 0}
+
+
+		}catch(error){
+					
+			console.log('waitForWindowTitle error',i);
+		}
+	}
+		
+	return -1
+
+}
+                              +újscr  úÞÞ­
