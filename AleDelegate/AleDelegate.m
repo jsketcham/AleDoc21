@@ -1401,6 +1401,7 @@ NSTimer *motionZoneTimer;
     }
     // 12/17/25 send top document to screen (avoids flashing text)
     [self.topDocument sendTakeToStreamerForDictionary];
+    [self.topDocument sendDialogToStreamerForDictionary];
 }
 
 // MARK: ------------ video rec delay routines -------------

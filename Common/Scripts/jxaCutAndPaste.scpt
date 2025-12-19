@@ -1,4 +1,4 @@
-JsOsaDAS1.001.00bplist00ÑVscript_+ä// to run in Terminal:
+JsOsaDAS1.001.00bplist00ÑVscript_+è// to run in Terminal:
 // % cd /Users/protools/Desktop/testScripts
 // % osascript -l JavaScript jxaCutAndPaste.scpt foobar 1 1
 
@@ -217,7 +217,7 @@ function copyClipsUp(dialog, recordToComposite, tracksUp, remoteOffset){
 
 	return -1; failure
 }
-function waitForDialogWindow(pt,title,onOff){
+/*function waitForDialogWindow(pt,title,onOff){
 
 // wait for the presence or absence of the dialog window
 	for(let i = 0; i < 200; i++){
@@ -259,7 +259,7 @@ function waitForDialogWindow(pt,title,onOff){
 	}
 	return -1;	// failure
 
-}
+}*/
 function copyToClipboard(currentApp,app){
 
 // clear the clipboard
@@ -431,4 +431,4 @@ function waitForWindowTitle(title,onOff){
 	return -1
 
 }
-                              +újscr  úÞÞ­
+                              +þjscr  úÞÞ­
