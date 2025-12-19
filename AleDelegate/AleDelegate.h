@@ -309,6 +309,7 @@ enum{
 -(void)actorDirect:(NSString*)key;
 -(void)dialAccessoryRefresh;
 -(void)foleyClipCapture;
+-(void)setCurrentTrack:(NSInteger)currentTrack forDocument:(Document*)doc;
 //-(NSString*)trackName;
 //-(NSString*)trackName:(NSDictionary*) dict;
 @end

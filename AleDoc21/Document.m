@@ -1180,7 +1180,16 @@ enum{
         // select the first cue, if any
         [self cueWithRowIndex:0];
     }
-    [self sendTakeToStreamerForDictionary]; // this is topDocment
+    [self sendTakeToStreamerForDictionary:self.recordCycleDictionary]; // this is topDocment
+    [self sendDialogToStreamerForDictionary:self.recordCycleDictionary]; // this is topDocment
+    
+    AleDelegate *delegate = NSApp.delegate;
+    NSString *trackString = [_recordCycleDictionary objectForKey:@"Track"];
+    NSLog(@"track %@",trackString);
+    
+    if(trackString){
+        [delegate setCurrentTrack:[trackString integerValue] - 1 forDocument:self];
+    }
 }
 //- (void)windowDidBecomeKey:(NSNotification *)notification{
 //    

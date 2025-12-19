@@ -220,50 +220,50 @@ enum{
     }
     
 }
-- (void)applicationDidFinishLaunching:(NSNotification *)notification {        
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(xKeyEdge:) name:@"xKeyEdge" object:nil];
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deviceConnected:) name:@"deviceConnected" object:nil];
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deviceDisconnected:) name:@"deviceDisconnected" object:nil];
+    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deviceConnected:) name:@"deviceConnected" object:nil];
+    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deviceDisconnected:) name:@"deviceDisconnected" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(xKeyDescriptor:) name:@"xKeyDescriptor" object:nil];
-
+    
     
     // preferences, see preferences window
     NSError *error;
     NSDictionary *registrationDefaults = [NSDictionary dictionaryWithObjectsAndKeys://data,@"colorWells",
-        [[NSNumber alloc]initWithBool:true],@"isFirstRun",
-        [[NSNumber alloc]initWithBool:true],@"incrTrack",
-        [[NSNumber alloc]initWithBool:false],@"delayFullScreen",
-        [[NSNumber alloc]initWithBool:true],@"delayExcludeApp",
-//        [[NSNumber alloc]initWithBool:false],@"screenRecorderChanged",   // we hate this
-        [[NSNumber alloc]initWithInteger:0],@"videoSourceSelector",
-        [[NSNumber alloc]initWithInteger:0],@"videoScreenSelector",
-        [[NSNumber alloc]initWithDouble:0.0],@"videoDelaySeconds",
-        [[NSNumber alloc]initWithDouble:0.083],@"beepsDuration",
-        [[NSNumber alloc]initWithBool:false],@"DialMuteKey_107",    // Remote Editor, may not have Companion dial in some rooms, set to unmute
-        [[NSNumber alloc]initWithInteger:104],@"DialValueKey_107",  // Remote Editor, may not have Companion dial in some rooms, set to 0dB
-        [[NSNumber alloc]initWithInteger:NSControlStateValueOff],@"enInPastSwitching",
-        //          [NSKeyedArchiver archivedDataWithRootObject:_micDictionary requiringSecureCoding:false error:&error],@"micDictionary",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.clearColor requiringSecureCoding:false error:&error],@"rehearseBgColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.clearColor requiringSecureCoding:false error:&error],@"recordBgColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.clearColor requiringSecureCoding:false error:&error],@"playbackBgColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.blackColor requiringSecureCoding:false error:&error],@"cueIdBgColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.blackColor requiringSecureCoding:false error:&error],@"textBgColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.blackColor requiringSecureCoding:false error:&error],@"progressBarBgColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.greenColor requiringSecureCoding:false error:&error],@"rehearseColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.redColor requiringSecureCoding:false error:&error],@"recordColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.blueColor requiringSecureCoding:false error:&error],@"playbackColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.whiteColor requiringSecureCoding:false error:&error],@"cueIdColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.whiteColor requiringSecureCoding:false error:&error],@"textColor",
-        [NSKeyedArchiver archivedDataWithRootObject:NSColor.whiteColor requiringSecureCoding:false error:&error],@"progressBarColor",
-        nil];
+                                          [[NSNumber alloc]initWithBool:true],@"isFirstRun",
+                                          [[NSNumber alloc]initWithBool:true],@"incrTrack",
+                                          [[NSNumber alloc]initWithBool:false],@"delayFullScreen",
+                                          [[NSNumber alloc]initWithBool:true],@"delayExcludeApp",
+                                          //        [[NSNumber alloc]initWithBool:false],@"screenRecorderChanged",   // we hate this
+                                          [[NSNumber alloc]initWithInteger:0],@"videoSourceSelector",
+                                          [[NSNumber alloc]initWithInteger:0],@"videoScreenSelector",
+                                          [[NSNumber alloc]initWithDouble:0.0],@"videoDelaySeconds",
+                                          [[NSNumber alloc]initWithDouble:0.083],@"beepsDuration",
+                                          [[NSNumber alloc]initWithBool:false],@"DialMuteKey_107",    // Remote Editor, may not have Companion dial in some rooms, set to unmute
+                                          [[NSNumber alloc]initWithInteger:104],@"DialValueKey_107",  // Remote Editor, may not have Companion dial in some rooms, set to 0dB
+                                          [[NSNumber alloc]initWithInteger:NSControlStateValueOff],@"enInPastSwitching",
+                                          //          [NSKeyedArchiver archivedDataWithRootObject:_micDictionary requiringSecureCoding:false error:&error],@"micDictionary",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.clearColor requiringSecureCoding:false error:&error],@"rehearseBgColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.clearColor requiringSecureCoding:false error:&error],@"recordBgColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.clearColor requiringSecureCoding:false error:&error],@"playbackBgColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.blackColor requiringSecureCoding:false error:&error],@"cueIdBgColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.blackColor requiringSecureCoding:false error:&error],@"textBgColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.blackColor requiringSecureCoding:false error:&error],@"progressBarBgColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.greenColor requiringSecureCoding:false error:&error],@"rehearseColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.redColor requiringSecureCoding:false error:&error],@"recordColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.blueColor requiringSecureCoding:false error:&error],@"playbackColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.whiteColor requiringSecureCoding:false error:&error],@"cueIdColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.whiteColor requiringSecureCoding:false error:&error],@"textColor",
+                                          [NSKeyedArchiver archivedDataWithRootObject:NSColor.whiteColor requiringSecureCoding:false error:&error],@"progressBarColor",
+                                          nil];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:registrationDefaults];
     
     // temp set remote editor dial to 0dB, unmute
     [[NSUserDefaults standardUserDefaults] setInteger:104 forKey:@"DialValueKey_107"];
     [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"DialMuteKey_107"];
-
+    
     _showArmedOneshot = [[NSTimer alloc]init];
     
     _lastRecordTrack = 0;   // so that we do show something before the first record pass
@@ -272,7 +272,7 @@ enum{
     [self setSession:@""];
     
     
-//    _cueCounter = 0;    // count cues entered manually
+    //    _cueCounter = 0;    // count cues entered manually
     _tcc = [[TcCalculator alloc] init]; _tcc.delegate = self;
     _tcf = [[TCFormatter alloc] init];
     
@@ -280,22 +280,22 @@ enum{
     
     //    NSLog(@"applicationDidFinishLaunching");
     //    tcc = [[TcCalculator alloc] init];
-//    keybdChars = [[NSMutableArray alloc] init];
+    //    keybdChars = [[NSMutableArray alloc] init];
     _streamerWindowController = nil;
     _matrixWindowController = nil;
-//    eventChars = @"";
-//    eventArray = [[NSMutableArray alloc] init];
+    //    eventChars = @"";
+    //    eventArray = [[NSMutableArray alloc] init];
     //    _lastCycleType = -1;
     
     //    _midiClient = [[MidiClient alloc] init];    // sets the delegate in 'init'
     //    [_midiClient setDelegate:(id)self];
     // V1.00.18 MTC output is a relay of MTC input
-//    _mtcClient = [[MidiClient alloc] initWithTitle:@"MTC" :IN_AND_OUT]; 
+    //    _mtcClient = [[MidiClient alloc] initWithTitle:@"MTC" :IN_AND_OUT];
     _mtcClient = [[MtcMidi alloc] init];// finds or adds a menu, sets delegate to [NSApp delegate]
     [_mtcClient setMtcMidiDelegate:(id<MtcMidiDelegate> _Nullable)self];
-//    _mtcHui = [[MidiHui alloc]init];
-//    [_mtcClient setCommandDecoder:_mtcHui];
-//    [_mtcHui setMtcDelegate:self];
+    //    _mtcHui = [[MidiHui alloc]init];
+    //    [_mtcClient setCommandDecoder:_mtcHui];
+    //    [_mtcHui setMtcDelegate:self];
     
     _ptClient = [[MidiClient alloc] initWithTitle:@"Protools" :IN_AND_OUT];
     _ptHui = [[MidiHui alloc]init];
@@ -308,14 +308,14 @@ enum{
     _statusClient = [[StatusMidi alloc]init];
     _control1Client = [[ControlMidi alloc]init:@"Control 1" ];
     _control2Client = [[ControlMidi alloc]init:@"Control 2" ];
-//    _remoteClient = [[RemoteMidi alloc]init];
+    //    _remoteClient = [[RemoteMidi alloc]init];
     
     // V1.00.17
     // all tx to VM15A-MADI is in MatrixView.m
     // see 'delegate tx' instances, we have txMsg (gains) and txChunk (crosspoint on/off)
     // review how sliders get to VM15A-MADI
     _ufxClient = [[MidiClient alloc] initWithTitle:@"UFX" :OUT_ONLY];   // is it really out only?
-
+    
     _xKey = [[XKey alloc] init];
     
     //    _safetyRecorderClient = [[SafetyRecorderClient alloc]init];
@@ -336,7 +336,7 @@ enum{
     [_overlayWindowController deactivateWindow];
     
     //    _textWindowClient = [[TextWindowClient alloc]init];     // v1.00.23, after overlay window is opened
-//    _boomRecorderClient = [[BoomRecorderClient alloc]init];
+    //    _boomRecorderClient = [[BoomRecorderClient alloc]init];
     
     [_adrClientWindowController setDelegate:self];  // not used by AleDoc, used by AleMini
     
@@ -352,8 +352,8 @@ enum{
     
     // PIE keyboard service
     //http://stackoverflow.com/questions/6139751/objective-c-listen-to-keyboard-shortcuts-and-act-on-them
-//    [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskApplicationDefined
-//                                          handler:monitorHandlerPIE];
+    //    [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskApplicationDefined
+    //                                          handler:monitorHandlerPIE];
     
     [self initJumpTables];
     
@@ -368,7 +368,7 @@ enum{
     
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector (didChangeScreenParameters:)
                                                  name: NSApplicationDidChangeScreenParametersNotification object: nil];
-        
+    
     // open editor window last so that editor/doc/matrix windows stack on the right side the first time we open
     [self setAppLaunchedTimer:[NSTimer scheduledTimerWithTimeInterval:0.5 target: self selector:@selector(appLaunchedTimerService) userInfo:nil repeats: NO]];
     
@@ -381,8 +381,8 @@ enum{
         ,@"enBeeps": @[@9,@44]
         ,@"enStreamer": @[@9,@42]
         ,@"inhibitStreamerInPlayback": @[@9,@45]
-//        ,@"enBlackCueBlack": @[@9,@36]
-//        ,@"useAltGuideInRecord": @[@9,@46]
+        //        ,@"enBlackCueBlack": @[@9,@36]
+        //        ,@"useAltGuideInRecord": @[@9,@46]
         ,@"linkCompAndPbRouting": @[@9,@40]
         ,@"enInPastSwitching": @[@9,@37]
         ,@"show16Tracks": @[@9,@34]
@@ -403,7 +403,7 @@ enum{
         ,@"progressBarPerCue" : @[@9,@123]
         ,@"incrTrack" : @[@9,@125]
     };
-      
+    
     // add observers for checkbox changes
     for(NSString *key in [setLEDForUnitIDDictionary allKeys]){
         
@@ -421,17 +421,17 @@ enum{
                                                 forKeyPath:key
                                                    options:NSKeyValueObservingOptionNew
                                                    context:NULL];
-
+        
     }
     // after setting observer
     self.snoopAuto = true;  // start with snoop auto on
-
+    
     bool isFirstRun = [[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstRun"];
     
     if(isFirstRun){
         [_matrixWindowController onLoadDefaults: self];
         // TODO; any thing else that needs to be set the first time
-
+        
         [[NSUserDefaults standardUserDefaults]setBool:false forKey:@"isFirstRun"];
         
     }
@@ -441,13 +441,13 @@ enum{
     [self setCycleMotion:CYCLE_MODE_IDLE];  // turn off the button 2.10.02
     
     [self getSession:nil];  // case where PT is present when we open
-        
+    
     // https://github.com/apple/swift-corelibs-foundation/issues/4162
     // debugging the intermittent crash v2.10.02, 08/09/23
-//    NSThread *thread = [NSThread currentThread];
-//    NSInteger threadNumber = [[thread valueForKeyPath:@"private.seqNum"] integerValue];
-//    NSLog(@"main thread number: %ld",threadNumber); // the thread that crashes is 1, the main thread.
-        
+    //    NSThread *thread = [NSThread currentThread];
+    //    NSInteger threadNumber = [[thread valueForKeyPath:@"private.seqNum"] integerValue];
+    //    NSLog(@"main thread number: %ld",threadNumber); // the thread that crashes is 1, the main thread.
+    
 }
 // MARK: ------------ observeValueForKeyPath ---------------
 
@@ -500,10 +500,10 @@ NSTimer *motionZoneTimer;
                         change:(NSDictionary<NSKeyValueChangeKey, id> *)change
                        context:(void *)context{
     
-//  moved from showTcDigits:, using observer approach for snoopAuto, motionZoneByte
+    //  moved from showTcDigits:, using observer approach for snoopAuto, motionZoneByte
     bool snoopAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"snoopAuto"];
     NSInteger motionZoneByte = [[NSUserDefaults standardUserDefaults] integerForKey:@"motionZoneByte"];
-
+    
     if([keyPath isEqualToString:@"snoopAuto"] && snoopAuto){
         
         switch(motionZoneByte){
@@ -532,37 +532,37 @@ NSTimer *motionZoneTimer;
                 break;
         }
     }
-//    if([keyPath isEqualToString:@"hasColumnTitles"]){
-        
-//        bool hasColumnTitles = [[NSUserDefaults standardUserDefaults]boolForKey:@"hasColumnTitles"];
-//        // TODO: figuring out why we can't set column titles w/o crashing
-//        
-//        // this opens a new document, bad idea if there are unsaved changes
-//        
-//        Document *top = [self topDocument];
-//        
-//        NSMenu *mm;
-//        NSMenu *fileMenu;
-//        NSMenuItem *newItem;
-//        
-//        if(hasColumnTitles){
-//            
-//            mm = [NSApp mainMenu];
-//            if(mm){fileMenu = [[mm itemWithTitle:@"File"] submenu];}
-//            if(fileMenu){newItem = [fileMenu itemWithTitle:@"New"];}
-//            
-//            if(newItem){
-//                NSLog(@"newItem");
-//                NSUInteger idx = [[[newItem menu] itemArray] indexOfObject:newItem];
-//                [[newItem menu] performActionForItemAtIndex:idx];
-//                
-//                if(top){
-//                    [top close];
-//                }
-//            }
-//        }
+    //    if([keyPath isEqualToString:@"hasColumnTitles"]){
     
-//    }//hasColumnTitles
+    //        bool hasColumnTitles = [[NSUserDefaults standardUserDefaults]boolForKey:@"hasColumnTitles"];
+    //        // TODO: figuring out why we can't set column titles w/o crashing
+    //
+    //        // this opens a new document, bad idea if there are unsaved changes
+    //
+    //        Document *top = [self topDocument];
+    //
+    //        NSMenu *mm;
+    //        NSMenu *fileMenu;
+    //        NSMenuItem *newItem;
+    //
+    //        if(hasColumnTitles){
+    //
+    //            mm = [NSApp mainMenu];
+    //            if(mm){fileMenu = [[mm itemWithTitle:@"File"] submenu];}
+    //            if(fileMenu){newItem = [fileMenu itemWithTitle:@"New"];}
+    //
+    //            if(newItem){
+    //                NSLog(@"newItem");
+    //                NSUInteger idx = [[[newItem menu] itemArray] indexOfObject:newItem];
+    //                [[newItem menu] performActionForItemAtIndex:idx];
+    //
+    //                if(top){
+    //                    [top close];
+    //                }
+    //            }
+    //        }
+    
+    //    }//hasColumnTitles
     
     if(setLEDForUnitIDDictionary[keyPath]){
         
@@ -573,7 +573,7 @@ NSTimer *motionZoneTimer;
         int keyNumber = [(NSNumber*)array[1] intValue];
         
         bool state = [[NSUserDefaults standardUserDefaults] boolForKey:keyPath];
-//        NSLog(@"setLEDForUnitIDDictionary %@ %d",keyPath,state);
+        //        NSLog(@"setLEDForUnitIDDictionary %@ %d",keyPath,state);
         [self setLEDForUnitID:unit :keyNumber :state]; // 1.00.23
         
         // special cases
@@ -593,21 +593,21 @@ NSTimer *motionZoneTimer;
             }else{
                 [self onVideoDelayWindow:self];
             }
-
+            
         }
         
         return;
     }
-//    if([keyPath isEqualToString:@"beepsTrimFrames"]){
-//
-//        NSInteger beepsTrimFrames = [[NSUserDefaults standardUserDefaults] integerForKey:@"beepsTrimFrames"];
-//        [self txOsc:[NSString stringWithFormat:@"beepsTrim %ld",beepsTrimFrames]];
-//        [_xKey setLEDForUnitID:8 :18+80 : beepsTrimFrames < 0]; // BEEPS ARE OFFSET
-//        [_xKey setLEDForUnitID:8 :26+80 : beepsTrimFrames > 0]; // BEEPS ARE
-////        [self setTrimLeds]; // TODO: 2.00.00 ???
-////        [self setDocLEDs];  // TODO: 2.00.00 ???
-//
-//    }
+    //    if([keyPath isEqualToString:@"beepsTrimFrames"]){
+    //
+    //        NSInteger beepsTrimFrames = [[NSUserDefaults standardUserDefaults] integerForKey:@"beepsTrimFrames"];
+    //        [self txOsc:[NSString stringWithFormat:@"beepsTrim %ld",beepsTrimFrames]];
+    //        [_xKey setLEDForUnitID:8 :18+80 : beepsTrimFrames < 0]; // BEEPS ARE OFFSET
+    //        [_xKey setLEDForUnitID:8 :26+80 : beepsTrimFrames > 0]; // BEEPS ARE
+    ////        [self setTrimLeds]; // TODO: 2.00.00 ???
+    ////        [self setDocLEDs];  // TODO: 2.00.00 ???
+    //
+    //    }
 }
 -(void)motionZoneTimerService{
     self.snoopState = SNOOP_STATE_ON;   // PT is stopped
@@ -629,8 +629,8 @@ NSTimer *motionZoneTimer;
     
     // tell the streamer and MADI box 'bye' so that they are available for telnet right away
     
-//    [_streamerWindowController txMsg:@"bye"];
-//    [_matrixWindowController txMsg:@"bye"];
+    //    [_streamerWindowController txMsg:@"bye"];
+    //    [_matrixWindowController txMsg:@"bye"];
 }
 
 -(NSArray*)getDocWindows{
@@ -680,8 +680,8 @@ NSTimer *motionZoneTimer;
     if(self.cycleMotion == CYCLE_MOTION_ACTIVE){
         return;
     }
-
-//    [_editorWindowController setPrerollToHere:nil];
+    
+    //    [_editorWindowController setPrerollToHere:nil];
     //    [self setStartFromPrerollTc:nil];
     Document *doc = [self topDocument];
     if(doc) [doc previousCue];
@@ -699,7 +699,7 @@ NSTimer *motionZoneTimer;
     Document *doc = [self topDocument];
     if(doc)[doc nextCue];
     self.prerollIndex = self.prerollIndex;  // reset from 'preroll to here'
-
+    
 }
 -(void)unmergeCue{
     
@@ -717,14 +717,14 @@ NSTimer *motionZoneTimer;
     
 }
 -(void)rehearseMode{
-        
+    
     switch(self.cycleMotion){
             
-//        case CYCLE_MOTION_ACTIVE:
-//        case CYCLE_MOTION_STARTING:
+            //        case CYCLE_MOTION_ACTIVE:
+            //        case CYCLE_MOTION_STARTING:
         case CYCLE_MOTION_STOPPING:
             [_ptHui onStop];
-//            self.cycleMotion = CYCLE_MOTION_PENDING;
+            //            self.cycleMotion = CYCLE_MOTION_PENDING;
             [_matrixWindowController setRehRecPb:MODE_CONTROL_REHEARSE_PENDING];
             break;
         case CYCLE_MOTION_PENDING:
@@ -741,14 +741,14 @@ NSTimer *motionZoneTimer;
     }
 }
 -(void)recordMode{
-
+    
     switch(self.cycleMotion){
             
-//        case CYCLE_MOTION_ACTIVE:
-//        case CYCLE_MOTION_STARTING:
+            //        case CYCLE_MOTION_ACTIVE:
+            //        case CYCLE_MOTION_STARTING:
         case CYCLE_MOTION_STOPPING:
             [_ptHui onStop];
-//            self.cycleMotion = CYCLE_MOTION_PENDING;
+            //            self.cycleMotion = CYCLE_MOTION_PENDING;
             [_matrixWindowController setRehRecPb:MODE_CONTROL_RECORD_PENDING];
             break;
         case CYCLE_MOTION_PENDING:
@@ -767,11 +767,11 @@ NSTimer *motionZoneTimer;
     
     switch(self.cycleMotion){
             
-//        case CYCLE_MOTION_ACTIVE:
-//        case CYCLE_MOTION_STARTING:
+            //        case CYCLE_MOTION_ACTIVE:
+            //        case CYCLE_MOTION_STARTING:
         case CYCLE_MOTION_STOPPING:
             [_ptHui onStop];
-//            self.cycleMotion = CYCLE_MOTION_PENDING;
+            //            self.cycleMotion = CYCLE_MOTION_PENDING;
             [_matrixWindowController setRehRecPb:MODE_CONTROL_PLAYBACK_PENDING];
             break;
         case CYCLE_MOTION_PENDING:
@@ -814,56 +814,56 @@ NSTimer *motionZoneTimer;
     if(_matrixWindowController.protoolsAnnunciator.state != NSControlStateValueOn){
         
         [self alertErr:@"ProTools isn't running" :@""];
-
+        
         return;
-
+        
     }
     // check for MIDI, put up an alert if not connected
     if(_matrixWindowController.midiAnnunciator.state!= NSControlStateValueOn){
         
         [self alertErr:@"Protools MIDI not connected" :@""];
         return;
-
+        
     }
     
-//    if(self.cycleMotion != CYCLE_MOTION_IDLE){
-//        [_matrixWindowController setRehRecPb:MODE_CONTROL_REHEARSE];
-//
-//    }
+    //    if(self.cycleMotion != CYCLE_MOTION_IDLE){
+    //        [_matrixWindowController setRehRecPb:MODE_CONTROL_REHEARSE];
+    //
+    //    }
     
     // FIXME: before the loop, don't finalize record
     if(self.cycleMode == CYCLE_MODE_RECORD){
         self.cycleMode = CYCLE_MODE_SKIP_PASTE;
     }
-
+    
     Document *doc = [self topDocument];
-
+    
     if(!doc.recordCycleDictionary){
         
         [self alertErr:@"No cue selected" :@""];
         return;
     }
     
-//    if(doc.recordCycleDictionaryState == RECORD_CYCLE_DICTIONARY_ACTIVE){
-//        // setup for a new recordCycleDictionary is in progress, wait for it to complete
-//        self.cycleMotion = CYCLE_MOTION_PENDING;
-//        return;
-//        
-//    }
-
+    //    if(doc.recordCycleDictionaryState == RECORD_CYCLE_DICTIONARY_ACTIVE){
+    //        // setup for a new recordCycleDictionary is in progress, wait for it to complete
+    //        self.cycleMotion = CYCLE_MOTION_PENDING;
+    //        return;
+    //
+    //    }
+    
     // 10/11/22 a state machine that ignores button pushes for in-between states
     [_ptHui onStop];
     [_overlayWindowController.viewController.streamer cancelAllStreamers];
     
     // 01/30/24 refresh Osc REH REC PB, might be in Evan's video switching state
     [self txOsc:[NSString stringWithFormat:@"rehRecPb %d",_matrixWindowController.rehRecPb]];
-
+    
     switch(_cycleMotion){
         case CYCLE_MOTION_IDLE:
             // put overlays in front of PT
             [self onDocumentWindow:nil];
-//            [NSApp activateIgnoringOtherApps:true];
-//            [_overlayWindowController.viewController bringToFront];
+            //            [NSApp activateIgnoringOtherApps:true];
+            //            [_overlayWindowController.viewController bringToFront];
             
             _overlayWindowController.viewController.annunciatorTextView.fadeDuration = 0.1; // Fast fade in
             _overlayWindowController.viewController.annunciatorTextView.opacity = 1.0;
@@ -879,7 +879,7 @@ NSTimer *motionZoneTimer;
                     break;
             }
             self.cycleMotion = CYCLE_MOTION_STARTING;
-//            [_matrixWindowController.matrixView autoSlate];
+            //            [_matrixWindowController.matrixView autoSlate];
             break;
         case CYCLE_MOTION_ACTIVE:
             self.cycleMotion = CYCLE_MOTION_STOPPING;
@@ -911,17 +911,17 @@ NSTimer *motionZoneTimer;
 }
 
 //-(NSString*)trackName:(NSDictionary*) dict{
-//    
+//
 //    Document *doc = [self topDocument];
-//    
+//
 //    NSString *cueID = [doc cueIDForDictionary:dict];
 //    NSString *character = [doc characterForDictionary:dict];
-//    
+//
 //    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
 //    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
-//    
+//
 //    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
-//    
+//
 //    // spacer can be added w/o character
 //    cueID = [spacer stringByAppendingString:cueID];
 //
@@ -930,28 +930,28 @@ NSTimer *motionZoneTimer;
 //    return [_matrixWindowController sanitizeFileNameString:cueID]; //
 //}
 //-(NSString*)trackName{
-//    
+//
 //    return [self trackName:_recordCycleDictionary];
 //}
 -(void)renameLastTrack{
     
     Document *doc = [self topDocument];
-//    
-//    NSString *cueID = [doc cueIDForDictionary];
-//    NSString *character = [doc characterForDictionary];
-//    
-//    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
-//    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
-//    
-//    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
-////    if(spacer.length > 1){
-////        spacer = [spacer substringToIndex:2];   // 1 character
-////    }
-//    
-//    // spacer can be added w/o character
-//    cueID = [spacer stringByAppendingString:cueID];
-
-//    if(doc.characterInTrackName) cueID = [character stringByAppendingString:cueID];  // 2.00.00 ' '
+    //
+    //    NSString *cueID = [doc cueIDForDictionary];
+    //    NSString *character = [doc characterForDictionary];
+    //
+    //    // 11/26/25 add a spacing char that can be set, Document.dialogSpacer
+    //    NSString *spacer = [[NSUserDefaults standardUserDefaults] stringForKey:@"dialogSpacer"];
+    //
+    //    if(spacer == NULL || ![[NSUserDefaults standardUserDefaults] boolForKey:@"spacerEnable"]){spacer = @"";}
+    ////    if(spacer.length > 1){
+    ////        spacer = [spacer substringToIndex:2];   // 1 character
+    ////    }
+    //
+    //    // spacer can be added w/o character
+    //    cueID = [spacer stringByAppendingString:cueID];
+    
+    //    if(doc.characterInTrackName) cueID = [character stringByAppendingString:cueID];  // 2.00.00 ' '
     
     NSString *trackName = [doc trackName]; // no @"/\\?%*|\"<>.^\r\n\t"
     
@@ -979,7 +979,7 @@ NSTimer *motionZoneTimer;
     // otherwise you can manually change the name to some bogus value
     [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaRenameLastTrack\t0\t%@\t%@",nameNote,_suggestedTrackName]];
     [self setLastCueID:nameNote];
-
+    
 }
 -(void)cueToCycleStart{
     
@@ -993,23 +993,23 @@ NSTimer *motionZoneTimer;
                 if(![_ptHui isPlay]){
                     
                     [_overlayWindowController.viewController.streamer fadeToBlack:true :_streamerWindowController.fadeSeconds];
-
+                    
                 }
                 break;
             default: break;
         }
     }
     // when a new cue is selected, we are in CYCLE_MOTION_IDLE, don't fade to black
-//    if(self.cycleMotion != CYCLE_MOTION_IDLE){
-//        [_overlayWindowController.viewController.streamer fadeToBlack:true :0.0];
-//    }
-
+    //    if(self.cycleMotion != CYCLE_MOTION_IDLE){
+    //        [_overlayWindowController.viewController.streamer fadeToBlack:true :0.0];
+    //    }
+    
     Document *doc = [self topDocument];
     
     if(!doc.recordCycleDictionary){
         return; // nothing to cycle
     }
-
+    
     [self selectCurrentSixteenTrackMemory]; // moved from record part of case statement
     
     [_adrClientWindowController txMsg:@"prerollOff"]; // turn off PT preroll
@@ -1020,13 +1020,13 @@ NSTimer *motionZoneTimer;
     start = [_tcc subtractTc:preroll fromTc:start withType:self.getTcType];
     
     [self locate:start : @"2"];    // sends 'getProtoolsPosition 2'
-
+    
 }
 -(void)cycleStart{
     
     Document *doc = [self topDocument];
-//    doc.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;    // this blocks cycle button
-
+    //    doc.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;    // this blocks cycle button
+    
     // TODO: 2.00.00 cycleStart
     if(_cycleMotion != CYCLE_MOTION_STARTING){
         self.cycleMotion = CYCLE_MOTION_IDLE;
@@ -1035,13 +1035,13 @@ NSTimer *motionZoneTimer;
     
     // set monitor to AHEAD
     _matrixWindowController.aheadInPast = MODE_AHEAD;   //
-
+    
     switch (_matrixWindowController.rehRecPb) {
             
         case MODE_CONTROL_RECORD:
             
             [self renameLastTrack]; // rename on record cycle
-//            [_adrClientWindowController txMsg:@"armLastTrack"]; // 2.00.00 start sequencer
+            //            [_adrClientWindowController txMsg:@"armLastTrack"]; // 2.00.00 start sequencer
             
             break;
             
@@ -1051,7 +1051,7 @@ NSTimer *motionZoneTimer;
             
             break;
     }
-
+    
     
 }
 -(void)incrementCurrentTrack{
@@ -1097,9 +1097,9 @@ NSTimer *motionZoneTimer;
 }
 
 -(void)incrementRecordTake{
-  
+    
     Document *doc = self.topDocument;
-
+    
     if(doc == nil || !doc.recordCycleDictionary) return;
     
     NSString *take = [doc.recordCycleDictionary objectForKey:@"Take"];
@@ -1133,9 +1133,9 @@ NSTimer *motionZoneTimer;
     
     // 12/08/24 For Foley, don't increment the track after record
     bool incrTrack = [[NSUserDefaults standardUserDefaults] boolForKey:@"incrTrack"];
-
+    
     if(doc == nil || !doc.recordCycleDictionary || !incrTrack) return;
-
+    
     NSString *track = [doc.recordCycleDictionary objectForKey:@"Track"];
     
     if(!track){
@@ -1154,7 +1154,7 @@ NSTimer *motionZoneTimer;
         [doc.recordCycleDictionary setObject:track forKey:@"Track"];
     }
     [doc.tableView reloadData];
-
+    
 }
 -(void)skipCutAndPaste{
     
@@ -1165,7 +1165,7 @@ NSTimer *motionZoneTimer;
         case CYCLE_MODE_RECORD_KEEP_TAKE:   // in the loop
         case CYCLE_MODE_RECORD: // before the loop
             self.cycleMode = CYCLE_MODE_SKIP_PASTE;
-//            [_matrixWindowController setRehRecPb:MODE_CONTROL_REHEARSE];    // paranoia, can't hurt
+            //            [_matrixWindowController setRehRecPb:MODE_CONTROL_REHEARSE];    // paranoia, can't hurt
             break;
         default:
             break;
@@ -1177,8 +1177,8 @@ NSTimer *motionZoneTimer;
     [self showWindows];     // unhide windows maybe
     
     if(self.cycleMotion != CYCLE_MOTION_IDLE){
-//        [_matrixWindowController setRehRecPb:MODE_CONTROL_REHEARSE];
-
+        //        [_matrixWindowController setRehRecPb:MODE_CONTROL_REHEARSE];
+        
         // FIXME: before the loop, don't finalize record
         if(self.cycleMode == CYCLE_MODE_RECORD){
             self.cycleMode = CYCLE_MODE_SKIP_PASTE;
@@ -1260,18 +1260,18 @@ NSTimer *motionZoneTimer;
     [self txOsc:[NSString stringWithFormat:@"led %d,%d,%@",unitID,index, (on ? @"true" : @"false")]];
 }
 //-(void)setMemoryLED{
-//    
+//
 //    // TODO:  2.00.00 setMemoryLED
 //    if(_matrixWindowController){
-//        
+//
 //        int memoryTag = (int)[_matrixWindowController memoryTag];
 //        [self setLEDForUnitID:2 :3 :0 == memoryTag];
 //        [self setLEDForUnitID:2 :4 :2 == memoryTag];
 //        [self setLEDForUnitID:2 :11 :1 == memoryTag];
 //        [self setLEDForUnitID:2 :12 :3 == memoryTag];
-//        
+//
 //    }
-//    
+//
 //}
 //-(void)setDocLEDs{
 //
@@ -1309,8 +1309,8 @@ NSTimer *motionZoneTimer;
     
     //    [self setTrackLEDs];
     //    [self setRehRecPbLEDs];
-//    [self showFmtLEDs];
-//    [self setDocLEDs];
+    //    [self showFmtLEDs];
+    //    [self setDocLEDs];
     [self set16TrackLED];
     self.prerollIndex = self.prerollIndex;  // sends to heads
     
@@ -1318,14 +1318,14 @@ NSTimer *motionZoneTimer;
     Document *doc = [self topDocument];
     doc.recordToComposite = doc.recordToComposite;  // 2.10.02 init XKEY LED, sets unit 8 and 9
     _overlayWindowController.viewController.streamer.hidePix = _overlayWindowController.viewController.streamer.hidePix;    // 2.10.02 init XKEY LED, sets unit 8 and 9
-//    [self setPrerollLEDs:_editorWindowController.preroll];
+    //    [self setPrerollLEDs:_editorWindowController.preroll];
     
 }
 -(void)initUnit_9_LEDs{
     // companion initialization of non-KVO unit 9 items
-
+    
     [self txOsc:[NSString stringWithFormat:@"Track %ld",_currentTrack + 1]];    // track selector
-
+    
     [self txOsc:[NSString stringWithFormat:@"rehRecPb %d",[_matrixWindowController rehRecPb]]];    // mode
     [self txOsc:[NSString stringWithFormat:@"aheadInPast %d",[_matrixWindowController aheadInPast]]];
     _matrixWindowController.sampleRateTag = _matrixWindowController.sampleRateTag;  // set indicators
@@ -1357,13 +1357,13 @@ NSTimer *motionZoneTimer;
     
     [self sendMidiToClosure];   // 1.00.12
     [self setLEDForUnitID:8 :46 :_cycleMotion]; // set StreamDeck indicator
-
+    
 }
 -(void)triggerStreamerCompanion:(NSEvent*)event{
     // 2.00.00 trigger streamer from StreamDeck
     NSColor *color = _streamerWindowController.streamerColor;
     
-//    [_overlayWindowController.viewController.streamer triggerStreamer:color];
+    //    [_overlayWindowController.viewController.streamer triggerStreamer:color];
     [_overlayWindowController triggerStreamer:color];
 }
 -(void)pictureMode:(NSEvent*)event{
@@ -1396,7 +1396,7 @@ NSTimer *motionZoneTimer;
         
         if(window && [window isKindOfClass:[DocWindow class]]){
             Document *doc = (Document*)[window delegate];
-                [doc readLog];  // 12/17/25 does not send to screen
+            [doc readLog];  // 12/17/25 does not send to screen
         }
     }
     // 12/17/25 send top document to screen (avoids flashing text)
@@ -1408,14 +1408,14 @@ NSTimer *motionZoneTimer;
 - (IBAction)onVideoDelayHotKey:(id)sender {
     
     NSEvent *newEvent = [NSEvent otherEventWithType:NSEventTypeApplicationDefined
-                            location:NSMakePoint(0, 0)
-                            modifierFlags:0
-                            timestamp:0
-                            windowNumber:0
-                            context:nil
-                            subtype:NSEventSubtypeApplicationActivated
-                            data1:103
-                            data2:0]; // it is not a dial, used in long press of dial set to 0dB
+                                           location:NSMakePoint(0, 0)
+                                      modifierFlags:0
+                                          timestamp:0
+                                       windowNumber:0
+                                            context:nil
+                                            subtype:NSEventSubtypeApplicationActivated
+                                              data1:103
+                                              data2:0]; // it is not a dial, used in long press of dial set to 0dB
     
     [self dial:newEvent];
 }
@@ -1426,8 +1426,8 @@ NSTimer *motionZoneTimer;
     _matrixWindowController.captureFirstLineInRehearse = !_matrixWindowController.captureFirstLineInRehearse;
 }
 -(void)autoslate:(NSEvent*)event{
-//    @"autoslate:",@"75", // autoslate leading edge
-//    @"autoslate:",@"-75", // autoslate trailing edge
+    //    @"autoslate:",@"75", // autoslate leading edge
+    //    @"autoslate:",@"-75", // autoslate trailing edge
     
     NSInteger keyNumber = event.data1;
     
@@ -1441,13 +1441,13 @@ NSTimer *motionZoneTimer;
             [_matrixWindowController.matrixView autoSlate:false];
             break;
     }
-
+    
 }
 
 -(void)talkback:(NSEvent*)event{
     
     // talkback and mute buttons
-
+    
     NSInteger keyNumber = event.data1;
     
     switch(keyNumber){
@@ -1490,86 +1490,86 @@ NSTimer *motionZoneTimer;
 NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
                                            ,@"Text" : @"Zoom"
                                            ,@"midiMsgs" : @[@[@"176",@"23"]]
-                                        }
+}
                                  ,@"93" : @{DIAL_CLIENT_KEY : @"accClient"
                                             ,@"Text" : @"Source\\nConnect"
-//                                            ,@"Routine" : @"dialMuteDim:"
+                                            //                                            ,@"Routine" : @"dialMuteDim:"
                                             ,@"midiMsgs" : @[@[@"176",@"24"]]
                                             ,@"Name" : @"Source Connect" // the name of the matrix
-                                        }
+                                 }
                                  ,@"94" : @{@"Taper" : @"ufx"
                                             ,@"Text" : @"Actor\\nDirect"
                                             ,@"Routine" : @"actorDirect:"
-                                         }
+                                 }
                                  ,@"95" : @{@"Text" : @"Actor\\nHP"
                                             ,@"Taper" : @"ufx"
                                             ,@"Routine" : @"dialMuteDim:"
                                             ,@"Name" : @"Actor" // the name of the matrix to mute
-                                         }
+                                 }
                                  ,@"96" : @{DIAL_CLIENT_KEY : @"accClient"
                                             ,@"Text" : @"Beeps"
                                             ,@"midiMsgs" : @[@[@"176",@"17"]]
-                                         }
+                                 }
                                  ,@"97" : @{DIAL_CLIENT_KEY : @"accClient"
                                             ,@"Text" : @"Mac\\nCPU"
                                             ,@"midiMsgs" : @[@[@"176",@"18"]]
-                                         }
+                                 }
                                  ,@"98" : @{DIAL_CLIENT_KEY : @"accClient"
                                             ,@"Text" : @"Guide\\nTo Booth"
                                             ,@"midiMsgs" : @[@[@"176",@"19"]]
-                                         }
+                                 }
                                  ,@"99" : @{@"Text" : @"Snoop"
                                             ,@"Taper" : @"ufx"
                                             ,@"Routine" : @"dialMuteDim:"//@"dialSnoopService:"
-                                         }
+                                 }
                                  ,@"100" : @{DIAL_CLIENT_KEY : @"remoteClient"
-                                            ,@"Taper" : @"ufx"
-                                            ,@"Text" : @"Loopback"
-                                            ,@"midiMsgs" : @[@[@"188",@"104"],@[@"180",@"102"]]
-                                         }
+                                             ,@"Taper" : @"ufx"
+                                             ,@"Text" : @"Loopback"
+                                             ,@"midiMsgs" : @[@[@"188",@"104"],@[@"180",@"102"]]
+                                 }
                                  ,@"101" : @{DIAL_CLIENT_KEY : @"remoteClient"
-                                            ,@"Taper" : @"ufx"
-                                            ,@"Text" : @"Remote\\nActor Dir"
-                                            ,@"midiMsgs" : @[@[@"188",@"106"],@[@"176",@"102"]]
-                                         }
+                                             ,@"Taper" : @"ufx"
+                                             ,@"Text" : @"Remote\\nActor Dir"
+                                             ,@"midiMsgs" : @[@[@"188",@"106"],@[@"176",@"102"]]
+                                 }
                                  ,@"102" : @{DIAL_CLIENT_KEY : @"remoteClient"
-                                            ,@"Taper" : @"ufx"
-//                                             ,@"Routine" : @"dialMuteDim:"
-                                            ,@"Text" : @"Remote\\nActor HP"
-                                            ,@"midiMsgs" : @[@[@"184",@"104"]]
-                                            ,@"Name" : @"Remote Actor" // the name of the matrix
-                                         }
+                                             ,@"Taper" : @"ufx"
+                                             //                                             ,@"Routine" : @"dialMuteDim:"
+                                             ,@"Text" : @"Remote\\nActor HP"
+                                             ,@"midiMsgs" : @[@[@"184",@"104"]]
+                                             ,@"Name" : @"Remote Actor" // the name of the matrix
+                                 }
                                  ,@"103" : @{DIAL_CLIENT_KEY : @"accClient"
                                              ,@"Text" : @"Video\\nDelay"
                                              ,@"midiMsgs" : @[@[@"176",@"0"]]//0xb0,CC_VIDEO_REC_DELAY
                                              ,@"Routine" : @"VideoDelayService:"
-                                         }
+                                 }
                                  ,@"104" : @{@"Text" : @"Control\\nRoom"
                                              ,@"Taper" : @"ufx"
                                              ,@"Routine" : @"dialMuteDim:"
                                              ,@"Name" : @"Control Room" // the name of the matrix to mute
-                                         }
+                                 }
                                  ,@"105" : @{@"Text" : @"Stage"
                                              ,@"Taper" : @"ufx"
                                              ,@"Routine" : @"dialMuteDim:"
                                              ,@"Name" : @"Stage" // the name of the matrix to mute
-                                         }
+                                 }
                                  ,@"106" : @{@"Text" : @"Editor\\nHP"
                                              ,@"Taper" : @"ufx"
                                              ,@"Routine" : @"dialMuteDim:"
                                              ,@"Name" : @"Editor" // the name of the matrix to mute
-                                         }
+                                 }
                                  ,@"107" : @{@"Text" : @"Remote\\nEditor HP"
                                              ,@"Taper" : @"ufx"
-//                                             ,@"Routine" : @"dialMuteDim:"
+                                             //                                             ,@"Routine" : @"dialMuteDim:"
                                              ,@"Name" : @"Remote Editor" // the name of the matrix to mute
-                                         }
-
-                                };
+                                 }
+                                 
+};
 
 -(void)dial:(NSEvent*)event{
-        
-//    NSLog(@"dial %ld %ld",event.data1,event.data2);
+    
+    //    NSLog(@"dial %ld %ld",event.data1,event.data2);
     
     // 16 dial buttons 92-107
     // dial pots    192-207 (i.e. button + 100)
@@ -1579,13 +1579,13 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
     NSString *muteKey = [NSString stringWithFormat:@"%@_%@",DIAL_MUTE_KEY,key];
     
     NSDictionary *dict = dialDictionary[key];
-
+    
     if(dict){
         
         if(labs(event.data1) >= LAST_DIAL_INDEX){
             
             // pot, positive for right, negative for left
-
+            
             NSInteger dialValue = [[NSUserDefaults standardUserDefaults] integerForKey:valueKey];
             dialValue += event.data1 > 0 ? 1 : -1;
             
@@ -1597,9 +1597,9 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
             [[NSUserDefaults standardUserDefaults] setInteger:dialValue forKey:valueKey];
         }else if(event.data1 > 0 && event.data2 == 9){
             // dials, fire a oneshot, long press sets to 0dB
-            [_keyOneshot invalidate];   
+            [_keyOneshot invalidate];
             [self setKeyOneshot:[NSTimer scheduledTimerWithTimeInterval:.5 target: self selector:@selector(dialOneShotService) userInfo:key repeats: NO]];
-
+            
         }else{
             if(_keyOneshot.isValid || event.data2 != 9) {
                 // short press, or event from mute button mutes
@@ -1617,7 +1617,7 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
 }
 -(void)dialOneShotService{
     // long press sets gain to 0dB
-
+    
     NSString *key = _keyOneshot.userInfo;
     NSDictionary *dict = dialDictionary[key];
     
@@ -1632,21 +1632,21 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
     NSString *valueKey = [NSString stringWithFormat:@"%@_%@",DIAL_VALUE_KEY,key];
     [[NSUserDefaults standardUserDefaults] setInteger:zerodB forKey:valueKey];
     [self sendDial:key];
-
+    
 }
 -(void)sendDial:(NSString*)key{
     
     NSString *valueKey = [NSString stringWithFormat:@"%@_%@",DIAL_VALUE_KEY,key];
     NSString *muteKey = [NSString stringWithFormat:@"%@_%@",DIAL_MUTE_KEY,key];
-
+    
     NSInteger dialMute = [[NSUserDefaults standardUserDefaults] boolForKey:muteKey];
     NSInteger dialValue = [[NSUserDefaults standardUserDefaults] integerForKey:valueKey];
     dialValue = dialValue < 0 ? 0 : dialValue;
     dialValue = dialValue > 127 ? 127 : dialValue;  //
-
+    
     int fg = btnWhiteColor;
     int bg = dialMute ? aRedColor : btnOffColor;
-
+    
     NSDictionary *dict = dialDictionary[key];
     
     NSString *dBString;
@@ -1660,17 +1660,17 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
         
         // trims, in dB
         // items w/o taper are blueCat taper
-
+        
         dBString = [_matrixWindowController bluCatSliderToString:(NSInteger) dialValue];    // default is blueCat
-
+        
         NSString *taper = dict[@"Taper"];
         if(taper && [taper isEqualToString:@"ufx"]){
             
             dBString = [_matrixWindowController sliderToString:(NSInteger) dialValue];
-
+            
         }
     }
-        
+    
     NSString *msg = [NSString stringWithFormat:@"btn 9_%@,%d,%d,%@\\n%@",key,fg,bg,dict[@"Text"],dBString];
     [self txOsc:msg];
     
@@ -1703,15 +1703,15 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
     if(!dict){return;}
     NSString *clientKey = dict[DIAL_CLIENT_KEY];
     if(!clientKey){return;}
-
+    
     NSString *valueKey = [NSString stringWithFormat:@"%@_%@",DIAL_VALUE_KEY,key];
     NSString *muteKey = [NSString stringWithFormat:@"%@_%@",DIAL_MUTE_KEY,key];
-
+    
     NSInteger dialMute = [[NSUserDefaults standardUserDefaults] boolForKey:muteKey];
     NSInteger dialValue = [[NSUserDefaults standardUserDefaults] integerForKey:valueKey];
     
     AleDelegate *aleDelegate = (AleDelegate *)NSApp.delegate;
-
+    
     // MIDI destinations for pots are in midiClientDictionary
     if(_statusClient && _lpMini.accMidi.midiClient && _matrixWindowController.boomRecorderMIDI){
         
@@ -1727,8 +1727,8 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
             return;
         }
         
-//        NSLog(@"sendDialMidi %@ %@",clientKey,midiMsgs);
-
+        //        NSLog(@"sendDialMidi %@ %@",clientKey,midiMsgs);
+        
         for (NSArray *midiMsg in midiMsgs){
             
             unsigned char msg[] = {0,0,0};
@@ -1736,7 +1736,7 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
             msg[1] = [midiMsg[1] integerValue] & 0x7f;
             // 103 is the delay line value, is not a mute
             msg[2] = dialMute && ![key isEqualToString:@"103"] ? 0 : dialValue & 0x7f;
-
+            
             // special case for video rec delay
             if(msg[0] == 0xb0 && msg[1] == CC_VIDEO_REC_DELAY){
                 
@@ -1751,13 +1751,13 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
                     case 0: delaySeconds    *= 0.041666;   break;
                     case 1: delaySeconds    *= 0.040000;   break;
                     default: delaySeconds   *= 0.033333;   break;
-
+                        
                 }
                 
                 delaySeconds /= 2;  // MIDI is in 1/2 frame increments
                 
                 [aleDelegate.videoDelayWindowController setDelaySeconds:delaySeconds];
-//                [[NSUserDefaults standardUserDefaults]setDouble:delaySeconds forKey:@"videoDelaySeconds"];
+                //                [[NSUserDefaults standardUserDefaults]setDouble:delaySeconds forKey:@"videoDelaySeconds"];
                 
                 // 11/2/23 there is a chirp at the end of REC CYCLE, wait to turn off delay
                 if(msg[2] == 0 && self.cycleMode != CYCLE_MODE_IDLE){
@@ -1771,7 +1771,7 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
                 
             }
             
-//            NSLog(@"sendDialMidi %@ %d %d %d",clientKey,msg[0],msg[1],msg[2]);
+            //            NSLog(@"sendDialMidi %@ %d %d %d",clientKey,msg[0],msg[1],msg[2]);
             [client midiTx:[NSData dataWithBytes:msg length:3]];
         }
     }
@@ -1779,7 +1779,7 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
 NSTimer *videoRecDelayTimer;
 -(void)videoRecDelayTimerService{
     
-//    tickle github
+    //    tickle github
     unsigned char msg[] = {0xb0,CC_VIDEO_REC_DELAY,0};
     
     MidiClient *client = videoRecDelayTimer.userInfo;
@@ -1811,19 +1811,19 @@ NSTimer *videoRecDelayTimer;
 }
 // MARK: ------------ additional mute buttons for dials -------------
 NSDictionary *muteToDialDictionary = @{ @"87" : @"104"      // control room mute button
-                                       ,@"88" : @"105"      // stage
-                                       ,@"89" : @"95"       // actor
-                                       ,@"90" : @"106"      // editor
-                                       ,@"77" : @"103"      // video delay line
-                                       ,@"108" : @"99"     // snoop
-                                    };
+                                        ,@"88" : @"105"      // stage
+                                        ,@"89" : @"95"       // actor
+                                        ,@"90" : @"106"      // editor
+                                        ,@"77" : @"103"      // video delay line
+                                        ,@"108" : @"99"     // snoop
+};
 NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute button
-                                        ,@"105" : @"88"     // stage
-                                        ,@"95"  : @"89"     // actor
-                                        ,@"106" : @"90"     // editor
-                                        ,@"103" : @"77"     // video delay line
-                                        ,@"99"  : @"108"     // snoop
-                                    };
+                                         ,@"105" : @"88"     // stage
+                                         ,@"95"  : @"89"     // actor
+                                         ,@"106" : @"90"     // editor
+                                         ,@"103" : @"77"     // video delay line
+                                         ,@"99"  : @"108"     // snoop
+};
 
 -(void)muteForDial:(NSEvent*)event{
     
@@ -1831,22 +1831,22 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     // the commands have an event operand
     
     NSString *dial = muteToDialDictionary[[NSString stringWithFormat:@"%ld",event.data1]];
-        
+    
     if(!dial){
         return; // no dial for this button
     }
     NSEvent *newEvent = [NSEvent otherEventWithType:NSEventTypeApplicationDefined
-                            location:NSMakePoint(0, 0)
-                            modifierFlags:0
-                            timestamp:0
-                            windowNumber:0
-                            context:nil
-                            subtype:NSEventSubtypeApplicationActivated
-                            data1:[dial integerValue]
-                            data2:0]; // it is not a dial, used in long press of dial set to 0dB
+                                           location:NSMakePoint(0, 0)
+                                      modifierFlags:0
+                                          timestamp:0
+                                       windowNumber:0
+                                            context:nil
+                                            subtype:NSEventSubtypeApplicationActivated
+                                              data1:[dial integerValue]
+                                              data2:0]; // it is not a dial, used in long press of dial set to 0dB
     
     [self dial: newEvent];
-
+    
 }
 -(void)dimControlRoom{
     // button 9.91
@@ -1883,14 +1883,14 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     
     double videoDelaySeconds = (double) d * t / 2;
     
-//    [[NSUserDefaults standardUserDefaults] setDouble:videoDelaySeconds forKey:@"videoDelaySeconds"];
+    //    [[NSUserDefaults standardUserDefaults] setDouble:videoDelaySeconds forKey:@"videoDelaySeconds"];
     // because we don't know how to set a Swift static var from here
     [_videoDelayWindowController setDelaySeconds:videoDelaySeconds];
-
+    
     [_matrixWindowController refreshCrosspoints];
 }
 -(void)actorDirect:(NSString*)key{
-
+    
     // routing an input not in the matrix to the actor HP, add unity gain crosspoint send MIDI
     // Actor Direct mic is assigned in a combo box 2.10.02
     // 12/6/23 multi selection, string is tab separated like 'Mic 1/tMic 2'
@@ -1902,10 +1902,10 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     // multiple selection
     NSArray *actorDirectOutputArray = [actorDirectMic componentsSeparatedByString:@"\t"];
     NSArray *lastActorDirectOutputArray = [lastActorDirectMic componentsSeparatedByString:@"\t"];
-        
+    
     NSString *valueKey = [NSString stringWithFormat:@"%@_%@",DIAL_VALUE_KEY,key];
     NSString *muteKey = [NSString stringWithFormat:@"%@_%@",DIAL_MUTE_KEY,key];
-
+    
     NSInteger dialMute = [[NSUserDefaults standardUserDefaults] boolForKey:muteKey];
     NSInteger dialValue = dialMute ? 0 : [[NSUserDefaults standardUserDefaults] integerForKey:valueKey];
     
@@ -1921,7 +1921,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
             NSString *controlChange = colDict[@"SelectControlChange"];
             
             NSString *str;
-
+            
             // output change detect
             if(![actorDirectMic isEqualToString:lastActorDirectMic]){
                 
@@ -1929,11 +1929,11 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
                 for(NSString *item in lastActorDirectOutputArray){
                     
                     NSString *lastActorDirectOutput = [NSString stringWithFormat:@"%d",([[item componentsSeparatedByString:@" "]lastObject]).intValue + 101];
-
+                    
                     str = [NSString stringWithFormat:@"%@ %@ 0 176 %@ 0",channel,controlChange,lastActorDirectOutput];
                     
                     [self sendUfxString:str];
-               }
+                }
                 
                 // turn off change detector
                 [[NSUserDefaults standardUserDefaults] setObject:actorDirectMic forKey:@"lastActorDirectMic"];
@@ -1943,7 +1943,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
             for(NSString *item in actorDirectOutputArray){
                 
                 NSString *actorDirectOutput = [NSString stringWithFormat:@"%d",([[item componentsSeparatedByString:@" "]lastObject]).intValue + 101];
-
+                
                 str = [NSString stringWithFormat:@"%@ %@ 0 176 %@ %ld",channel,controlChange,actorDirectOutput,dialValue];
                 
                 [self sendUfxString:str];
@@ -1955,22 +1955,22 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     
     NSString *valueKey = [NSString stringWithFormat:@"%@_%@",DIAL_VALUE_KEY,key];
     NSString *muteKey = [NSString stringWithFormat:@"%@_%@",DIAL_MUTE_KEY,key];
-
+    
     NSInteger dialMute = [[NSUserDefaults standardUserDefaults] boolForKey:muteKey];
     NSInteger dialValue = [[NSUserDefaults standardUserDefaults] integerForKey:valueKey];
     
-//    NSLog(@"dialMuteDim valueKey %@ value %ld muteKey %@ mute %ld",valueKey,dialValue,muteKey,dialMute);
-
+    //    NSLog(@"dialMuteDim valueKey %@ value %ld muteKey %@ mute %ld",valueKey,dialValue,muteKey,dialMute);
+    
     NSString *muteButton = dialToMuteDictionary[key];
     
     if (muteButton != nil){
         NSString *oscStr = [NSString stringWithFormat:@"led 9,%@,%@",muteButton,(dialMute ? @"true" : @"false")];
-
+        
         [self txOsc:oscStr];  // the mute button for this section, tied to dial button
     }
-
+    
     NSString *matrixName = dialDictionary[key][@"Name"];
-
+    
     // special case
     bool dimControlRoom = [matrixName isEqualToString:@"Control Room"] && _matrixWindowController.dimControlRoom;
     
@@ -1985,10 +1985,10 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
             if(_matrixWindowController.midiAnnunciator.state == NSControlStateValueOn){
                 dialValue = (_snoopState % 2) == 1 ? dialValue : MAX_FADER_ATTENUATION;
             }
-           break;
+            break;
         default: break;
     }
-
+    
     dialMute |= _matrixWindowController.muteAll;    // after the txOsc so that the individual mute indications don't follow Mute All
     
     // fixed sends or returns, always 0dB or muted
@@ -2000,13 +2000,13 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     }
     
     double dimDB = [[NSUserDefaults standardUserDefaults] doubleForKey:@"dimDB"];
-
+    
     if(matrixName){
-//        NSLog(@"matrixName %@",matrixName);
-
+        //        NSLog(@"matrixName %@",matrixName);
+        
         for(int i = 0; i < _matrixWindowController.talkbackArray.count; i++){
             
-//            NSLog(@"Name %@",_matrixWindowController.talkbackArray[i][@"Name"]);
+            //            NSLog(@"Name %@",_matrixWindowController.talkbackArray[i][@"Name"]);
             
             if([_matrixWindowController.talkbackArray[i][@"Name"] hasPrefix:matrixName]){
                 NSNumber *dimA = _matrixWindowController.talkbackArray[i][DIM_A_KEY];
@@ -2030,11 +2030,11 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     }else{
         return;
     }
-
+    
     dialValue = dialValue < 0 ? 0 : dialValue;
     dialValue = dialValue > 127 ? 127 : dialValue;  //
     dialValue = dialMute ? 0 : dialValue;
-
+    
     for(NSDictionary *colDict in _matrixWindowController.matrixView.colTitles){
         
         NSString *colTitle = colDict[@"Title"];
@@ -2048,26 +2048,26 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
             
             NSString *str = [NSString stringWithFormat:@"%@ %@ %d",channel,controlChange,(int)dialValue];
             [self sendUfxString:str];
-
+            
         }
     }
 }
 -(void)dialSnoopService:(NSString*)key{
     
     // 09/29/24 why do we have this, instead of calling dialMuteDim?
-    // 
+    //
     
     //self.snoopState = self.snoopState;  // uses dial value for snoop gain
     [self dialMuteDim:@"99"];   // special-case dialMuteDim for '99'
-
+    
     NSString *muteKey = [NSString stringWithFormat:@"%@_%@",DIAL_MUTE_KEY,key];
     NSInteger dialMute = [[NSUserDefaults standardUserDefaults] boolForKey:muteKey];
     
     NSString *muteButton = dialToMuteDictionary[key];
     NSString *oscStr = [NSString stringWithFormat:@"led 9,%@,%@",muteButton,(dialMute ? @"true" : @"false")];
-
+    
     [self txOsc:oscStr];  // the mute button for this section, tied to dial button
-
+    
 }
 
 // MARK: ------------ end of extra routines for dial MIDI service -------------
@@ -2076,10 +2076,10 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 -(void)toggleLoop2:(NSEvent*)event{
     // 2.00.00, used by OSC
     NSInteger keyNumber = event.data1;
-
+    
     if(_audioPlayerWindowController){
         [_audioPlayerWindowController loopFromOsc:keyNumber];
-
+        
     }
 }
 //-(void)toggleLoop:(NSEvent*)event{
@@ -2097,23 +2097,23 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 //-(void)toggleSelectTake:(NSEvent*)event{
 //    // play quicktime files
 //    NSInteger keyNumber = event.data1;
-//    
+//
 //    if(_editorWindowController){
 //        [_editorWindowController toggleXKey:keyNumber];
 //    }
-//    
-//    
+//
+//
 //}
 //-(void)toggleSampler:(NSEvent*)event{
-//    
+//
 //    // toggleSampler
 //    if(_samplerWindowController){
-//        
+//
 //        NSInteger keyNumber = event.data1;
-//        
+//
 //        DropButton *db;// = [_samplerWindowController playbackButton];
 //        NSInteger currentState;
-//        
+//
 //        switch(keyNumber){
 //            case 4:
 //                db = [_samplerWindowController playbackButton2];
@@ -2122,24 +2122,24 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 //                [_samplerWindowController onPlaybackButton2:db];
 //                break;
 //            case 5:
-//                
+//
 //                db = [_samplerWindowController playbackButton];
 //                currentState = [db state];
 //                [db setState:currentState ? NSControlStateValueOff : NSControlStateValueOn];
 //                [_samplerWindowController onPlaybackButton:db];
 //                break;
-//                
+//
 //            default: return;
 //        }
-//        
+//
 //    }
-//    
+//
 //}
 //-(void)resendCue{
-//    
+//
 //    Document *doc = [self topDocument];
 ////    [doc onSendCueToProtools:nil];
-//    
+//
 //}
 -(void)fastRev{
     
@@ -2153,26 +2153,26 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     [_adrClientWindowController txMsg:@"keyStroke ;;;;;;;;;;;;;;;;;;;;;;;;;;"];   // move off of guide track
     [_adrClientWindowController txMsg:@"keyWithModifiers\t9\t4"];   // default is fwd
     [_adrClientWindowController txMsg:@"keyStroke -"];              // reverse
-
-//    switch (_fastFwdRev) {
-//        case 2:
-//            [_adrClientWindowController txMsg:@"keyStroke -"];
-//            _fastFwdRev = -2;
-//            break;
-//            
-//        case 0:
-//        case -1:
-//        case 1:
-//            
-//            [_adrClientWindowController txMsg:@"keyWithModifiers\t9\t4"];
-//            [_adrClientWindowController txMsg:@"keyStroke -"];
-//            _fastFwdRev = -2;
-//            break;
-//        case -2:
-//            [_adrClientWindowController txMsg:@"keyCode 49"];
-//            _fastFwdRev = 0;
-//            break;
-//    }
+    
+    //    switch (_fastFwdRev) {
+    //        case 2:
+    //            [_adrClientWindowController txMsg:@"keyStroke -"];
+    //            _fastFwdRev = -2;
+    //            break;
+    //
+    //        case 0:
+    //        case -1:
+    //        case 1:
+    //
+    //            [_adrClientWindowController txMsg:@"keyWithModifiers\t9\t4"];
+    //            [_adrClientWindowController txMsg:@"keyStroke -"];
+    //            _fastFwdRev = -2;
+    //            break;
+    //        case -2:
+    //            [_adrClientWindowController txMsg:@"keyCode 49"];
+    //            _fastFwdRev = 0;
+    //            break;
+    //    }
     
     
 }
@@ -2183,26 +2183,26 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     }
     [_adrClientWindowController txMsg:@"keyStroke ;;;;;;;;;;;;;;;;;;;;;;;;;;"];   // move off of guide track
     [_adrClientWindowController txMsg:@"keyWithModifiers\t3\t4"];   // default is fwd
-
-//    switch (_fastFwdRev) {
-//        case -1:
-//            [_adrClientWindowController txMsg:@"keyStroke +"];
-//            _fastFwdRev = 1;
-//            break;
-//            
-//        case 0:
-//        case 2:
-//        case -2:
-//            
-//            [_adrClientWindowController txMsg:@"keyWithModifiers\t3\t4"];
-//            [_adrClientWindowController txMsg:@"keyStroke +"];
-//            _fastFwdRev = 1;
-//            break;
-//        case 1:
-//            [_adrClientWindowController txMsg:@"keyCode 49"];
-//            _fastFwdRev = 0;
-//            break;
-//    }
+    
+    //    switch (_fastFwdRev) {
+    //        case -1:
+    //            [_adrClientWindowController txMsg:@"keyStroke +"];
+    //            _fastFwdRev = 1;
+    //            break;
+    //
+    //        case 0:
+    //        case 2:
+    //        case -2:
+    //
+    //            [_adrClientWindowController txMsg:@"keyWithModifiers\t3\t4"];
+    //            [_adrClientWindowController txMsg:@"keyStroke +"];
+    //            _fastFwdRev = 1;
+    //            break;
+    //        case 1:
+    //            [_adrClientWindowController txMsg:@"keyCode 49"];
+    //            _fastFwdRev = 0;
+    //            break;
+    //    }
     
 }
 -(void)fastFwd{
@@ -2212,28 +2212,28 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     }
     [_adrClientWindowController txMsg:@"keyStroke ;;;;;;;;;;;;;;;;;;;;;;;;;;"];   // move off of guide track
     [_adrClientWindowController txMsg:@"keyWithModifiers\t9\t4"];   // default is fwd
-
+    
     //        [acwc txMsg:@"keyWithModifiers\tz\t1"]; // modifiers in 2nd operand, 0-15, [0] command [1] option [2] control [3] shift
     
-//    switch (_fastFwdRev) {
-//        case -2:
-//            [_adrClientWindowController txMsg:@"keyStroke +"];
-//            _fastFwdRev = 2;
-//            break;
-//            
-//        case 0:
-//        case -1:
-//        case 1:
-//            
-//            [_adrClientWindowController txMsg:@"keyWithModifiers\t9\t4"];
-//            [_adrClientWindowController txMsg:@"keyStroke +"];
-//            _fastFwdRev = 2;
-//            break;
-//        case 2:
-//            [_adrClientWindowController txMsg:@"keyCode 49"];
-//            _fastFwdRev = 0;
-//            break;
-//    }
+    //    switch (_fastFwdRev) {
+    //        case -2:
+    //            [_adrClientWindowController txMsg:@"keyStroke +"];
+    //            _fastFwdRev = 2;
+    //            break;
+    //
+    //        case 0:
+    //        case -1:
+    //        case 1:
+    //
+    //            [_adrClientWindowController txMsg:@"keyWithModifiers\t9\t4"];
+    //            [_adrClientWindowController txMsg:@"keyStroke +"];
+    //            _fastFwdRev = 2;
+    //            break;
+    //        case 2:
+    //            [_adrClientWindowController txMsg:@"keyCode 49"];
+    //            _fastFwdRev = 0;
+    //            break;
+    //    }
     
     //    if([_midiClient isStop]) [_adrClientWindowController txMsg:@"fastFwd 1"];
     //    else [_adrClientWindowController txMsg:@"fastFwd 0"];
@@ -2247,47 +2247,47 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     [_adrClientWindowController txMsg:@"keyStroke ;;;;;;;;;;;;;;;;;;;;;;;;;;"];   // move off of guide track
     [_adrClientWindowController txMsg:@"keyWithModifiers\t3\t4"];   // default is fwd
     [_adrClientWindowController txMsg:@"keyStroke -"];              // rev
-
+    
     //        [acwc txMsg:@"keyWithModifiers\tz\t1"]; // modifiers in 2nd operand, 0-15, [0] command [1] option [2] control [3] shift
     
-//    switch (_fastFwdRev) {
-//        case 1:
-//            [_adrClientWindowController txMsg:@"keyStroke -"];
-//            _fastFwdRev = -1;
-//            break;
-//        case 0:
-//        case 2:
-//        case -2:
-//            
-//            [_adrClientWindowController txMsg:@"keyWithModifiers\t3\t4"];
-//            [_adrClientWindowController txMsg:@"keyStroke -"];
-//            _fastFwdRev = -1;
-//            break;
-//        case -1:
-//            [_adrClientWindowController txMsg:@"keyCode 49"];
-//            _fastFwdRev = 0;
-//            break;
-//    }
+    //    switch (_fastFwdRev) {
+    //        case 1:
+    //            [_adrClientWindowController txMsg:@"keyStroke -"];
+    //            _fastFwdRev = -1;
+    //            break;
+    //        case 0:
+    //        case 2:
+    //        case -2:
+    //
+    //            [_adrClientWindowController txMsg:@"keyWithModifiers\t3\t4"];
+    //            [_adrClientWindowController txMsg:@"keyStroke -"];
+    //            _fastFwdRev = -1;
+    //            break;
+    //        case -1:
+    //            [_adrClientWindowController txMsg:@"keyCode 49"];
+    //            _fastFwdRev = 0;
+    //            break;
+    //    }
     
 }
 //-(void)loopRecord{
-//    
+//
 //    Document *doc = [self topDocument];
-//    
+//
 //    if(doc == nil)return;
-//    
+//
 //    NSString *msg = doc.loopRecord ? @"preroll 00:00:01:00" : @"preroll 00:00:03:00";
 //    NSString *msg2 = doc.loopRecord ? @"loopRecord 2" : @"loopRecord 1";
-//    
+//
 //    if(_adrClientWindowController){
-//        
+//
 //        [_adrClientWindowController txMsg:msg];
 //        [_adrClientWindowController txMsg:msg2];
 //    }
-//    
+//
 //}
 //-(void)toggleLoopRecord{
-//    
+//
 //    Document *doc = [self topDocument];
 //    if(doc){
 //        [doc setLoopRecord:!doc.loopRecord];
@@ -2320,7 +2320,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     
     // 2.10.02 Ventura, PT11 Ultimate, added jxaLocate script
     start = [start stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
+    
     [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaLocate %@",start]];
     
     // getProtoolsPosition handles cueup complete
@@ -2348,21 +2348,21 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     NSString *msg = _matrixWindowController.show16Tracks & 1 ? msg16 : msg1;
     [_adrClientWindowController txMsg:msg];
     
-//    [_adrClientWindowController appendToLog:[NSString stringWithFormat:@"selected track %ld",_currentTrack + 1]];
-
+    //    [_adrClientWindowController appendToLog:[NSString stringWithFormat:@"selected track %ld",_currentTrack + 1]];
+    
     // code below should be the same, but it does not work reliably
-
-//    return;
-//
-//    if([_matrixWindowController show16Tracks]){
-//
-//        NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_currentTrack >> 4];
-//        if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaMem %d\n",(int)mem]];
-//
-//    }else{
-//
-//        [self selectTrackMemory:_currentTrack];
-//    }
+    
+    //    return;
+    //
+    //    if([_matrixWindowController show16Tracks]){
+    //
+    //        NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_currentTrack >> 4];
+    //        if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaMem %d\n",(int)mem]];
+    //
+    //    }else{
+    //
+    //        [self selectTrackMemory:_currentTrack];
+    //    }
     
 }
 -(void)selectLastSixteenTrackMemory{
@@ -2381,19 +2381,19 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     if(track > trackMax) track = trackMax;
     
     NSString *msg1 = [NSString stringWithFormat:@"jxaMem %ld",track];
-
+    
     NSString *msg = _matrixWindowController.show16Tracks & 1 ? msg16 : msg1;
     [_adrClientWindowController txMsg:msg];
-
-//    if([_matrixWindowController show16Tracks]){
-//
-//        NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_lastRecordTrack >> 4];
-//        if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaMem %d\n",(int)mem]];
-//
-//    }else{
-//
-//        [self selectTrackMemory:_lastRecordTrack];    // if we are not in 16 track mode, show the last record track
-//    }
+    
+    //    if([_matrixWindowController show16Tracks]){
+    //
+    //        NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_lastRecordTrack >> 4];
+    //        if(_adrClientWindowController) [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaMem %d\n",(int)mem]];
+    //
+    //    }else{
+    //
+    //        [self selectTrackMemory:_lastRecordTrack];    // if we are not in 16 track mode, show the last record track
+    //    }
 }
 -(void)selectCurrentTrackMemory:(NSEvent*)event{
     
@@ -2422,7 +2422,7 @@ NSTimer *toggleShowSixteenTimer;
     _currentTrack = (_currentTrack + 16) % 32;   // show the other 16
     [self selectCurrentSixteenTrackMemory];
     //NSLog(@"toggleShowSixteenTimerService, currentTrack: %ld",_currentTrack);
-
+    
 }
 -(void)toggleShowSixteen:(NSEvent*)event{
     
@@ -2447,11 +2447,11 @@ NSTimer *toggleShowSixteenTimer;
             // answer: because 'showSixteenTracks' shows 16 now, without toggling the state
             bool state = [[NSUserDefaults standardUserDefaults] boolForKey:@"show16Tracks"];
             state = state ? false : true;
-        //    NSLog(@"show16Tracks %d",state);
+            //    NSLog(@"show16Tracks %d",state);
             [[NSUserDefaults standardUserDefaults] setBool:state forKey:@"show16Tracks"];
             [self selectCurrentSixteenTrackMemory];             // show the tracks
-
-        //    [_matrixWindowController setShow16Tracks:![_matrixWindowController show16Tracks]];
+            
+            //    [_matrixWindowController setShow16Tracks:![_matrixWindowController show16Tracks]];
         }
         
     }
@@ -2478,7 +2478,7 @@ NSTimer *toggleShowSixteenTimer;
     // Evan's xk-80, May 10 2015 revision
     NSDictionary *unit_8_dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
                                        
-//                                       @"initUnit_8_LEDs",[NSString stringWithFormat:@"%d",REPORT_KEY],   // REPORT_KEY
+                                       //                                       @"initUnit_8_LEDs",[NSString stringWithFormat:@"%d",REPORT_KEY],   // REPORT_KEY
                                        @"getCueName:",@"0",
                                        @"preroll:",@"1",
                                        //                                       @"getCueName:",@"2",
@@ -2581,7 +2581,7 @@ NSTimer *toggleShowSixteenTimer;
                                                //                                               @"trackMem5:",@"1",
                                                @"deleteCurrentCue:",@"1",   // 1.00.23, was "2"
                                                //                                               @"missingMethod:",@"3",
-//                                               @"cycleAlignment",@"4",
+                                               //                                               @"cycleAlignment",@"4",
                                                @"toggleOpaque",@"5",
                                                @"cycleWindows:",@"6",
                                                @"shiftKey:",@"7",
@@ -2676,8 +2676,8 @@ NSTimer *toggleShowSixteenTimer;
     // keys 0-31 are tracks 0-31, so we don't have to cross-map keys to tracks
     // other fns where we have shift/unshift logic problems should go here
     NSDictionary *unit_9_dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-//
-//                                       @"initUnit_9_LEDs",[NSString stringWithFormat:@"%d",REPORT_KEY],   // REPORT_KEY
+                                       //
+                                       //                                       @"initUnit_9_LEDs",[NSString stringWithFormat:@"%d",REPORT_KEY],   // REPORT_KEY
                                        @"trackMem9:",@"0",
                                        @"clearCopyDown",@"-128",
                                        @"trackMem9:",@"1",
@@ -2749,10 +2749,10 @@ NSTimer *toggleShowSixteenTimer;
                                        @"toggleShowSixteen:",@"-34",    //
                                        @"overlayKey:",@"35",
                                        @"overlayKey:",@"-35",
-//                                       @"blackCueBlack",@"36",
+                                       //                                       @"blackCueBlack",@"36",
                                        @"inPastSwitching",@"37",
                                        @"nextScreen",@"38",
-//                                       @"nextPunch",@"39",
+                                       //                                       @"nextPunch",@"39",
                                        @"linkCompAndPbRouting",@"40",
                                        @"toggleOpaque",@"41",
                                        
@@ -2760,8 +2760,8 @@ NSTimer *toggleShowSixteenTimer;
                                        @"togglePunch",@"43",    //1.00.23
                                        @"toggleBeeps",@"44",    //1.00.23
                                        @"toggleInhibitStreamerInPlayback",@"45",    //1.00.23
-//                                       @"toggleUseAltGuideInRecord",@"46",    //1.00.23
-//                                       @"showSixteenTracks:",@"47",    //1.00.23, does work with :
+                                       //                                       @"toggleUseAltGuideInRecord",@"46",    //1.00.23
+                                       //                                       @"showSixteenTracks:",@"47",    //1.00.23, does work with :
                                        
                                        @"toggleLoop2:",@"60",   // button tag 60
                                        @"toggleLoop2:",@"61",   // button tag 61
@@ -2784,7 +2784,7 @@ NSTimer *toggleShowSixteenTimer;
                                        @"autoslate:",@"-75", // autoslate trailing edge
                                        @"captureFirstLineInRehearse:",@"76", // talkback a trailing edge
                                        @"muteForDial:",@"77",
-//                                       @"remoteDelay:",@"-77",
+                                       //                                       @"remoteDelay:",@"-77",
                                        @"readLog",@"78",
                                        @"showAllCols",@"79",
                                        @"useAnnunciatorColor",@"80",
@@ -2863,7 +2863,7 @@ NSTimer *toggleShowSixteenTimer;
                                        @"dial:",@"-107", // dial 1 service, button up
                                        @"dial:",@"207", // dial 1 service, rotate right
                                        @"dial:",@"-207", // dial 1 service, rotate left
-
+                                       
                                        @"muteForDial:",@"108", // mute snoop
                                        
                                        @"talkback:",@"109", // talkback c
@@ -2878,9 +2878,9 @@ NSTimer *toggleShowSixteenTimer;
                                        @"toggleProgressBarPerCue",@"123",
                                        @"foleyClipCapture",@"124",
                                        @"incrTrackAfterRec",@"125",
-
+                                       
                                        // skip 128 because XKeys uses -128 to signal -0
-
+                                       
                                        nil];
     
     // make dictionary of jump tables
@@ -2898,7 +2898,7 @@ NSTimer *toggleShowSixteenTimer;
     
     bool state = [[NSUserDefaults standardUserDefaults] boolForKey:@"boomRecOnlineLocal"];
     [[NSUserDefaults standardUserDefaults] setBool:!state forKey:@"boomRecOnlineLocal"];
-
+    
 }
 -(void)boomRecOnlineRemoteToggle{
     
@@ -2915,7 +2915,7 @@ NSTimer *toggleShowSixteenTimer;
     
     bool state = [[NSUserDefaults standardUserDefaults] boolForKey:@"linkRemoteEditor"];
     [[NSUserDefaults standardUserDefaults] setBool:!state forKey:@"linkRemoteEditor"];
-
+    
 }
 -(void)linkCompAndPbRouting{
     NSString *key = @"linkCompAndPbRouting";
@@ -2927,9 +2927,9 @@ NSTimer *toggleShowSixteenTimer;
     [defaults setBool:state forKey:key];
     
     // refresh the text for Playback keys
-//    [_matrixWindowController aipShowOsc];
+    //    [_matrixWindowController aipShowOsc];
     
-//    [self onLinkCompAndPbRouting: nil];
+    //    [self onLinkCompAndPbRouting: nil];
 }
 //-(void)nextPunch{
 //    // select TextWindowServer next punch
@@ -2941,7 +2941,7 @@ NSTimer *toggleShowSixteenTimer;
     // causing a store
     NSInteger sel = _overlayWindowController.screenSelector + 1;
     sel %= NSScreen.screens.count;
- 
+    
     [[NSUserDefaults standardUserDefaults]setInteger:sel forKey:@"OVERLAY_KEYscreenSelector"];
     
     _overlayWindowController.screenSelector = sel;   // v2.00.00
@@ -2955,8 +2955,8 @@ NSTimer *toggleShowSixteenTimer;
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:state forKey:key];
-
-//    [self onEnInPastSwitching:nil];
+    
+    //    [self onEnInPastSwitching:nil];
 }
 
 -(void)onAddCue{
@@ -2969,7 +2969,7 @@ NSTimer *toggleShowSixteenTimer;
     
     if (_cycleMotion == CYCLE_MOTION_IDLE) {    // locked out if cycling
         [_matrixWindowController setAheadInPast:MODE_AHEAD];
-
+        
     }
     
 }
@@ -2977,7 +2977,7 @@ NSTimer *toggleShowSixteenTimer;
     // github tickle
     if (_cycleMotion == CYCLE_MOTION_IDLE) {    // locked out if cycling
         [_matrixWindowController setAheadInPast:MODE_IN];
-
+        
     }
     
 }
@@ -2985,7 +2985,7 @@ NSTimer *toggleShowSixteenTimer;
     
     if (_cycleMotion == CYCLE_MOTION_IDLE) {    // locked out if cycling
         [_matrixWindowController setAheadInPast:MODE_PAST];
-
+        
     }
 }
 -(void)showWindows{
@@ -3012,11 +3012,11 @@ NSTimer *toggleShowSixteenTimer;
     
 }
 //-(void)toggleAutoPlay:(NSString*)msg{
-//    
+//
 //    Document *doc = [self topDocument];
-//    
-//    [doc setAutoPlay:!doc.autoPlay];    
-//    
+//
+//    [doc setAutoPlay:!doc.autoPlay];
+//
 //}
 -(void)mainOutputs{
     
@@ -3039,24 +3039,24 @@ NSTimer *toggleShowSixteenTimer;
     
 }
 //-(void)zeroFeetAtTc:(NSString*)tc{
-//    
+//
 //    // if we are in ft/fr, calculate the tc for our current position, set tc
-//    
+//
 ////    unsigned char displayFmt = [_midiClient getControlTableByte:0x16];
 ////    Document *doc = [self topDocument];
 //    //[doc setTimeCodeStart:tc];
-//    
+//
 ////    if(displayFmt & 2){   // we are in ft/fr, set tc
-//    
+//
 ////        [self setTimeCodeStart:tc];
-//    
+//
 ////        int frs = [_tcc ftToBinary:doc.ctr];
 ////        frs += [_tcc tcToBinary:tc withType:TCTYPE_24]; // FIXME
 ////        NSString *tc = [_tcc binaryToTc:frs withType:TCTYPE_24];    // FIXME
 //        NSArray *array = [tc componentsSeparatedByString:@":"];
-//       
+//
 //        [_adrClientWindowController txMsg:[NSString stringWithFormat:@"setZeroFeetAtTc %@%@%@%@",array[0],array[1],array[2],array[3]]];
-//        
+//
 ////    }
 //}
 -(void)theHour:(NSEvent*)event{
@@ -3131,18 +3131,18 @@ NSTimer *toggleShowSixteenTimer;
     [_adrClientWindowController txMsg:@"loopPlaybackOff"];
     [_lpMini micSet:@"90787f" :true];
     //_micDictionary[@"90787f"] = MIC_ON;
-//    [self sendToMicAccessoryForKey:@"90787f"];
-//    micState[CUSTOM_FILL_INDEX] = 127;    // 2.00.00 state is in _micDictionary[@"90787f"] = MIC_ON;
-//    unsigned char msg[] = {0x90,CUSTOM_FILL_INDEX,COLOR_AIP_RED};
-//    //    [_launchPadMiniClient midiTx:[NSData dataWithBytes:msg length:3]]; // 12/14/16 change to have 2 heads for Tommy
-//    [self launchPadMiniTx:[NSData dataWithBytes:msg length:3]];
+    //    [self sendToMicAccessoryForKey:@"90787f"];
+    //    micState[CUSTOM_FILL_INDEX] = 127;    // 2.00.00 state is in _micDictionary[@"90787f"] = MIC_ON;
+    //    unsigned char msg[] = {0x90,CUSTOM_FILL_INDEX,COLOR_AIP_RED};
+    //    //    [_launchPadMiniClient midiTx:[NSData dataWithBytes:msg length:3]]; // 12/14/16 change to have 2 heads for Tommy
+    //    [self launchPadMiniTx:[NSData dataWithBytes:msg length:3]];
     //    [_midiClient txMidiToHead:[NSData dataWithBytes:msg length:3]];  // light the 'H' button (custom fill indicator)
     unsigned char msg[] = {0xb0,CC_CAPTURE_FILL,0};
-//    msg[0] = 0xb0; msg[1] = 13; msg[2] = 0;
+    //    msg[0] = 0xb0; msg[1] = 13; msg[2] = 0;
     [_lpMini.accMidi.midiClient midiTx:[NSData dataWithBytes:msg length:3]];
     //    [_midiClient txMidiToAcc:[NSData dataWithBytes:msg length:3]];
     
-//    if(_rehearseCaptureWindowController) [((RehearseCaptureWindowController*)_rehearseCaptureWindowController) setEnableCaptureFill:true];   // 6/22/15
+    //    if(_rehearseCaptureWindowController) [((RehearseCaptureWindowController*)_rehearseCaptureWindowController) setEnableCaptureFill:true];   // 6/22/15
     
     [_ptHui onPlay];
     
@@ -3161,11 +3161,11 @@ NSTimer *toggleShowSixteenTimer;
     
     // 6/22/15
     
-//    if(_rehearseCaptureWindowController) [((RehearseCaptureWindowController*)_rehearseCaptureWindowController) stopCapture];
+    //    if(_rehearseCaptureWindowController) [((RehearseCaptureWindowController*)_rehearseCaptureWindowController) stopCapture];
     
 }
 //-(void)setPrerollLEDs:(NSString*)preroll{
-//    
+//
 //    [self txOsc:[NSString stringWithFormat:@"prerollIndex %ld",(long)_prerollIndex]];    //
 //}
 -(void)preroll:(NSEvent*)event{
@@ -3181,7 +3181,7 @@ NSTimer *toggleShowSixteenTimer;
         default:
             break;
     }
-
+    
 }
 -(void)calcPrerollToHere:(NSString*)tc{
     
@@ -3194,7 +3194,7 @@ NSTimer *toggleShowSixteenTimer;
     tc = [_tcf tcForString:tc];
     
     NSString *preroll = [_tcc subtractTc:tc fromTc:start withType:self.getTcType];
-
+    
     NSString *prerollFt = [_tcc tcToFt:preroll];
     [_editorWindowController setPreroll:[self getDisplayFormat] == DISPLAY_FMT_FT ? prerollFt : preroll];
     
@@ -3222,7 +3222,7 @@ NSTimer *toggleShowSixteenTimer;
     
     Document *doc = [self topDocument];
     if(doc == nil){return;}
-
+    
     [doc deleteSelectedRows];
 }
 // : streamer1:
@@ -3230,66 +3230,66 @@ NSTimer *toggleShowSixteenTimer;
     
     Document *doc = [self topDocument];
     if(doc == nil){return;}
-
+    
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer1"];
     [self locate:tc];
-
+    
 }
 -(void)streamer2Locate:(NSEvent*)event{
     
     Document *doc = [self topDocument];
     if(doc == nil){return;}
-
+    
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer2"];
     [self locate:tc];
-
+    
 }
 -(void)streamer3Locate:(NSEvent*)event{
     
     Document *doc = [self topDocument];
     if(doc == nil){return;}
-
+    
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer3"];
     [self locate:tc];
-
+    
 }
 -(void)streamer4Locate:(NSEvent*)event{
     
     Document *doc = [self topDocument];
     if(doc == nil){return;}
-
+    
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer4"];
     [self locate:tc];
-
+    
 }
 -(void)streamer5Locate:(NSEvent*)event{
     
     Document *doc = [self topDocument];
     if(doc == nil){return;}
-
+    
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer5"];
     [self locate:tc];
-
+    
 }
 -(void)streamer6Locate:(NSEvent*)event{
     
     Document *doc = [self topDocument];
     if(doc == nil){return;}
-
+    
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer6"];
     [self locate:tc];
-
+    
 }
 
 -(void)streamer1:(NSEvent*)event{
     
     [_adrClientWindowController txMsg:@"jxaGetProtoolsPosition 8"];
-
+    
 }
 -(void)streamer2:(NSEvent*)event{
     
     [_adrClientWindowController txMsg:@"jxaGetProtoolsPosition 9"];
-
+    
 }
 -(void)streamer3:(NSEvent*)event{
     
@@ -3312,7 +3312,7 @@ NSTimer *toggleShowSixteenTimer;
     
     Document *doc = [self topDocument];
     if(doc == nil){return;}
-
+    
     [doc.recordCycleDictionary setObject:@"" forKey:@"streamer1"];
     [doc.recordCycleDictionary setObject:@"" forKey:@"streamer2"];
     [doc.recordCycleDictionary setObject:@"" forKey:@"streamer3"];
@@ -3348,11 +3348,11 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)prerollUp:(NSEvent*)event{
     
-//    if([_editorWindowController startFromPrerollTc]){
-//
-//        [_editorWindowController setStartFromPrerollTc:nil];   // preroll up button clears the startFromPrerollTc if there is one
-//        return;
-//    }
+    //    if([_editorWindowController startFromPrerollTc]){
+    //
+    //        [_editorWindowController setStartFromPrerollTc:nil];   // preroll up button clears the startFromPrerollTc if there is one
+    //        return;
+    //    }
     
     // increment preroll by 1 second, clip at 10 seconds
     Document *doc = [self topDocument];
@@ -3395,7 +3395,7 @@ NSTimer *toggleShowSixteenTimer;
     if (!doc.recordCycleDictionary) return;
     
     NSString *start = doc.startTc;
-
+    
     [_adrClientWindowController txMsg:[NSString stringWithFormat:@"jxaWildSyncSelect %@",start]];   // cmd-c script to start the wild sync select process
 }
 -(void)replaceSelect:(NSEvent*)event{
@@ -3406,9 +3406,9 @@ NSTimer *toggleShowSixteenTimer;
     
     bool hidePix = !_overlayWindowController.viewController.streamer.hidePix;
     _overlayWindowController.viewController.streamer.hidePix = hidePix;
-//    [self setLEDForUnitID:9 :33 :hidePix]; // 2.00.00
-//    [_xKey setLEDForUnitID:8 :10+80 :hidePix]; // 2.10.02
-
+    //    [self setLEDForUnitID:9 :33 :hidePix]; // 2.00.00
+    //    [_xKey setLEDForUnitID:8 :10+80 :hidePix]; // 2.10.02
+    
 }
 
 -(void)keyOneshotService{
@@ -3430,7 +3430,7 @@ NSTimer *toggleShowSixteenTimer;
     
     // 6/22/15
     
-//    if(_rehearseCaptureWindowController) [(RehearseCaptureWindowController*)_rehearseCaptureWindowController onPlay:nil];
+    //    if(_rehearseCaptureWindowController) [(RehearseCaptureWindowController*)_rehearseCaptureWindowController onPlay:nil];
     
 }
 -(void)sampleTrailingEdge:(NSEvent*)event{
@@ -3439,20 +3439,20 @@ NSTimer *toggleShowSixteenTimer;
     [_lpMini.accMidi.midiClient midiTx:[NSData dataWithBytes:msg length:3]];
     //    [_midiClient txMidiToAcc:[NSData dataWithBytes:msg length:3]];
     
-//    if(_rehearseCaptureWindowController) [(RehearseCaptureWindowController*)_rehearseCaptureWindowController onStop:nil];
+    //    if(_rehearseCaptureWindowController) [(RehearseCaptureWindowController*)_rehearseCaptureWindowController onStop:nil];
 }
 
 -(void)quickPreview:(NSEvent*)event{
     
     // locate to the in point minus the trim frames at clip start, play
     //--Hold down for half a second, it locates to the pre-edit location and plays (may need to stop first before the locate for that to work, not sure).  Press and hold again and it repeats the play from the pre-edit location.  Tap the Quick Preview button while it's playing, it stops.
-
+    
     // no quick preview if in cycle
     if(_cycleMode != CYCLE_MODE_IDLE){
         return;
     }
     
-    [_ptHui onStop];    // always stops 
+    [_ptHui onStop];    // always stops
     
     [self setKeyOneshot:[NSTimer scheduledTimerWithTimeInterval:.3 target: self selector:@selector(keyOneshotService) userInfo:nil repeats: NO]];
     
@@ -3470,14 +3470,14 @@ NSTimer *toggleShowSixteenTimer;
     
 }
 //-(void)showFmtLEDs{
-//    
+//
 ////    [self setLEDForUnitID:5 :64 :[_matrixWindowController numRecTracksTag] == 0];
 ////    [self setLEDForUnitID:5 :65 :[_matrixWindowController numRecTracksTag] == 1];
 ////    [self setLEDForUnitID:5 :66 :[_matrixWindowController numRecTracksTag] == 2];
 ////    [self setLEDForUnitID:5 :72 :[_matrixWindowController numRecTracksTag] == 3];
 ////    [self setLEDForUnitID:5 :73 :[_matrixWindowController numRecTracksTag] == 4];
 ////    [self setLEDForUnitID:5 :74 :[_matrixWindowController numRecTracksTag] == 5];
-//    
+//
 ////    [self setLEDForUnitID:8 :64 :[_matrixWindowController numRecTracksTag] == 0];
 ////    [self setLEDForUnitID:8 :72 :[_matrixWindowController numRecTracksTag] == 1];
 ////    [self setLEDForUnitID:8 :65 :[_matrixWindowController numRecTracksTag] == 2];
@@ -3486,7 +3486,7 @@ NSTimer *toggleShowSixteenTimer;
 ////    [self setLEDForUnitID:8 :74 :[_matrixWindowController numRecTracksTag] == 5];
 //    // TODO: 66,74 are actually on the shifted page
 //    [self txOsc:[NSString stringWithFormat:@"monitor %ld",[_matrixWindowController numRecTracksTag]]];    // track selector
-//    
+//
 //}
 //-(void)showFmt:(NSInteger)fmt{
 //
@@ -3568,14 +3568,14 @@ NSTimer *toggleShowSixteenTimer;
         [self getCueName:nil];
         return;
     }
-
+    
     [_adrClientWindowController txMsg:@"jxaGetProtoolsPosition 0"];    // 0 is msg to do the store when the value is returned
 }
 -(void)numberPad5:(NSEvent*)event{
     
     // unitID 8 is the only one with a keyboard
     NSDictionary *dict = @{
-         @12    :    @"7"
+        @12    :    @"7"
         ,@13    :    @"4"
         ,@14    :    @"1"
         ,@15    :    @"0"
@@ -3615,7 +3615,7 @@ NSTimer *toggleShowSixteenTimer;
     // Evan: I’m using rehRecPb to control the video switcher that feeds zoom.
     // that is MODE_CONTROL_PLAYBACK_PENDING
     [self txOsc:[NSString stringWithFormat:@"rehRecPb %d",MODE_CONTROL_PLAYBACK_PENDING]];    // Tami special request 2.10.02
-
+    
     [_matrixWindowController setMemoryTag:1];   // long push of 'show armed'
 }
 -(void)showArmed:(NSEvent*)event{
@@ -3672,7 +3672,7 @@ NSTimer *toggleShowSixteenTimer;
 -(void)shiftKey:(NSEvent*)event{
     // keyboardIsShifted
     //NSLog(@"_keyboardIsShifted before %d",_keyboardIsShifted);
-
+    
     if(event.data1 > 0){
         
         _keyboardIsShifted = true;
@@ -3685,8 +3685,8 @@ NSTimer *toggleShowSixteenTimer;
         
     }
     //NSLog(@"_keyboardIsShifted after %d",_keyboardIsShifted);
-
-//    [self initUnit_5_LEDs]; // state changes when shifted
+    
+    //    [self initUnit_5_LEDs]; // state changes when shifted
 }
 -(void)escape:(NSEvent*)event{
     // ESCAPE cancels * mode and sends an ESC to protools
@@ -3702,7 +3702,7 @@ NSTimer *toggleShowSixteenTimer;
     
     //    [_streamerWindowController forceBlack:false];
     //    [_textWindowClient txMsg:@"hidePix 0"];
-//    _overlayWindowController.viewController.streamer.forceBlack = false;
+    //    _overlayWindowController.viewController.streamer.forceBlack = false;
     _overlayWindowController.viewController.streamer.hidePix = false;
     
     [self setCycleMode:CYCLE_MODE_IDLE];
@@ -3729,14 +3729,14 @@ NSTimer *toggleShowSixteenTimer;
     
     Document *doc = [self topDocument];
     
-//    [self setStartFromPrerollTc:nil];
+    //    [self setStartFromPrerollTc:nil];
     
     if(!doc) return;
     //NSString *ctr = [doc ctr];
     //if(!ctr || ![_tcc isTc:ctr])
-//    [_adrClientWindowController txMsg:@"getProtoolsPosition 3"];    // no action
-//
-//    [self txMsgToAdrClient:[NSString stringWithFormat:@"setCueName\t%@",[doc cueID]]];
+    //    [_adrClientWindowController txMsg:@"getProtoolsPosition 3"];    // no action
+    //
+    //    [self txMsgToAdrClient:[NSString stringWithFormat:@"setCueName\t%@",[doc cueID]]];
     
     [_adrClientWindowController txMsg:[NSString stringWithFormat:@"setCueName\t%@",[doc cueID]]];   // TODO: 2.00.00 check this
     
@@ -3747,15 +3747,15 @@ NSTimer *toggleShowSixteenTimer;
     
     if(!doc) return;
     
-//    if([doc inhibitGetTrackPos]){
-//        
-//        [doc setInhibitGetTrackPos:false];  // per Evan 2/11/16
-//    }
+    //    if([doc inhibitGetTrackPos]){
+    //
+    //        [doc setInhibitGetTrackPos:false];  // per Evan 2/11/16
+    //    }
     
     NSString *dlg = doc.dialogForDictionary;    // dialog for current cue
     
     [self txMsgToAdrClient:[NSString stringWithFormat:@"setDialog\t%@",dlg]];
-//    [self txMsgToAdrClient:[NSString stringWithFormat:@"setDialog\t%@",dlg]];
+    //    [self txMsgToAdrClient:[NSString stringWithFormat:@"setDialog\t%@",dlg]];
     
 }
 -(void)missingMethod:(NSEvent*)event{
@@ -3789,10 +3789,10 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     // companion keys 0-31 are the track selectors, so we don't need to re-map
     
     NSInteger track = event.data1;
-//    NSLog(@"trackMem9 track %ld",track);
-
+    //    NSLog(@"trackMem9 track %ld",track);
+    
     [self setCurrentTrack:track];
-
+    
     [self setLastRecordTrack:track]; // V1.00.10 for Tommy, pressing 'show single track' will show the track just selected on the stick
     // 02/05/23 we do want the track selector to work if there is no cue selected, this avoids 'no cue selected' error messages
     Document *doc = self.topDocument;
@@ -3803,8 +3803,8 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     // turned off 2.10.02, Evan says no one uses this, he needs long press for something else
     // a oneshot to copy the track to the comp track if the button is held for more than .3 seconds
     //trackToCompCopyOneshot
-//    if(_trackToCompCopyOneshot && _trackToCompCopyOneshot.isValid) [_trackToCompCopyOneshot invalidate];
-//    [self setTrackToCompCopyOneshot:[NSTimer scheduledTimerWithTimeInterval:TRACK_TO_COMP_COPY_TIMEOUT target:self selector:@selector(trackToCompCopyOneshotService) userInfo:nil repeats:NO]];
+    //    if(_trackToCompCopyOneshot && _trackToCompCopyOneshot.isValid) [_trackToCompCopyOneshot invalidate];
+    //    [self setTrackToCompCopyOneshot:[NSTimer scheduledTimerWithTimeInterval:TRACK_TO_COMP_COPY_TIMEOUT target:self selector:@selector(trackToCompCopyOneshotService) userInfo:nil repeats:NO]];
 }
 
 //-(void)trackMem:(NSEvent*)event{
@@ -3853,7 +3853,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
         [self alertErr:@"No cue selected" :@""];
         return;
     }
-
+    
     [self selectTrackMemory:_currentTrack]; // not 16 track for this operation
     // cue to start, assume we will be in the clip
     // startForDictionary:delegate.recordCycleDictionary
@@ -4519,35 +4519,35 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     [_lpMini micSet:@"90587f" :false];
     [_lpMini micSet:@"90687f" :false];
     [_lpMini micSet:@"90787f" :false];
-//
-//    _micDictionary[@"90087f"] = MIC_OFF;
-//    _micDictionary[@"90187f"] = MIC_OFF;
-//    _micDictionary[@"90287f"] = MIC_OFF;
-//    _micDictionary[@"90387f"] = MIC_OFF;
-//    _micDictionary[@"90487f"] = MIC_OFF;
-//    _micDictionary[@"90587f"] = MIC_OFF;
-//    _micDictionary[@"90687f"] = MIC_OFF;
-//    _micDictionary[@"90787f"] = MIC_OFF;  // round right buttons
-//
-//    NSArray *array = @[
-//        @"90087f",
-//        @"90187f",
-//        @"90287f",
-//        @"90387f",
-//        @"90487f",
-//        @"90587f",
-//        @"90687f",
-//        @"90787f"
-//    ];
-//
-//    [self sendToMicAccessoryForKeys:array]; // clear round right buttons, send to accessories
-
+    //
+    //    _micDictionary[@"90087f"] = MIC_OFF;
+    //    _micDictionary[@"90187f"] = MIC_OFF;
+    //    _micDictionary[@"90287f"] = MIC_OFF;
+    //    _micDictionary[@"90387f"] = MIC_OFF;
+    //    _micDictionary[@"90487f"] = MIC_OFF;
+    //    _micDictionary[@"90587f"] = MIC_OFF;
+    //    _micDictionary[@"90687f"] = MIC_OFF;
+    //    _micDictionary[@"90787f"] = MIC_OFF;  // round right buttons
+    //
+    //    NSArray *array = @[
+    //        @"90087f",
+    //        @"90187f",
+    //        @"90287f",
+    //        @"90387f",
+    //        @"90487f",
+    //        @"90587f",
+    //        @"90687f",
+    //        @"90787f"
+    //    ];
+    //
+    //    [self sendToMicAccessoryForKeys:array]; // clear round right buttons, send to accessories
+    
 }
 -(void)nextAnchor:(NSEvent*)event{
     
     [_overlayWindowController.viewController bringToFront];
     [_overlayWindowController.viewController.textView nextAnchor];
-
+    
 }
 
 - (IBAction)onOverlayWindow:(id)sender{
@@ -4644,7 +4644,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     
     [[_editorWindowController window] makeKeyAndOrderFront:nil];   // give it the focus
     if(doc && doc.recordCycleDictionary)[doc bindEditorWindowFields:doc.recordCycleDictionary];
-    [NSApp activateIgnoringOtherApps:YES];    
+    [NSApp activateIgnoringOtherApps:YES];
     
 }
 
@@ -4652,7 +4652,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     
     if(_audioPlayerWindowController == nil){
         
-//        _samplerWindowController = [[SamplerWindowController alloc]initWithWindowNibName:@"SamplerWindowController"];
+        //        _samplerWindowController = [[SamplerWindowController alloc]initWithWindowNibName:@"SamplerWindowController"];
         _audioPlayerWindowController = [[AudioPlayerWindowController alloc]initWithWindowNibName:@"AudioPlayerWindowController"];
     }
     
@@ -4685,20 +4685,20 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     if(_videoDelayWindowController == nil){
         
         _videoDelayWindowController = (VideoDelayWindowController*)[PrefsWindowObjCBridge makePrefsWindow];
-//        [_videoDelayWindowController showWindow:self];
+        //        [_videoDelayWindowController showWindow:self];
     }
     
     if(_videoDelayWindowController.window != nil){
-
+        
         // this window can't be key, we get a warning if we try, so silence the warning
         [_videoDelayWindowController.window orderFront:nil];
-//        [_videoDelayWindowController.window makeKeyAndOrderFront:nil];   // give it the focus
+        //        [_videoDelayWindowController.window makeKeyAndOrderFront:nil];   // give it the focus
     }
     // http://stackoverflow.com/questions/1740412/how-to-bring-nswindow-to-front-and-to-the-current-space
-//    [NSApp activateIgnoringOtherApps:YES];  // Evan wants the program w/focus to keep the focus
+    //    [NSApp activateIgnoringOtherApps:YES];  // Evan wants the program w/focus to keep the focus
     
     // 2.10.02 when this window opens, set 'use alt guide in record'
-//    [[NSUserDefaults standardUserDefaults]setBool:true forKey:@"useAltGuideInRecord"];
+    //    [[NSUserDefaults standardUserDefaults]setBool:true forKey:@"useAltGuideInRecord"];
     
     // status message indicating delay window is open
     unsigned char bytes[] = {0xb0,5,127};
@@ -4720,14 +4720,14 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     if(_dialMidiWindowController == nil){
         
         _dialMidiWindowController = [[DialMidiWindowController alloc]initWithWindowNibName:@"DialMidiWindowController"];
-//        [_videoDelayWindowController showWindow:self];
+        //        [_videoDelayWindowController showWindow:self];
     }
     
     if(_dialMidiWindowController.window != nil){
-
+        
         // this window can't be key, we get a warning if we try, so silence the warning
         [_dialMidiWindowController.window orderFront:nil];
-//        [_videoDelayWindowController.window makeKeyAndOrderFront:nil];   // give it the focus
+        //        [_videoDelayWindowController.window makeKeyAndOrderFront:nil];   // give it the focus
     }
     // http://stackoverflow.com/questions/1740412/how-to-bring-nswindow-to-front-and-to-the-current-space
     [NSApp activateIgnoringOtherApps:YES];  //
@@ -4739,15 +4739,15 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 //
 //}
 //-(void)loopTimeInterval:(NSDate*)time{
-//    
+//
 //    if(_midiClient && [_midiClient loopDate]){
-//        
+//
 //        NSTimeInterval interval = [time timeIntervalSinceDate:[_midiClient loopDate]];
-//        
+//
 //        if (interval < .5)  NSLog(@"loopTimeInterval: %5.3f",interval); // mask out loop starts etc
-//        
+//
 //    }
-//    
+//
 //}
 
 //-(void)setTrackLEDs{
@@ -4885,9 +4885,9 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 #pragma mark ------------- MidiClientDelegate -----------------
 
 //-(void)switcherGain:(NSData*)data{
-//    
+//
 //    [_matrixWindowController switcherGain:data];
-//    
+//
 //}
 -(void)toggleToTc{
     
@@ -4949,7 +4949,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     [[NSUserDefaults standardUserDefaults]setInteger:recDelayState forKey:@"recDelayState"];
     
     [self setLEDForUnitID:9 :77 :recDelayState];
-
+    
 }
 -(NSInteger)recDelayState{
     return [[NSUserDefaults standardUserDefaults] integerForKey:@"recDelayState"];
@@ -4976,14 +4976,14 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     //    SNOOP_STATE_ON,
     //    SNOOP_STATE_FORCE_OFF,
     //    SNOOP_STATE_FORCE_ON
-        
+    
     if(snoopState == _snoopState){
         return; // no change, or not enabled
     }
     NSLog(@"setSnoopState %ld",snoopState);
     _snoopState = snoopState;
     [self dialMuteDim:@"99"];   // special-case dialMuteDim for '99'
-
+    
 }
 -(NSInteger)snoopState{
     return _snoopState;
@@ -4993,7 +4993,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     _snoopAuto = snoopAuto;
     [[NSUserDefaults standardUserDefaults]setBool:snoopAuto forKey:@"snoopAuto"];
     self.snoopState = self.snoopState + 2;  // FORCE_ON, FORCE_OFF
-
+    
 }
 -(bool)snoopAuto{
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"snoopAuto"];
@@ -5004,7 +5004,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 -(void)toggleCueIdInSlate{
     
     self.cueIdInSlate = !self.cueIdInSlate;
-
+    
 }
 -(void)sampleRate:(NSEvent*)event{
     
@@ -5015,7 +5015,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 }
 //-(void)setAipPairSelector:(NSInteger)aipPairSelector{
 //    _aipPairSelector = aipPairSelector;
-//    
+//
 //    unsigned char colors[] = {COLOR_AIP_OFF,COLOR_AIP_OFF,COLOR_AIP_OFF,COLOR_AIP_OFF};
 ////    unsigned char colors[] = {COLOR_AIP_GREEN_DIM,COLOR_AIP_GREEN_DIM,COLOR_AIP_GREEN_DIM,COLOR_AIP_GREEN_DIM};
 //
@@ -5032,17 +5032,17 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 //     */
 //    // TODO: why are we skipping b06c7f
 //    NSString *msg = [NSString stringWithFormat:@"lpMini b0697f,%02x\tb06a7f,%02x\tb06b7f,%02x\tb06d7f,%02x",colors[0],colors[1],colors[2],colors[3]];
-//    
+//
 //    [self txOsc:msg];
-//    
+//
 //    // send round buttons to lp Mini. osc
 //    unsigned char tx[] = {0xb0,0x69,colors[0],0x6a,colors[1],0x6b,colors[2],0x6d,colors[3]};    // NOTE: missing 0x6c
 //    [self launchPadMiniTx:[NSData dataWithBytes:tx length:sizeof(tx)]];
-//    
+//
 //    // send aip buttons to lp Mini
 //    NSData *aipData = [self aipStateMessageData];
 //    [self launchPadMiniTx:aipData]; // only launch pad mini changes, no need to send to osc
-//    
+//
 //}
 //-(NSInteger)aipPairSelector{
 //    return _aipPairSelector;
@@ -5053,12 +5053,12 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
                            ,@"00:00:06:00"
                            ,@"00:00:08:00"
                            ,@"00:00:12:00"
-                            ];
+    ];
     NSArray *ftPreroll = @[@"6+00"
                            ,@"9+00"
                            ,@"12+00"
                            ,@"18+00"
-                            ];
+    ];
     
     _prerollIndex = prerollIndex;
     [self txOsc:[NSString stringWithFormat:@"prerollIndex %ld",(long)_prerollIndex]];    //
@@ -5068,7 +5068,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     [_xKey setLEDForUnitID:8 :18    :_prerollIndex == 2];
     [_xKey setLEDForUnitID:8 :26    :_prerollIndex == 3];
     [_xKey setLEDForUnitID:8 :34    :_prerollIndex == 4];
-
+    
     switch(prerollIndex){
         case 0:
         case 1:
@@ -5077,19 +5077,19 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
             [_editorWindowController setPreroll: [self getDisplayFormat] == DISPLAY_FMT_FT ? ftPreroll[prerollIndex] : tcPreroll[prerollIndex]];
             break;
         case 4: // preroll to here, calc preroll based on cue start and current position.
-                // Don't save to user defaults, next cue resets to user default
+            // Don't save to user defaults, next cue resets to user default
             [_adrClientWindowController txMsg:@"jxaGetProtoolsPosition 4"]; // 2.00.00 calc preroll to here
             return;
         default:   // bad index, default to 4 seconds
             _prerollIndex = 0;
             [_editorWindowController setPreroll: [self getDisplayFormat] == DISPLAY_FMT_FT ? @"6+00" : @"00:00:04:00"];
-
+            
             break;
             
     }
     
     [[NSUserDefaults standardUserDefaults] setInteger:_prerollIndex forKey:@"prerollIndex"];
-
+    
 }
 -(NSInteger)prerollIndex{
     return [[NSUserDefaults standardUserDefaults] integerForKey:@"prerollIndex"];
@@ -5129,19 +5129,19 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 //}
 -(void)setSession:(NSString *)session{
     
-    NSLog(@"setSession: %@",session);
+    //NSLog(@"setSession: %@",session);
     
     if(session != nil && ![_session isEqualToString:session]){
         
         NSLog(@"session changed: %@",session);
-
+        
         _session = session;
         [self selectCurrentSixteenTrackMemory];
-//        [self sendToMicAccessoryForKeys:nil];    // defaults to all keys. micTimerService says we need to do this on new session, why?
+        //        [self sendToMicAccessoryForKeys:nil];    // defaults to all keys. micTimerService says we need to do this on new session, why?
         [self readLog]; // reads the log for all open document windows
         [_adrClientWindowController deleteAdrClientLog];  // fresh session, fresh log
         [_adrClientWindowController appendToAdrClientLog:session];   // first log item is session
-
+        
     }
 }
 -(NSString *)session{
@@ -5178,7 +5178,7 @@ NSTimer *motionIdleTimer;
     NSInteger lastValue = _cycleMode;
     
     _cycleMode = cycleMode;
-
+    
     // RECORD sequencer
     
     if(cycleMode == CYCLE_MODE_IDLE){
@@ -5187,8 +5187,8 @@ NSTimer *motionIdleTimer;
             case CYCLE_MODE_SKIP_PASTE: // cancelled after getting into the loop
                 [self decrementRecordTake];
                 [self.adrClientWindowController txMsg:@"keyWithModifiers\tz\t1"]; // [0] command [1] option [2] control [3] shift
-                self.cycleMotion = CYCLE_MOTION_IDLE;   
-
+                self.cycleMotion = CYCLE_MOTION_IDLE;
+                
                 break;
             case CYCLE_MODE_RECORD_KEEP_TAKE:
                 
@@ -5197,12 +5197,12 @@ NSTimer *motionIdleTimer;
                 [_matrixWindowController cueToTrimFrames];      // a sequencer
                 break;
                 // Tami delay needs to be in switching to REHEARSE
-//            case CYCLE_MODE_FINALIZE_RECORD:
-//                // delay audio switching if CYCLE_MODE_FINALIZE_RECORD
-//                // Tami found the phfft
-//                NSLog(@"delayed monitor switching to AHEAD");
-//                motionIdleTimer = [NSTimer scheduledTimerWithTimeInterval:AHEAD_MONITOR_DELAY target:self selector:@selector(motionIdleTimerService) userInfo:nil repeats:false];
-//                break;
+                //            case CYCLE_MODE_FINALIZE_RECORD:
+                //                // delay audio switching if CYCLE_MODE_FINALIZE_RECORD
+                //                // Tami found the phfft
+                //                NSLog(@"delayed monitor switching to AHEAD");
+                //                motionIdleTimer = [NSTimer scheduledTimerWithTimeInterval:AHEAD_MONITOR_DELAY target:self selector:@selector(motionIdleTimerService) userInfo:nil repeats:false];
+                //                break;
             default:
                 self.cycleMotion = CYCLE_MOTION_IDLE;
                 break;
@@ -5210,7 +5210,7 @@ NSTimer *motionIdleTimer;
     }
     
     NSLog(@"setCycleMode %ld -> %ld",lastValue,(long)_cycleMode);
-
+    
 }
 
 -(NSInteger)cycleMode{
@@ -5240,15 +5240,15 @@ int btnOffColor = 0x404040;
     NSString *txt = @"Cycle";
     int fg = 0xffffff;
     int bg = 0x000080;
-
+    
     switch (cycleMotion){
         case CYCLE_MOTION_IDLE:
             txt = @"Cycle";
             //fg = 0xffffff;
-            bg = cycleStopColor;    // 10/17/25, this was missing 
-//            if(lastValue != CYCLE_MOTION_IDLE){
-//                _matrixWindowController.rehRecPb = MODE_CONTROL_REHEARSE;
-//            }
+            bg = cycleStopColor;    // 10/17/25, this was missing
+            //            if(lastValue != CYCLE_MOTION_IDLE){
+            //                _matrixWindowController.rehRecPb = MODE_CONTROL_REHEARSE;
+            //            }
             break;
         case CYCLE_MOTION_STARTING:
             txt = @"Cycle Start";
@@ -5278,7 +5278,7 @@ int btnOffColor = 0x404040;
     switch(cycleMotion){
         case CYCLE_MOTION_IDLE:
             [_overlayWindowController.viewController.streamer cancelAllStreamers];
-            _matrixWindowController.aheadInPast = MODE_AHEAD;   // 2.00.00 no longer 
+            _matrixWindowController.aheadInPast = MODE_AHEAD;   // 2.00.00 no longer
             switch(_matrixWindowController.rehRecPb){
                 case MODE_CONTROL_REHEARSE_PENDING:
                     _matrixWindowController.rehRecPb = MODE_CONTROL_REHEARSE;
@@ -5292,14 +5292,14 @@ int btnOffColor = 0x404040;
                 default:
                     // go back to REHEARSE if there wasn't a fast button push
                     // TODO: pressing PLAY/STOP shouldn't change modes
-//                    _matrixWindowController.rehRecPb = MODE_CONTROL_REHEARSE;
+                    //                    _matrixWindowController.rehRecPb = MODE_CONTROL_REHEARSE;
                     break;
             }
             break;
             
         case CYCLE_MOTION_STARTING:
             [_adrClientWindowController txMsg:@"jxaIsModalDialog\t2"];  // cycle sequencer
-
+            
             break;
         case CYCLE_MOTION_STOPPING:
             _matrixWindowController.rehRecPb = MODE_CONTROL_REHEARSE;
@@ -5312,8 +5312,8 @@ int btnOffColor = 0x404040;
         [self cycleButton];
     }
     NSLog(@"setCycleMotion %ld -> %ld",lastValue,_cycleMotion);
-// tickle github
-
+    // tickle github
+    
 }
 -(NSInteger)cycleMotion{
     return _cycleMotion;
@@ -5321,7 +5321,8 @@ int btnOffColor = 0x404040;
 // LCR and greater have 16 tracks max
 //1,2,3,4,6,8 track, end
 NSInteger maxTracks[] = {32,32,16,16,16,16};
--(void)setCurrentTrack:(NSInteger)currentTrack{
+
+-(void)setCurrentTrack:(NSInteger)currentTrack forDocument:(Document*)doc{
     
     if(currentTrack < 0)currentTrack = 0;   // clip
     
@@ -5330,8 +5331,6 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
     if(currentTrack >= maxTracks[numRecTracksTag]){
         currentTrack = maxTracks[numRecTracksTag] - 1;
     }
-
-    Document *doc = self.topDocument;
     
 //    NSLog(@"setCurrentTrack lastTrack: %d currentTrack is %d will be %d",_lastTrack,_currentTrack,currentTrack);
     
@@ -5342,6 +5341,8 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
 //    [self setTrackLEDs];    // show the active track and shift
     
     if(doc && doc.recordCycleDictionary)
+        
+        NSLog(@"set %@ track to %ld",doc.docWindow.title,_currentTrack);
         
         [doc.recordCycleDictionary setObject:[NSString stringWithFormat:@"%ld",_currentTrack + 1] forKey:@"Track"];
         [doc.tableView reloadData];
@@ -5367,6 +5368,13 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
     UInt8 index = array[_currentTrack % 8];
     
     [self.xKey setLEDForUnitID:unitId :index :1];
+
+}
+-(void)setCurrentTrack:(NSInteger)currentTrack{
+    
+    // when windows swap, sometimes topDocument is not the main window, why?
+    Document *doc = self.topDocument;
+    [self setCurrentTrack: currentTrack forDocument:doc];
 
 }
 
