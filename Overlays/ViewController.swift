@@ -194,7 +194,7 @@ let MASK_Z = HIDEPIX_Z - 0.05   // mask behind all
         
         if aleDelegate?.cycleMotion == CYCLE_MOTION_ACTIVE,
             let tc = tcc?.tc(toBinary: aleDelegate?.matrixWindowController.mtcString, withType: 3),
-           let doc = aleDelegate?.topDocument(),
+           let doc = aleDelegate?.topDocument,
            let tv = doc.tableView,
            let first = tv.selectedRowIndexes.first,
            let last = tv.selectedRowIndexes.last,
@@ -261,7 +261,7 @@ let MASK_Z = HIDEPIX_Z - 0.05   // mask behind all
         
         // update the progress bar a few times a second
         // note that we stay in tc, and use pt mtc as the trigger, because we have 'mtcString' handy
-        if let doc = aleDelegate?.topDocument(),
+        if let doc = aleDelegate?.topDocument,
            let start = doc.startTc(),
            let end = doc.endTc(),
            let startFrs = tcc?.tc(toBinary: start, withType: 3),

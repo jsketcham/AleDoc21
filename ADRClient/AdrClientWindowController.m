@@ -236,7 +236,7 @@ bool bInitializePtCtr = false;
 //    
 //    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
 //    
-//    Document *doc = [delegate topDocument];
+//    Document *doc = delegate.topDocument;
 //    [doc addCueToDoc:name start:start end:end];
 //
 //}
@@ -577,7 +577,7 @@ bool bInitializePtCtr = false;
     int operand = [msgArray[0] intValue];
     
     AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     
     NSString *start = msgArray[1];
     
@@ -874,7 +874,7 @@ bool bInitializePtCtr = false;
     
     // locate to start of cue
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     [doc locateToCurrentCue];   // put ourselves back in position
     // call 2nd script to do many downs, one up, paste
     [self txMsg:@"wildSyncSelect2"];
@@ -886,7 +886,7 @@ bool bInitializePtCtr = false;
 ////    [delegate setTimeCodeStart:[msgArray objectAtIndex:0]];
 //    
 //    [delegate toggleToFt];
-//    Document *doc = [delegate topDocument];
+//    Document *doc = delegate.topDocument;
 //    [doc locateToCurrentCue];   // put ourselves back in position
 //
 //}
@@ -895,7 +895,7 @@ bool bInitializePtCtr = false;
     // resize the cue sheet (must be after MIDI display format has arrived)
     //sizeTableViewToContents
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     [doc sizeTableViewToContents];
 }
 //-(void)locateZeroFeet:(NSArray*)msgArray{
@@ -909,7 +909,7 @@ bool bInitializePtCtr = false;
 //
 //    NSInteger displayFormat = [[msgArray objectAtIndex:0] integerValue];
 //    
-//    Document *doc = [delegate topDocument];
+//    Document *doc = delegate.topDocument;
 //    [doc setTimeCodeStart:[msgArray objectAtIndex: 1]];
 //    [doc calcTableContentsForNewTcStart: displayFormat];   // adjust tableContents when a new start arrives
 //    [doc locateToCurrentCue];
@@ -1011,7 +1011,7 @@ bool bInitializePtCtr = false;
 -(void)getProtoolsPosition:(NSArray*)msgArray{
     
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     
     if(msgArray.count > 2) {    // getProtoolsPosition 1 01:06:57:13 1.350 (note the command has been removed from msgArray)
         
@@ -1145,7 +1145,7 @@ bool bInitializePtCtr = false;
 -(void)getSession:(NSArray*)msgArray{
     
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-//    Document *doc = [delegate topDocument];
+//    Document *doc = delegate.topDocument;
     
 //    NSLog(@"getSession");
     if(msgArray.count < 1 || [[msgArray objectAtIndex:0]isEqualToString:@"-1"]){
@@ -1226,7 +1226,7 @@ NSTimer *monitorSwitchingDelayTimer;
     // [3] script execution time
     
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     
     // handle grab all timeout
     if(_delegate)[_delegate grabAllTimeout];  // TODO: 2.00.00 what is this
@@ -1292,7 +1292,7 @@ NSTimer *recPlayTimer;
  
     if(msgArray.count >= 2){
         AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-        Document *doc = [delegate topDocument];
+        Document *doc = delegate.topDocument;
         [doc addCueWithDialogAndStart:msgArray[0] :msgArray[1]];
     }
 
@@ -1304,7 +1304,7 @@ NSTimer *recPlayTimer;
     }
 
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     [doc setDialog:msgArray[0]];
     
 }
@@ -1315,7 +1315,7 @@ NSTimer *recPlayTimer;
     {
         
         AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-        Document *doc = [delegate topDocument];
+        Document *doc = delegate.topDocument;
         // from setCueName script- return tab & newCue & tab & currentCue & tab & pos & tab
         [doc locateOrAddCue:[msgArray objectAtIndex:0] :[msgArray objectAtIndex:1]];    //2.00.00 why was it objectAtIndex:1?
    }
@@ -1328,7 +1328,7 @@ NSTimer *recPlayTimer;
     }
 
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
    
     NSString *item = [msgArray objectAtIndex:0];
     [doc setCueNote:item];
@@ -1400,7 +1400,7 @@ NSTimer *recPlayTimer;
     NSString *end = [msgArray objectAtIndex:2];
     
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     
     if(![doc existsRowWithStart:start] || _forceAddCue){
         
@@ -1417,7 +1417,7 @@ NSTimer *recPlayTimer;
     NSString *end = [msgArray objectAtIndex:0];
     // set the out
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     if(doc){
         [doc setEndTc:end];
     }

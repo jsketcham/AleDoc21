@@ -31,7 +31,7 @@
 @property (weak) IBOutlet NSTextField *take;
 @property (weak) IBOutlet NSTextField *track;
 
-@property (strong) IBOutlet AleDelegate *aleDelegate;
+//@property (strong) IBOutlet AleDelegate *aleDelegate;
 @property (weak) IBOutlet NSButton *dialogInClipNameCheck;
 //@property (weak) IBOutlet NSButton *actorInFileNameCheck;
 @property (strong) IBOutlet NSTextField *beepsTrimFrames;
@@ -117,10 +117,10 @@
 //
 //        [defaults registerDefaults:registrationDefaults];
         
-        if(!_aleDelegate){
-            
-            [self setAleDelegate:(AleDelegate*)[NSApp delegate]];
-        }
+//        if(!_aleDelegate){
+//            
+//            [self setAleDelegate:(AleDelegate*)[NSApp delegate]];
+//        }
     }
     return self;
 }
@@ -297,7 +297,8 @@
 //    [self didChangeValueForKey:@"preroll"];
 //    [self setPreroll:[defaults objectForKey:@"preroll"]];
     
-    _aleDelegate.prerollIndex = _aleDelegate.prerollIndex;  // sets preroll
+    AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
+    delegate.prerollIndex = delegate.prerollIndex;  // sets preroll
 
 }
 //- (void)displayFmtDidChange:(NSNotification *)note

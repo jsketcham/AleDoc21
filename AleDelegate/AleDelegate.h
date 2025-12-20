@@ -50,7 +50,6 @@
 @class ControlMidi;
 @class MtcMidi;
 
-
 enum {
     CYCLE_MOTION_IDLE,
     CYCLE_MOTION_STARTING,
@@ -115,6 +114,7 @@ enum{
 
 @interface AleDelegate : NSObject<NSApplicationDelegate>
 
+@property NSDictionary *recordCycleDictionary;  // 12/19/25, the master dictionary
 @property NSInteger entryState;
 @property bool cancelCurrentCycle; // FIXME
 //@property NSInteger cueCounter; // manual entry of cues
@@ -202,6 +202,7 @@ enum{
 @property bool cueIdInSlate;
 @property LoopMidi *loopMidi;
 @property bool sendUfxStringInhibit;    // kludge 09/28/24
+@property Document *topDocument;
 
 // access
 
@@ -213,7 +214,6 @@ enum{
 //-(void)setMemoryLED;
 -(void)txMsgToAdrClient:(NSString*)msg;
 //-(void)setDocLEDs;
--(Document*)topDocument;
 -(void)rehearseMode;
 -(void)recordMode;
 -(void)playbackMode;
@@ -309,7 +309,7 @@ enum{
 -(void)actorDirect:(NSString*)key;
 -(void)dialAccessoryRefresh;
 -(void)foleyClipCapture;
--(void)setCurrentTrack:(NSInteger)currentTrack forDocument:(Document*)doc;
+-(void)sendTrack:(NSInteger)track;
 //-(NSString*)trackName;
 //-(NSString*)trackName:(NSDictionary*) dict;
 @end

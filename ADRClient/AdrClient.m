@@ -105,6 +105,12 @@ NSTimer *adrClientTimer;
                 ScriptResult *scriptResult = [[ScriptResult alloc] init];
                 scriptResult.scriptCmd = args[0];   // the selector, note that we lose any operands, but this has to happen here or in processScriptResult(:)
                 
+                NSString *path = [[NSBundle mainBundle]pathForResource:scriptResult.scriptCmd ofType:@"scpt"];//@"";
+                if(!path){
+                    NSLog(@"missing script: %@",scriptResult.scriptCmd);
+                }
+
+                
                 // moved Scripts to be a resource so that they get installed with the app
 //                NSString *s = [[NSString alloc] initWithFormat:@"/Users/%@/Library/Scripts/%@.scpt",NSUserName(),args[0]];
                 // /Applications/AleDoc21.app/Contents/Resources

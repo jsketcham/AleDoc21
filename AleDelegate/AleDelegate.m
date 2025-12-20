@@ -170,6 +170,8 @@ enum{
 @synthesize screenRecorder = _screenRecorder;
 @synthesize editorWindowController = _editorWindowController;
 @synthesize sendUfxStringInhibit = _sendUfxStringInhibit;
+@synthesize topDocument = _topDocument;
+
 
 -(void)xKeyEdge:(NSNotification *)aNotification{
     
@@ -539,7 +541,7 @@ NSTimer *motionZoneTimer;
     //
     //        // this opens a new document, bad idea if there are unsaved changes
     //
-    //        Document *top = [self topDocument];
+    //        Document *top = self.topDocument;
     //
     //        NSMenu *mm;
     //        NSMenu *fileMenu;
@@ -581,7 +583,7 @@ NSTimer *motionZoneTimer;
            [keyPath isEqualToString:@"showAllCols"]){
             
             // topdocument
-            Document *doc = [self topDocument];
+            Document *doc = self.topDocument;
             [doc sizeTableViewToContents];  // show/hide end tc
             
         }
@@ -650,30 +652,6 @@ NSTimer *motionZoneTimer;
     return docWindows;
     
 }
--(Document*)topDocument{
-    
-    NSWindowNumberListOptions options = NSWindowNumberListAllSpaces;
-    NSArray *windowNumbers = [NSWindow windowNumbersWithOptions:options];
-    
-    NSArray *docWindows = [self getDocWindows];
-    
-    for(NSNumber *windowNumber in windowNumbers){   // windows in z-order, front to back
-        
-        for(DocWindow *docWindow in docWindows){
-            
-            if(docWindow.windowNumber == [windowNumber integerValue]){
-                
-                return (Document*)[docWindow delegate]; // the top-most document
-                
-            }
-            
-        }
-        
-    }
-    
-    return nil; // no document found
-    
-}
 -(void)previousCue{
     
     // it takes too long to check the front window, don't  do it here
@@ -681,10 +659,7 @@ NSTimer *motionZoneTimer;
         return;
     }
     
-    //    [_editorWindowController setPrerollToHere:nil];
-    //    [self setStartFromPrerollTc:nil];
-    Document *doc = [self topDocument];
-    if(doc) [doc previousCue];
+    if(_topDocument) [_topDocument previousCue];
     self.prerollIndex = self.prerollIndex;  // reset from 'preroll to here'
     
 }
@@ -696,24 +671,19 @@ NSTimer *motionZoneTimer;
         return;
     }
     
-    Document *doc = [self topDocument];
-    if(doc)[doc nextCue];
+    if(_topDocument)[_topDocument nextCue];
     self.prerollIndex = self.prerollIndex;  // reset from 'preroll to here'
     
 }
 -(void)unmergeCue{
     
-    Document *doc = [self topDocument];
-    
-    if(doc)[doc unmergeCue];
+    if(_topDocument)[_topDocument unmergeCue];
     
     
 }
 -(void)mergeNextCue{
     
-    Document *doc = [self topDocument];
-    
-    if(doc)[doc mergeNextCue];
+    if(_topDocument)[_topDocument mergeNextCue];
     
 }
 -(void)rehearseMode{
@@ -836,7 +806,7 @@ NSTimer *motionZoneTimer;
         self.cycleMode = CYCLE_MODE_SKIP_PASTE;
     }
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     if(!doc.recordCycleDictionary){
         
@@ -912,7 +882,7 @@ NSTimer *motionZoneTimer;
 
 //-(NSString*)trackName:(NSDictionary*) dict{
 //
-//    Document *doc = [self topDocument];
+//    Document *doc = self.topDocument;
 //
 //    NSString *cueID = [doc cueIDForDictionary:dict];
 //    NSString *character = [doc characterForDictionary:dict];
@@ -935,7 +905,7 @@ NSTimer *motionZoneTimer;
 //}
 -(void)renameLastTrack{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     //
     //    NSString *cueID = [doc cueIDForDictionary];
     //    NSString *character = [doc characterForDictionary];
@@ -1004,7 +974,7 @@ NSTimer *motionZoneTimer;
     //        [_overlayWindowController.viewController.streamer fadeToBlack:true :0.0];
     //    }
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     if(!doc.recordCycleDictionary){
         return; // nothing to cycle
@@ -1024,7 +994,7 @@ NSTimer *motionZoneTimer;
 }
 -(void)cycleStart{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     //    doc.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;    // this blocks cycle button
     
     // TODO: 2.00.00 cycleStart
@@ -1193,7 +1163,7 @@ NSTimer *motionZoneTimer;
 }
 -(void)trimBeeps:(NSInteger)trim{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     if(doc) [doc trimBeeps:trim];
     
@@ -1275,7 +1245,7 @@ NSTimer *motionZoneTimer;
 //}
 //-(void)setDocLEDs{
 //
-//    Document *doc = [self topDocument];
+//    Document *doc = self.topDocument;
 ////    if(doc){
 ////
 ////        [self setLEDForUnitID:8 :2+80 : doc.recordToComposite]; // recordToComposite
@@ -1315,7 +1285,7 @@ NSTimer *motionZoneTimer;
     self.prerollIndex = self.prerollIndex;  // sends to heads
     
     // you  don't know the order of the heads connecting, set LEDs in both inits
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     doc.recordToComposite = doc.recordToComposite;  // 2.10.02 init XKEY LED, sets unit 8 and 9
     _overlayWindowController.viewController.streamer.hidePix = _overlayWindowController.viewController.streamer.hidePix;    // 2.10.02 init XKEY LED, sets unit 8 and 9
     //    [self setPrerollLEDs:_editorWindowController.preroll];
@@ -1333,7 +1303,7 @@ NSTimer *motionZoneTimer;
     self.cueIdInSlate = self.cueIdInSlate;
     
     // you  don't know the order of the heads connecting, set LEDs in both inits
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     doc.recordToComposite = doc.recordToComposite;  // 2.10.02 init XKEY LED, sets unit 8 and 9
     doc.beepsTrimFrames = doc.beepsTrimFrames;// 2.10.02 init
     _overlayWindowController.viewController.streamer.hidePix = _overlayWindowController.viewController.streamer.hidePix;
@@ -1374,7 +1344,7 @@ NSTimer *motionZoneTimer;
 }
 -(void)showAllCols{
     
-    Document *doc = ((AleDelegate*)NSApp.delegate).topDocument;
+    Document *doc = self.topDocument;
     
     if(doc){
         doc.showAllCols = !doc.showAllCols;
@@ -1399,9 +1369,10 @@ NSTimer *motionZoneTimer;
             [doc readLog];  // 12/17/25 does not send to screen
         }
     }
-    // 12/17/25 send top document to screen (avoids flashing text)
-    [self.topDocument sendTakeToStreamerForDictionary];
-    [self.topDocument sendDialogToStreamerForDictionary];
+    // 12/17/25 sends top document to screen (avoids flashing text)
+    self.topDocument = nil; // force a change
+    self.topDocument = self.topDocument;
+    
 }
 
 // MARK: ------------ video rec delay routines -------------
@@ -2137,7 +2108,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 //}
 //-(void)resendCue{
 //
-//    Document *doc = [self topDocument];
+//    Document *doc = self.topDocument;
 ////    [doc onSendCueToProtools:nil];
 //
 //}
@@ -2272,7 +2243,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 }
 //-(void)loopRecord{
 //
-//    Document *doc = [self topDocument];
+//    Document *doc = self.topDocument;
 //
 //    if(doc == nil)return;
 //
@@ -2288,7 +2259,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 //}
 //-(void)toggleLoopRecord{
 //
-//    Document *doc = [self topDocument];
+//    Document *doc = self.topDocument;
 //    if(doc){
 //        [doc setLoopRecord:!doc.loopRecord];
 //        [self loopRecord];
@@ -2296,13 +2267,13 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 //}
 -(void)sortByActor{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc) [doc sortByActor];
     
 }
 -(void)sortByCueID{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc) [doc sortByCueID];
     
 }
@@ -2961,7 +2932,7 @@ NSTimer *toggleShowSixteenTimer;
 
 -(void)onAddCue{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     [doc onAddCueButton:nil];
 }
 
@@ -3013,7 +2984,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 //-(void)toggleAutoPlay:(NSString*)msg{
 //
-//    Document *doc = [self topDocument];
+//    Document *doc = self.topDocument;
 //
 //    [doc setAutoPlay:!doc.autoPlay];
 //
@@ -3043,7 +3014,7 @@ NSTimer *toggleShowSixteenTimer;
 //    // if we are in ft/fr, calculate the tc for our current position, set tc
 //
 ////    unsigned char displayFmt = [_midiClient getControlTableByte:0x16];
-////    Document *doc = [self topDocument];
+////    Document *doc = self.topDocument;
 //    //[doc setTimeCodeStart:tc];
 //
 ////    if(displayFmt & 2){   // we are in ft/fr, set tc
@@ -3062,7 +3033,7 @@ NSTimer *toggleShowSixteenTimer;
 -(void)theHour:(NSEvent*)event{
     
     if(![_ptHui isStop]) return;   // exit if we are not stopped or there is no cue
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     NSInteger keyNumber = event.data1;
     
@@ -3185,7 +3156,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)calcPrerollToHere:(NSString*)tc{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc == nil || doc.recordCycleDictionary == nil){
         return;
     }
@@ -3220,7 +3191,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)deleteCurrentCue:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc == nil){return;}
     
     [doc deleteSelectedRows];
@@ -3228,7 +3199,7 @@ NSTimer *toggleShowSixteenTimer;
 // : streamer1:
 -(void)streamer1Locate:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc == nil){return;}
     
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer1"];
@@ -3237,7 +3208,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)streamer2Locate:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc == nil){return;}
     
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer2"];
@@ -3246,7 +3217,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)streamer3Locate:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc == nil){return;}
     
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer3"];
@@ -3255,7 +3226,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)streamer4Locate:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc == nil){return;}
     
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer4"];
@@ -3264,7 +3235,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)streamer5Locate:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc == nil){return;}
     
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer5"];
@@ -3273,7 +3244,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)streamer6Locate:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc == nil){return;}
     
     NSString *tc = [doc.recordCycleDictionary objectForKey:@"streamer6"];
@@ -3310,7 +3281,7 @@ NSTimer *toggleShowSixteenTimer;
 
 -(void)deleteStreamers:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc == nil){return;}
     
     [doc.recordCycleDictionary setObject:@"" forKey:@"streamer1"];
@@ -3334,7 +3305,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)prerollDown:(NSEvent*)event{
     // decrement preroll by 1 second, clip at 3 seconds
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(!doc) return;
     
     NSString *preroll = [_tcf tcForString:[_editorWindowController preroll]];
@@ -3355,7 +3326,7 @@ NSTimer *toggleShowSixteenTimer;
     //    }
     
     // increment preroll by 1 second, clip at 10 seconds
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(!doc) return;
     
     NSString *preroll = [_tcf tcForString:[_editorWindowController preroll]];
@@ -3373,7 +3344,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)locateToInpoint:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     if(doc == nil || doc.recordCycleDictionary == nil){return;}
     
@@ -3391,7 +3362,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)wildSyncSelect:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if (!doc.recordCycleDictionary) return;
     
     NSString *start = doc.startTc;
@@ -3413,7 +3384,7 @@ NSTimer *toggleShowSixteenTimer;
 
 -(void)keyOneshotService{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     if(doc && doc.recordCycleDictionary){
         
@@ -3530,25 +3501,25 @@ NSTimer *toggleShowSixteenTimer;
 //inpointPlusOne inpointMinusOne
 -(void)inpointPlusOne:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc)[doc inpointTrimFrames:1];
     
 }
 -(void)inpointMinusOne:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc)[doc inpointTrimFrames:-1];
     
 }
 -(void)inpointPlusTen:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc)[doc inpointTrimFrames:10];
     
 }
 -(void)inpointMinusTen:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc)[doc inpointTrimFrames:-10];
     
 }
@@ -3560,7 +3531,7 @@ NSTimer *toggleShowSixteenTimer;
         [_adrClientWindowController txMsg:@"keyStroke \r"];
         
     }
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     if(doc.tableContents.count == 0){
         // no items, add a cue
@@ -3643,7 +3614,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 //-(void)prerollHere:(NSEvent*)event{
 //
-//    Document *doc = [self topDocument];
+//    Document *doc = self.topDocument;
 //
 //    NSString *ctr = doc.ctr;
 //    ctr = [ctr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -3654,7 +3625,7 @@ NSTimer *toggleShowSixteenTimer;
 //}
 -(void)recordToComposite:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     doc.recordToComposite = !doc.recordToComposite;
 }
 -(void)getSession:(NSEvent*)event{
@@ -3714,7 +3685,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)getNote:(NSEvent*)event{
     
-    NSString *note = [self topDocument].cueNote;
+    NSString *note = self.topDocument.cueNote;
     [self txMsgToAdrClient:[NSString stringWithFormat:@"setNote\t%@",note]];
     
 }
@@ -3727,7 +3698,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)getCueName:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     //    [self setStartFromPrerollTc:nil];
     
@@ -3743,7 +3714,7 @@ NSTimer *toggleShowSixteenTimer;
 }
 -(void)getDialog:(NSEvent*)event{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     if(!doc) return;
     
@@ -3844,7 +3815,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     // 2.00.00
     // a oneshot to copy the track to the comp track if the button is held for more than .3 seconds
     // if there is no cue, there is no action
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     if(!doc){return;}
     
@@ -3869,8 +3840,8 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     [self setCurrentTrack:_lastTrack];
     // locate to clip start
     
-    //    [[self topDocument] locateToCurrentCue];
-    Document *doc = [self topDocument];
+    //    [self.topDocument locateToCurrentCue];
+    Document *doc = self.topDocument;
     
     // park at the start plus a programmable number of frames (which is a minus number always)
     //    int tcType = (int)[[doc fpsComboBox] indexOfSelectedItem];
@@ -4635,7 +4606,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 
 - (IBAction)onEditorWindow:(id)sender {
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     if(_editorWindowController == nil){
         
@@ -4708,7 +4679,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 
 - (IBAction)onDocumentWindow:(id)sender { //
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     [doc makeFrontmost];
     // http://stackoverflow.com/questions/1740412/how-to-bring-nswindow-to-front-and-to-the-current-space
@@ -4891,7 +4862,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 //}
 -(void)toggleToTc{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     [doc setTableContentsDisplayFormat:DISPLAY_FMT_TC];
     //    [doc toggleToTc];   // TODO other fields, preroll and ?
     [_editorWindowController toggleToTc];
@@ -4899,7 +4870,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 }
 -(void)toggleToFt{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     [doc setTableContentsDisplayFormat:DISPLAY_FMT_FT];
     
     //    [doc toggleToFt];   // TODO other fields, preroll and ?
@@ -4930,9 +4901,81 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
 //    }
 //    return -1;
 //}
+#pragma -
+#pragma mark ------------- topDocument revision -----------------
+-(void)sendTrack:(NSInteger)track{
+    
+    [self txOsc:[NSString stringWithFormat:@"Track %ld",track + 1]];
+    
+    // track selection (mem xx) happens ***after*** record complete. FIXME: Check 'show armed'
+//    [self selectCurrentSixteenTrackMemory];
+    
+    bool green = track < 16;
+    bool red = !green;
+
+    [self.xKey setGreenRed:green :red :6];
+    [self.xKey setGreenRed:green :red :7];
+
+    [self.xKey setAllBlueOnOffOnOffVal:false :6];
+    [self.xKey setAllBlueOnOffOnOffVal:false :7];
+    
+    int unitId = (track % 16) < 8 ? 6 : 7;
+    
+    UInt8 array[] = {0,1,2,3,4,5,8,9};
+    
+    UInt8 index = array[track % 8];
+    
+    [self.xKey setLEDForUnitID:unitId :index :1];
+
+}
 
 #pragma -
 #pragma mark ------------- setters/getters -----------------
+-(void)setTopDocument:(Document*)topDocument{
+    
+    if(_topDocument == topDocument){
+        return; // no change, don't wipe out manual track select
+    }
+    
+    _topDocument = topDocument;
+    
+    if(!_topDocument){return;}
+    
+    [_topDocument readLog]; // the first time we become topDocument, read the log
+    
+    NSLog(@"setTopDocument %@",_topDocument.docWindow.title);
+    
+    // send recordCycleDictionary to screen (send only works for _topDocument)
+    _topDocument.recordCycleDictionary = _topDocument.recordCycleDictionary;
+}
+-(Document*)topDocument{
+    
+    if(_topDocument){
+        return _topDocument;
+    }
+    
+    // not set yet, look for open documents
+    
+    NSWindowNumberListOptions options = NSWindowNumberListAllSpaces;
+    NSArray *windowNumbers = [NSWindow windowNumbersWithOptions:options];
+    
+    NSArray *docWindows = [self getDocWindows];
+    
+    for(NSNumber *windowNumber in windowNumbers){   // windows in z-order, front to back
+        
+        for(DocWindow *docWindow in docWindows){
+            
+            if(docWindow.windowNumber == [windowNumber integerValue]){
+                
+                return (Document*)[docWindow delegate];
+                
+            }
+        }
+    }
+    
+    return nil; // no document found
+}
+
 -(void)setScreenRecorder:(ScreenRecorder *)screenRecorder{
     
     _screenRecorder = screenRecorder;
@@ -5136,6 +5179,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
         NSLog(@"session changed: %@",session);
         
         _session = session;
+        
         [self selectCurrentSixteenTrackMemory];
         //        [self sendToMicAccessoryForKeys:nil];    // defaults to all keys. micTimerService says we need to do this on new session, why?
         [self readLog]; // reads the log for all open document windows
@@ -5322,7 +5366,10 @@ int btnOffColor = 0x404040;
 //1,2,3,4,6,8 track, end
 NSInteger maxTracks[] = {32,32,16,16,16,16};
 
--(void)setCurrentTrack:(NSInteger)currentTrack forDocument:(Document*)doc{
+-(void)setCurrentTrack:(NSInteger)currentTrack{
+    
+    NSLog(@"setCurrentTrack %ld",currentTrack);
+    Document *doc = self.topDocument;
     
     if(currentTrack < 0)currentTrack = 0;   // clip
     
@@ -5340,41 +5387,15 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
     
 //    [self setTrackLEDs];    // show the active track and shift
     
-    if(doc && doc.recordCycleDictionary)
+    if(doc && doc.recordCycleDictionary){
         
         NSLog(@"set %@ track to %ld",doc.docWindow.title,_currentTrack);
         
         [doc.recordCycleDictionary setObject:[NSString stringWithFormat:@"%ld",_currentTrack + 1] forKey:@"Track"];
         [doc.tableView reloadData];
-
-    [self txOsc:[NSString stringWithFormat:@"Track %ld",_currentTrack + 1]];
+    }
     
-    // track selection (mem xx) happens ***after*** record complete. FIXME: Check 'show armed'
-//    [self selectCurrentSixteenTrackMemory];
-    
-    bool green = _currentTrack < 16;
-    bool red = !green;
-
-    [self.xKey setGreenRed:green :red :6];
-    [self.xKey setGreenRed:green :red :7];
-
-    [self.xKey setAllBlueOnOffOnOffVal:false :6];
-    [self.xKey setAllBlueOnOffOnOffVal:false :7];
-    
-    int unitId = (currentTrack % 16) < 8 ? 6 : 7;
-    
-    UInt8 array[] = {0,1,2,3,4,5,8,9};
-    
-    UInt8 index = array[_currentTrack % 8];
-    
-    [self.xKey setLEDForUnitID:unitId :index :1];
-
-}
--(void)setCurrentTrack:(NSInteger)currentTrack{
-    
-    // when windows swap, sometimes topDocument is not the main window, why?
-    Document *doc = self.topDocument;
-    [self setCurrentTrack: currentTrack forDocument:doc];
+    [self sendTrack:_currentTrack];
 
 }
 
@@ -5402,7 +5423,7 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
     
     // this is for the TcFormatters
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     if(doc) return doc.tcType;
     else return TCTYPE_24;  // default is 24fps
     
@@ -5610,19 +5631,19 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
 }
 -(NSString*)getTcStart{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     return [doc timeCodeStart];
 
 }
 -(NSInteger)getDisplayFormat{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     return doc.tableContentsDisplayFormat;
 }
 -(bool)headerInTc{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     
     NSString *fmtString = [doc.headerDictionary objectForKey:@"DISPLAY_FORMAT"];
     
@@ -5658,7 +5679,7 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
 
 -(void)showProtoolsCtr:(NSString*)ctr{
     
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     [doc setCtr:ctr];
     
     // this causes us to go to Ahead, Evan wants that to happen only in CYCLE
@@ -5731,7 +5752,7 @@ NSInteger maxTracks[] = {32,32,16,16,16,16};
 //    }
     
     // we are on the main thread
-    Document *doc = [self topDocument];
+    Document *doc = self.topDocument;
     [doc setTc:ctr];
     [_matrixWindowController setMtcString:ctr];
     
@@ -6336,7 +6357,7 @@ NSMutableArray *ufxStringArray;
     alert.messageText = msg;
     alert.informativeText = info;
     
-    Document* doc = [self topDocument];
+    Document* doc = self.topDocument;
     
     if(doc){
         [alert beginSheetModalForWindow:doc.docWindow completionHandler:^(NSInteger result) {

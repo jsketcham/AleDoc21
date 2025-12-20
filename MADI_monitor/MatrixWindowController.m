@@ -561,7 +561,7 @@ SEND_CROSSPOINTS lastSendCrosspoint;
 -(void)takeAnnouncement{
     
     AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     
     // commented out v1.00.18
     //    NSString *selectedVoice = [delegate.samplerWindowController selectedVoice];
@@ -910,7 +910,7 @@ int lastAheadInPast;    // change detector
 -(void)aheadInPastFromTc:(NSString*)tc{
     
     AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     
     if(!doc || delegate.cycleMotion == CYCLE_MOTION_IDLE){
         
@@ -963,7 +963,7 @@ int lastAheadInPast;    // change detector
 //-(void)aheadInPastFromTc:(NSString*)tc{
 //
 //    AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
-//    Document *doc = [delegate topDocument]; if(!doc) return;
+//    Document *doc = delegate.topDocument; if(!doc) return;
 //
 //    // ahead/in/past
 //
@@ -1042,7 +1042,7 @@ int lastAheadInPast;    // change detector
     }
     
     AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
-    Document *doc = [delegate topDocument]; if(!doc) return;
+    Document *doc = delegate.topDocument; if(!doc) return;
     
     NSString *start = [_tcf tcForString:[doc startForDictionary]];
     int frs = [_tcc tcToBinary:start withType:(int)doc.tcType] + (int)self.trimFrames;  // trimFrames is a small negative number
@@ -2298,9 +2298,10 @@ NSTimer *dimTimer;
 //    _aleDelegate.sendUfxStringInhibit = true;   // 09/29/24 want to send from _matrixView sendCrosspoints
 //    
     // this has to be here to show buttons
-    for(Matrix *matrix in _matrixArray){
-        [matrix stateFromStates];   // sets buttons, faders, refreshes crosspoints
-    }
+    
+        for(Matrix *matrix in self->_matrixArray){
+            [matrix stateFromStates];   // sets buttons, faders, refreshes crosspoints
+        }
 //    _aleDelegate.sendUfxStringInhibit = false;
 //    [_matrixView sendCrosspoints:ON_CROSSPOINTS];
 //    [self refreshCrosspoints:DELTA_CROSSPOINTS];  // 2.10.02
@@ -2335,7 +2336,7 @@ NSTimer *rehRecPbOneshotTimer;
     [_aleDelegate dialMidiRefresh];   // 2.00.00
 //    [_aleDelegate.streamerWindowController sendAnnunciatorByTag:rehRecPb];
     _aleDelegate.overlayWindowController.viewController.rehRecPb = rehRecPb;
-   
+
     [_aleDelegate txOsc:[NSString stringWithFormat:@"rehRecPb %d",rehRecPb]];    // mode
         
     [_aleDelegate sendMidiToClosure];   // send MIDI status messages
@@ -2365,11 +2366,12 @@ NSTimer *rehRecPbOneshotTimer;
     [_recordAnnunciator setState:(rehRecPb % 4) == MODE_CONTROL_RECORD];
     [_playbackAnnunciator setState:(rehRecPb % 4) == MODE_CONTROL_PLAYBACK];
 
-    [_aleDelegate txOsc:[NSString stringWithFormat:@"rehRecPb %d",_rehRecPb]];    // mode
+    // redundant, 12/19/25
+    //[_aleDelegate txOsc:[NSString stringWithFormat:@"rehRecPb %d",_rehRecPb]];    // mode
     
-    Document *doc = [_aleDelegate topDocument];
+    Document *doc = _aleDelegate.topDocument;
     
-    if(doc /*&& doc.recordCycleDictionaryState == RECORD_CYCLE_DICTIONARY_IDLE*/){
+    if(doc){
         [doc sendDialogToStreamerForDictionary]; // for case where we had been in playback
         [doc sendTakeToStreamerForDictionary];
     }
@@ -2390,7 +2392,9 @@ NSTimer *rehRecPbOneshotTimer;
 
     }else{
         
-        [self rehRecPbOneshot]; // no delay
+        // 12/19/25 a short delay so that AIP is sent after reh/rec/pb, speeds up reh/rec/pb display
+        rehRecPbOneshotTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(rehRecPbOneshot) userInfo:nil repeats:false];
+        //[self rehRecPbOneshot]; // no delay
    }
     
 }
@@ -2677,7 +2681,7 @@ bool isFirstNumRecTracksTag = true;
 //
 //    AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
 //    AdrClientWindowController *acwc = delegate.adrClientWindowController;
-//    Document *doc = [delegate topDocument];
+//    Document *doc = delegate.topDocument;
 //
 //    [(BoomRecorderClient*)delegate.boomRecorderClient stopBoomRecorder];
 //
@@ -2743,7 +2747,7 @@ bool isFirstNumRecTracksTag = true;
 //        NSString *cueNote;
 //
 //        if(doc.notesInClipName){
-//            cueNote = [[delegate topDocument] cueNote];
+//            cueNote = [delegate.topDocument cueNote];
 //            cueNote = [self sanitizeFileNameString:cueNote];
 //        }
 //
@@ -2785,7 +2789,7 @@ bool isFirstNumRecTracksTag = true;
     // get PT position
     // copy clip up
     AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     
     // check for recordCycleDictionary
     if(!doc.recordCycleDictionary){
@@ -2815,7 +2819,7 @@ bool isFirstNumRecTracksTag = true;
     // 2.00.00 continue recordOffService
     AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
     AdrClientWindowController *acwc = delegate.adrClientWindowController;
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     
     NSString *dlg = doc.dialogInClipName ?  doc.dialog : @"";
     NSString *notes = doc.notesInClipName ? doc.notes :  @"";
@@ -2866,7 +2870,7 @@ bool isFirstNumRecTracksTag = true;
 //
 //    AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
 //    AdrClientWindowController *acwc = delegate.adrClientWindowController;
-//    Document *doc = [delegate topDocument];
+//    Document *doc = delegate.topDocument;
 //
 //    // if there is no cue sheet or nothing is selected, do not execute any macros
 //
@@ -3302,7 +3306,7 @@ double ufxTaperTable[] = {
 -(void)positionUnderDocWindow{
     
     AleDelegate *delegate = [NSApp delegate];
-    Document *doc = [delegate topDocument];
+    Document *doc = delegate.topDocument;
     if(!doc) return;
     
     DocWindow *window = doc.docWindow;

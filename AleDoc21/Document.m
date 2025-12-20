@@ -1163,16 +1163,6 @@ enum{
 #pragma mark -
 #pragma mark -------------- NSWindow delegate methods ---------------
 
-//-(void)cueSheetTitleFromWindow{
-////    if([[NSApp delegate] isKindOfClass:[AleDelegate class]]){
-//        
-//        AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
-//        EditorWindowController *ed = [delegate editorWindowController];
-////        if(ed)[ed setCueSheetTitle:[[_tableView window] title]];
-////    }
-//    
-//    
-//}
 - (void)windowDidBecomeMain:(NSNotification *)notification{
     
     NSLog(@"windowDidBecomeMain %@",self.docWindow.title);
@@ -1181,30 +1171,10 @@ enum{
         [self cueWithRowIndex:0];
         
     }
-    [self readLog]; // why not?
-    [self sendTakeToStreamerForDictionary:self.recordCycleDictionary]; // this is topDocment
-    [self sendDialogToStreamerForDictionary:self.recordCycleDictionary]; // this is topDocment
-    
     AleDelegate *delegate = NSApp.delegate;
-    NSString *trackString = [_recordCycleDictionary objectForKey:@"Track"];
-    NSLog(@"track %@",trackString);
+    delegate.topDocument = self;
     
-    if(trackString){
-        [delegate setCurrentTrack:[trackString integerValue] - 1 forDocument:self];
-    }
 }
-//- (void)windowDidBecomeKey:(NSNotification *)notification{
-//    
-//    NSLog(@"windowDidBecomeKey %@",self.docWindow.title);
-//    if(!self.recordCycleDictionary){
-//        // select the first cue, if any
-//        [self cueWithRowIndex:0];
-//    }
-//    // TODO: maybe set on-screen cue name, dialog, take number
-//    //    [self cueSheetTitleFromWindow];
-////    [self enablesFromStreamer];
-//}
-
 
 #pragma mark -
 #pragma mark -------------- NSTableView delegate methods ---------------
@@ -1933,6 +1903,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     NSError *error;
     BOOL isDir;
     
+    NSLog(@"readLog %@ ",self.docWindow.title);
+    
     NSString *pathToLog = [self getPathToLog];
     
     NSFileManager *mgr = [[NSFileManager alloc] init];
@@ -1949,9 +1921,9 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     }
     
     // keep take display in sync for the case where there is no log file
-    if(_recordCycleDictionary){
-        [self sendTakeToStreamerForDictionary];
-    }
+//    if(_recordCycleDictionary){
+//        [self sendTakeToStreamerForDictionary];
+//    }
 
     if(![mgr fileExistsAtPath:pathToLog isDirectory:&isDir]){
         
@@ -1971,8 +1943,6 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     // break the log on \n (log entries)
     NSArray *logItems = [contents componentsSeparatedByString:@"\n"];
-    
-    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
     
     for(NSMutableDictionary *dict in _tableContents){
         
@@ -2001,6 +1971,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
                 dict[@"Start"] = [logItemArray objectAtIndex:1];
                 dict[@"Take"] = [logItemArray objectAtIndex:2];
                 dict[@"Track"] = [logItemArray objectAtIndex:3];
+                
+               // NSLog(@"cue: %@ take: %@ track: %@",trackName,[logItemArray objectAtIndex:2],[logItemArray objectAtIndex:3]);
 
                 break;  // found the last cueId, next dict
                 
@@ -2009,6 +1981,12 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     }
     
     [_tableView reloadData];
+    
+//    for(NSMutableDictionary *dict in _tableContents){
+//        NSLog(@"%@ %@ %@",[self trackName:dict],[dict objectForKey:@"Take"],[dict objectForKey:@"Track"]);
+//    }
+//    
+//    NSLog(@"");
 }
 #pragma mark -
 #pragma mark ---------------- helper fns ----------------
@@ -2211,7 +2189,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 //    self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;    // TODO: justify, or get rid of, recordCycleDictionaryState
     AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
     
-    if(!_recordCycleDictionary){
+    // only top document sends text, etc
+    if(!_recordCycleDictionary || delegate.topDocument != self){
         return;
     }
 
@@ -2979,13 +2958,13 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     NSString *start = [tcf tcForString:_recordCycleDictionary[@"Start"]];
     
-    AleDelegate *aleDelegate = (AleDelegate*)[NSApp delegate];
-    Document *doc = [aleDelegate topDocument];
+    AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
+    Document *doc = delegate.topDocument;
     
     // 2.10.00 TODO: do we need this test?
     if([tcc compareTc:start fromTc:doc.ctr withType:[self getTcType]] == NSOrderedSame) return; // works for ft/fr too
     
-    [aleDelegate locate:start];
+    [delegate locate:start];
     
 }
 

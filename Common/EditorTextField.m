@@ -23,8 +23,8 @@
     
 //    NSLog(@"text did end editing");
     
-    AleDelegate *aleDelegate = (AleDelegate *)[NSApp delegate];
-    Document *doc = [aleDelegate topDocument];
+    AleDelegate *delegate = (AleDelegate *)[NSApp delegate];
+    Document *doc = delegate.topDocument;
 //    [doc selectionDidChange:false];  // cause updates of text and protools, no change to editor items
     // TODO how do we cause the cue sheet to show changes in our fields?
     [doc writeChanges]; // maybe save to disk
