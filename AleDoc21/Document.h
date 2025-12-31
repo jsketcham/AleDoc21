@@ -141,6 +141,10 @@ enum{
 -(void)deleteRows:(NSIndexSet *)selectedRowIndexes;
 -(void)deleteCols:(NSIndexSet *)selectedColIndexes;
 
+// 12/31/25 when swapping which cue sheet is front, skip locate in setRecordCycleDictionary
+
+@property bool skipLocate;
+
 -(void)previousCue;
 -(void)nextCue;
 -(void)mergeNextCue;

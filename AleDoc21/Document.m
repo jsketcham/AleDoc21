@@ -140,6 +140,8 @@ NSInteger encoding = NSMacOSRomanStringEncoding;    // default file encoding
 @synthesize encodingKey = _encodingKey;
 @synthesize notes = _notes;
 
+@synthesize skipLocate = _skipLocate;   // 12/31/25 skip 1st locate when brought to front
+
 NSArray *wbColTitles = @[
     @"Name",
     @"Start",
@@ -2191,6 +2193,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     // only top document sends text, etc
     if(!_recordCycleDictionary || delegate.topDocument != self){
+        _skipLocate = false;    // should never happen
         return;
     }
 
@@ -2216,7 +2219,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     [delegate txOsc:[NSString stringWithFormat:@"led 8,58,%@", (!s6 || [s6 isEqualToString:@""] ? @"false" : @"true")]];
     
     // dialog is following timecode, don't cue
-    if(delegate.ptHui.isPlay){
+    if(delegate.ptHui.isPlay || _skipLocate){
+        _skipLocate = false;    // document was brought to front, skip locate (so PT doesn't get the focus)
         return;
     }
 

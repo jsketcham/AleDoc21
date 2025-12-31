@@ -4946,6 +4946,7 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
     NSLog(@"setTopDocument %@",_topDocument.docWindow.title);
     
     // send recordCycleDictionary to screen (send only works for _topDocument)
+    _topDocument.skipLocate = true; // skip locate when brought to front (so PT does not get focus)
     _topDocument.recordCycleDictionary = _topDocument.recordCycleDictionary;
 }
 -(Document*)topDocument{

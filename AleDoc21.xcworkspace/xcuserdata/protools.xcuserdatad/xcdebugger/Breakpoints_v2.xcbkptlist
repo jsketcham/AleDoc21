@@ -14,8 +14,8 @@
             filePath = "AleDoc21/Document.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "528"
-            endingLineNumber = "528"
+            startingLineNumber = "530"
+            endingLineNumber = "530"
             landmarkName = "-onClearScreen:"
             landmarkType = "7">
             <Locations>
@@ -47,6 +47,21 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "528"
                   endingLineNumber = "528"
+                  offsetFromSymbolStart = "220">
+               </Location>
+               <Location
+                  uuid = "C60DC930-D213-4A81-96F2-61CE4B912D39 - 27b54fcd4d4aa8ce"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[Document onClearScreen:]"
+                  moduleName = "AleDoc21"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/protools/src/xcodeProjects/AleDoc21/AleDoc21/Document.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "530"
+                  endingLineNumber = "530"
                   offsetFromSymbolStart = "220">
                </Location>
             </Locations>
