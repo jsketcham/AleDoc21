@@ -5181,7 +5181,8 @@ NSInteger trackBaseTable[] = {41,91,131,151,171,191,211};   //1,2,3,4,6,8 track,
         
         _session = session;
         
-        [self selectCurrentSixteenTrackMemory];
+        // commented out 01/05/26, no mem recall on session change
+        //[self selectCurrentSixteenTrackMemory];
         //        [self sendToMicAccessoryForKeys:nil];    // defaults to all keys. micTimerService says we need to do this on new session, why?
         [self readLog]; // reads the log for all open document windows
         [_adrClientWindowController deleteAdrClientLog];  // fresh session, fresh log
