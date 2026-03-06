@@ -1597,7 +1597,21 @@ NSArray *hidePing = @[@"jxaGetSampleRate"
         NSLog(@"didn't delete the last log");
     }
 }
+- (bool)checkCommandKeyState {
+    NSEventModifierFlags flags = [NSEvent modifierFlags];
+    if (flags & (NSEventModifierFlagCommand | NSEventModifierFlagOption | NSEventModifierFlagShift)) {
+        //NSLog(@"Command key is currently held down system-wide.");
+        return true;
+    } else {
+        //NSLog(@"Command key is not currently held down.");
+        return false;
+    }
+}
+
 -(void)txMsg:(NSString *)msg{
+    
+    if([self checkCommandKeyState]){return;}    // avoid opening extra PT windows
+
     
 //    NSLog(@"txMsg: %@",msg);
     

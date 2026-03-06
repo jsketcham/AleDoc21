@@ -264,6 +264,7 @@ NSArray *noColTitles = @[
         [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"dialogSpacer" options:0 context:nil];
         [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"spacerEnable" options:0 context:nil];
         [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"characterInTrackName" options:0 context:nil];
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"showAllCols" options:0 context:nil];
 
         self.encodings = @{@"UTF-8":@"4",
                            @"Mac OS Roman":@"30",
@@ -332,6 +333,16 @@ NSArray *noColTitles = @[
             //[weakSelf readLog]; // refresh takes
         });
    }
+// showAllCols
+    
+    if([keyPath isEqualToString:@"showAllCols"]){
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self sizeTableViewToContents];
+            
+        });
+    }
     
     
 }
@@ -387,15 +398,15 @@ NSArray *noColTitles = @[
 //    }
 
     // leave this alone, the loop above doesn't display
-    self.clientTitles = [[NSMutableArray alloc]initWithArray:@[
-                @{@"clientTitle":wbColTitles[0] },
-                @{@"clientTitle":wbColTitles[1] },
-                @{@"clientTitle":wbColTitles[2] },
-                @{@"clientTitle":wbColTitles[3] },
-                @{@"clientTitle":wbColTitles[4] },
-                @{@"clientTitle":wbColTitles[5] },
-                @{@"clientTitle":wbColTitles[6] },
-                @{@"clientTitle":wbColTitles[7] }]];
+//    self.clientTitles = [[NSMutableArray alloc]initWithArray:@[
+//                @{@"clientTitle":wbColTitles[0] },
+//                @{@"clientTitle":wbColTitles[1] },
+//                @{@"clientTitle":wbColTitles[2] },
+//                @{@"clientTitle":wbColTitles[3] },
+//                @{@"clientTitle":wbColTitles[4] },
+//                @{@"clientTitle":wbColTitles[5] },
+//                @{@"clientTitle":wbColTitles[6] },
+//                @{@"clientTitle":wbColTitles[7] }]];
     
     self.colTitles = wbColTitles;   // initializes tableview columns
     
@@ -534,7 +545,7 @@ NSArray *noColTitles = @[
     
     NSMutableDictionary *contents = [[NSMutableDictionary alloc] init];
     
-//®
+    // FIXME: explain why we have this
     NSArray *colTitles = self.colTitles ?  self.colTitles : self.clientColTitles;
     
     if(colTitles){
@@ -548,6 +559,8 @@ NSArray *noColTitles = @[
     // mandatory items
     contents[@"Start"] = @"00:00:00:00";    // ALE mandatory
     contents[@"End"] = @"";      // ALE mandatory FIXME: can we do this?
+    contents[@"Dialog"] = @"";  // 03/06/26, file open needs this
+    contents[@"Notes"] = @"";   // 03/06/26, file open needs this
     contents[@"Take"] = @"0";               // WB mandatory
     contents[@"Track"] = @"1";              // WB mandatory
     contents[@"Name"] = [NSString stringWithFormat:@"cue_%03d",(int)self.cueCtr++];     // ALE mandatory
@@ -818,7 +831,7 @@ enum{
     
     NSString *fileContents = [NSString stringWithContentsOfURL:url encoding:encoding error:&error];
     
-//    NSLog(@"fileContents:\n%@",fileContents);
+    //NSLog(@"fileContents:\n%@",fileContents);
     
     if(error){
         
@@ -912,7 +925,7 @@ enum{
                     break;
                 }
                 
-                if(array.count == 0){break;}
+                if(array.count == 0){break;}    // skip empty lines
                 
                 colTitles = [[NSMutableArray alloc]initWithArray: array];
                 
@@ -957,9 +970,9 @@ enum{
 
         if(hasHeader){self.headerDictionary = headerDictionary;}
         // TODO: working on keeping left table intact
-        self.clientColTitles = [[NSArray alloc] initWithArray: colTitles];
         self.clientTableContents = [[NSArray alloc] initWithArray:tableContents];
-        
+        self.clientColTitles = [[NSArray alloc] initWithArray: colTitles];
+
         AleDelegate *delegate = (AleDelegate*)[NSApp delegate];
         [delegate getSession:nil];  // 2.10.00 arms change detector
         
@@ -1051,9 +1064,10 @@ enum{
            
         }
     }
-    // github tickler
-    if(cols && cols.count && _tableContents && _tableContents.count){
+    
+    if(cols && cols.count){
         
+        // && _tableContents && _tableContents.count
         //        NSLog(@"Take sizeTableViewToContents 1 %@",_tableContents[0][@"Take"]);
         
         NSTableColumn *col = [cols objectAtIndex:0];
@@ -1072,21 +1086,23 @@ enum{
             
             if(bounds.size.width > width) width = bounds.size.width;
 
-            for(NSDictionary *dict in _tableContents){
-                                
-                NSString *msg = [dict objectForKey:col.title];
-                
-                if(msg == nil || msg.length == 0) continue;
-                
-                // ft/fr will fit in tc, make it a little bigger
-                if([tcc isFtFr:msg]){
-                    msg = @"00:00:00:00";
+            if(_tableContents){
+                for(NSDictionary *dict in _tableContents){
+                    
+                    NSString *msg = [dict objectForKey:col.title];
+                    
+                    if(msg == nil || msg.length == 0) continue;
+                    
+                    // ft/fr will fit in tc, make it a little bigger
+                    if([tcc isFtFr:msg]){
+                        msg = @"00:00:00:00";
+                    }
+                    
+                    bounds = [msg boundingRectWithSize:NSMakeSize(PAGE_WIDTH, PAGE_HEIGHT) options: NSStringDrawingUsesLineFragmentOrigin attributes:attributes];   //
+                    
+                    if(bounds.size.width > width) width = bounds.size.width;
+                    
                 }
-                
-                bounds = [msg boundingRectWithSize:NSMakeSize(PAGE_WIDTH, PAGE_HEIGHT) options: NSStringDrawingUsesLineFragmentOrigin attributes:attributes];   //
-                
-                if(bounds.size.width > width) width = bounds.size.width;
-                
             }
             
             width += 5; // not so crowded...
@@ -2070,6 +2086,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     if(!clientTableContents || clientTableContents.count == 0){
         return;
     }
+    
     // show client column names intact, replace synonyms here
     NSArray *clientKeys = [clientTableContents[0] allKeys];
     NSArray *correctedClientKeys = [self replaceSynonyms:clientKeys];
@@ -2138,7 +2155,14 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 }
 -(void)setTableContents:(NSMutableArray *)tableContents{
     _tableContents = tableContents;
-    [self sizeTableViewToContents];
+    
+   // might get here from not the main thread, do this to size the table view
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self sizeTableViewToContents];
+        
+    });
+
 }
 -(NSMutableArray *)tableContents{
     return _tableContents;
@@ -2164,6 +2188,8 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     
     delegate.matrixWindowController.captureGuide = delegate.matrixWindowController.captureFirstLineInRehearse;    // capture first line
     
+    // 02/06/26 if CMD is held (to select discontiguous cues) we get
+    // PT windows popping up, because PT does the wrong commands
     // FIXME set track name
     [delegate selectCurrentSixteenTrackMemory];
 //    [delegate renameLastTrack];   // 2.10.02 do this on REC CYCLE start
@@ -2198,9 +2224,10 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     }
 
     [self sendDialogToStreamerForDictionary:_recordCycleDictionary];   // dialog overlay
+    
     [self sendTakeToStreamerForDictionary:_recordCycleDictionary];   // dialog overlay
     [self bindEditorWindowFields:_recordCycleDictionary];              // bind to editor window
-    
+
     [delegate.lpMini micSet:@"90787f" :false];  // fill button off 2.10.02
     
     // 2.10.02 set streamer indicators
@@ -2231,70 +2258,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     [self setRecCycleTimer:[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(recCycleTimerService) userInfo:nil repeats:NO]];
 
 }
-/*
-// the version where we got out of sync on screen when doing NEXT, PREV
-// check recordCycleDictionaryState, what is that about?
-// it looks like this is a (not very good?) way of dialog following mtc
--(void)setRecordCycleDictionaryx:(NSMutableDictionary *)recordCycleDictionary{
-    
-    // 2.10.00 TODO: see aleDelegate.setRecordCycleDictionary for additional logic
-    // case where selection is increased or decreased, or following tc
-    // before gate keeper
-    [self sendDialogToStreamerForDictionary:recordCycleDictionary];   // dialog overlay
-    [self sendTakeToStreamerForDictionary:recordCycleDictionary];   // dialog overlay
-    // gate keeper
-    AleDelegate *delegate = NSApp.delegate;
-    switch(delegate.cycleMotion){
-        case CYCLE_MOTION_STARTING:
-        case CYCLE_MOTION_ACTIVE:
-            self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_PENDING;
-            return;
-        default:
-            self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_IDLE;
-            break;
-    }
 
-    [self bindEditorWindowFields:recordCycleDictionary];              // bind to editor window
-
-    if(_recordCycleDictionary == recordCycleDictionary){
-        return;
-    }
-
-    _recordCycleDictionary = recordCycleDictionary;
-    
-    [delegate.lpMini micSet:@"90787f" :false];  // fill button off 2.10.02
-    
-    // 2.10.02 set streamer indicators
-    NSString *s1 = [_recordCycleDictionary objectForKey:@"streamer1"];
-    NSString *s2 = [_recordCycleDictionary objectForKey:@"streamer2"];
-    NSString *s3 = [_recordCycleDictionary objectForKey:@"streamer3"];
-    NSString *s4 = [_recordCycleDictionary objectForKey:@"streamer4"];
-    NSString *s5 = [_recordCycleDictionary objectForKey:@"streamer5"];
-    NSString *s6 = [_recordCycleDictionary objectForKey:@"streamer6"];
-
-    [delegate txOsc:[NSString stringWithFormat:@"led 8,41,%@", (!s1 || [s1 isEqualToString:@""] ? @"false" : @"true")]];
-    [delegate txOsc:[NSString stringWithFormat:@"led 8,49,%@", (!s2 || [s2 isEqualToString:@""] ? @"false" : @"true")]];
-    [delegate txOsc:[NSString stringWithFormat:@"led 8,57,%@", (!s3 || [s3 isEqualToString:@""] ? @"false" : @"true")]];
-    [delegate txOsc:[NSString stringWithFormat:@"led 8,42,%@", (!s4 || [s4 isEqualToString:@""] ? @"false" : @"true")]];
-    [delegate txOsc:[NSString stringWithFormat:@"led 8,50,%@", (!s5 || [s5 isEqualToString:@""] ? @"false" : @"true")]];
-    [delegate txOsc:[NSString stringWithFormat:@"led 8,58,%@", (!s6 || [s6 isEqualToString:@""] ? @"false" : @"true")]];
-
-    // dialog is following timecode, don't cue
-    if(delegate.ptHui.isPlay){
-        return;
-    }
-
-    // set up the new _recordCycleDictionary
-    self.recordCycleDictionaryState = RECORD_CYCLE_DICTIONARY_ACTIVE;
-
-    // use a timer to delay these actions
-    // this lets 'prev cue' and 'next cue' be quickly pressed
-    // w/o cueing up for each one
-    if(_recCycleTimer){[_recCycleTimer invalidate];}
-    [self setRecCycleTimer:[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(recCycleTimerService) userInfo:nil repeats:NO]];
-
-}
-*/
 -(NSDictionary*)recordCycleDictionary{
     return _recordCycleDictionary;
 }
@@ -2466,11 +2430,10 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     }
 }
 -(NSString*) dialog{
-    
+
     NSIndexSet *indexSet = [self selectedRowIndexes];
     
     NSMutableString *s = [[NSMutableString alloc]init];
-    
 
     for(NSInteger i = indexSet.firstIndex; i <= indexSet.lastIndex; i++){
         
@@ -2481,9 +2444,12 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
         
     }
     NSString *text = s;
+    
     text = [text stringByReplacingOccurrencesOfString:@"^" withString:@"\n"];   // convert ^ to \n
     text = [text stringByReplacingOccurrencesOfString:@"\\r" withString:@"\n"]; // convert \\r to \n
     text = [text stringByReplacingOccurrencesOfString:@"\v" withString:@"\n"];  // convert VT to \n
+    //  03/06/26 0x00a0 (NBSP, no-break space) is option-space on the Apple keyboard
+    text = [text stringByReplacingOccurrencesOfString:@"\u00A0" withString:@"\n"];  // convert NBSP to \n
 
     return [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     // Evan has a case where \r\r is in the dialog, must be a CR
@@ -3172,7 +3138,10 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
     // append dialog for multiple selection
     if(_dialogCheckBox.state == NSControlStateValueOn){
         
-        text = [text stringByAppendingString:[NSString stringWithFormat:@"%@\n",self.dialog]];
+        text = [text stringByAppendingString:[NSString stringWithFormat:@"%@\n",self.dialog]];  // does the multi-line join
+        
+//        // the join was moved to Document.dialog
+//        // this needs to be the one and only join
 //        NSIndexSet *set = [_tableView selectedRowIndexes];
 //        
 //        //    NSLog(@"items in set: %ld",set.count);
@@ -3186,6 +3155,7 @@ int m_retCode = NSModalResponseCancel;//NSCancelButton;  // initialize to someth
 //                text = [text stringByAppendingString:[NSString stringWithFormat:@"%@\n",dict[@"Dialog"]]];
 //            }
 //        }
+
     }
     
     NSString *notes = dict[@"Notes"];

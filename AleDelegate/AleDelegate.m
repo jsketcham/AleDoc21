@@ -2280,7 +2280,6 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 -(void)locate:(NSString *)start{
     [self locate:start :@"-1"];   // no action after getProtoolsPosition
 }
-
 -(void) locate:(NSString *)start :(NSString*)msg{
     
     if(start == nil){
@@ -2300,7 +2299,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
 }
 
 -(void)selectCurrentSixteenTrackMemory{
-    
+
     // 2.00.00 code at end was unreliable, guessing it was the \n terminator
     
     NSInteger mem = showSixteenTable[[_matrixWindowController numRecTracksTag]][_currentTrack >> 4];

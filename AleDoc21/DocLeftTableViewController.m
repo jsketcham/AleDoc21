@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
+    NSLog(@"DocLeftTableViewController viewDidLoad");
     [(NSTableView*)self.view registerForDraggedTypes:@[NSPasteboardTypeString]];
 }
 // MARK: --------- NSTableViewDelegate -------------
