@@ -556,14 +556,16 @@ NSArray *noColTitles = @[
         }
     }
     
-    // mandatory items
+    // 03/07/26 1st 8 items of wbColTitles, so that 'file open' can load table view properly
+    contents[@"Name"] = [NSString stringWithFormat:@"cue_%03d",(int)self.cueCtr++];     //ALE mandatory
     contents[@"Start"] = @"00:00:00:00";    // ALE mandatory
-    contents[@"End"] = @"";      // ALE mandatory FIXME: can we do this?
-    contents[@"Dialog"] = @"";  // 03/06/26, file open needs this
-    contents[@"Notes"] = @"";   // 03/06/26, file open needs this
+    contents[@"End"] = @"";                 // ALE mandatory
+    contents[@"Character"] = @"";           // 03/07/26, WB mandatory
+    contents[@"Dialog"] = @"";              // 03/06/26, WB mandatory
+    contents[@"Notes"] = @"";               // 03/06/26, WB mandatory
     contents[@"Take"] = @"0";               // WB mandatory
     contents[@"Track"] = @"1";              // WB mandatory
-    contents[@"Name"] = [NSString stringWithFormat:@"cue_%03d",(int)self.cueCtr++];     // ALE mandatory
+
 
     return contents;
     
