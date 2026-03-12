@@ -1235,7 +1235,11 @@ NSTimer *monitorSwitchingDelayTimer;
     {
         delegate.cycleMotion = CYCLE_MOTION_IDLE;
         
-        [delegate alertErr:@"can't arm last track" :@""];
+        // skip the warning if PT is not online
+        if(_protoolsAnnunciator.state == NSControlStateValueOn){
+            
+            [delegate alertErr:@"can't arm last track" :@""];
+        }
 
         [delegate setLastCueID: nil];   // must rename track, select tracks
         return;
