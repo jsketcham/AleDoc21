@@ -258,6 +258,8 @@ enum{
                                           [NSKeyedArchiver archivedDataWithRootObject:NSColor.whiteColor requiringSecureCoding:false error:&error],@"cueIdColor",
                                           [NSKeyedArchiver archivedDataWithRootObject:NSColor.whiteColor requiringSecureCoding:false error:&error],@"textColor",
                                           [NSKeyedArchiver archivedDataWithRootObject:NSColor.whiteColor requiringSecureCoding:false error:&error],@"progressBarColor",
+                                          [[NSNumber alloc]initWithBool:false],@"aipFontSize",  // small font
+                                          //aipFontSize
                                           nil];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:registrationDefaults];
@@ -404,6 +406,7 @@ enum{
         ,@"enProgressBar" : @[@9,@122]
         ,@"progressBarPerCue" : @[@9,@123]
         ,@"incrTrack" : @[@9,@125]
+        ,@"aipFontSize" : @[@9,@126]
     };
     
     // add observers for checkbox changes
@@ -1206,7 +1209,13 @@ NSTimer *motionZoneTimer;
     
     [[NSUserDefaults standardUserDefaults] setBool:![[NSUserDefaults standardUserDefaults]boolForKey:@"incrTrack"] forKey:@"incrTrack"];
 }
+-(void)toggleAipFontSize{
+    
+    [[NSUserDefaults standardUserDefaults] setBool:![[NSUserDefaults standardUserDefaults]boolForKey:@"aipFontSize"] forKey:@"aipFontSize"];
+    
+    [self setLEDForUnitID:9 :126 :[[NSUserDefaults standardUserDefaults]boolForKey:@"aipFontSize"]];
 
+}
 //
 //-(void)toggleUseAltGuideInRecord{
 //
@@ -2848,7 +2857,8 @@ NSTimer *toggleShowSixteenTimer;
                                        @"toggleProgressBarPerCue",@"123",
                                        @"foleyClipCapture",@"124",
                                        @"incrTrackAfterRec",@"125",
-                                       
+                                       @"toggleAipFontSize",@"126",
+
                                        // skip 128 because XKeys uses -128 to signal -0
                                        
                                        nil];
