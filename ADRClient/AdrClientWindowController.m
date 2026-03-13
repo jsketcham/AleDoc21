@@ -1235,11 +1235,7 @@ NSTimer *monitorSwitchingDelayTimer;
     {
         delegate.cycleMotion = CYCLE_MOTION_IDLE;
         
-        // skip the warning if PT is not online
-        if(_protoolsAnnunciator.state == NSControlStateValueOn){
-            
-            [delegate alertErr:@"can't arm last track" :@""];
-        }
+        [delegate alertErr:@"can't arm last track" :@""];
 
         [delegate setLastCueID: nil];   // must rename track, select tracks
         return;
@@ -1615,7 +1611,12 @@ NSArray *hidePing = @[@"jxaGetSampleRate"
 -(void)txMsg:(NSString *)msg{
     
     if([self checkCommandKeyState]){return;}    // avoid opening extra PT windows
-
+    
+    // skip sending if PT is not online
+    // note 'ping' timer uses addToInArray(), not txMsg()
+    if(_protoolsAnnunciator.state != NSControlStateValueOn){
+        return;
+    }
     
 //    NSLog(@"txMsg: %@",msg);
     
