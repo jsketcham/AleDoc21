@@ -1902,7 +1902,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
                 
                 str = [NSString stringWithFormat:@"%@ %@ 0 176 %@ %ld",channel,controlChange,output,gain];
                  
-                NSLog(@"%@",str);
+                //NSLog(@"%@",str);
                 [self sendUfxString:str];
 
             }
@@ -1985,8 +1985,11 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     dialMute |= _matrixWindowController.muteAll;    // after the txOsc so that the individual mute indications don't follow Mute All
     
     // fixed sends or returns, always 0dB or muted
-    NSArray *fixedSendsAndReturns = @[@"93",@"102",@"107"];
-    
+    // TODO: 03/14/26 check with Evan about which are fixed, we removed new dial 'Editor Direct' from the list
+    //NSArray *fixedSendsAndReturns = @[@"93",@"102",@"107"];
+    // 93 source connect, 102 Remote Actor HP
+    NSArray *fixedSendsAndReturns = @[@"93",@"102"];
+
     if([fixedSendsAndReturns containsObject:key]){
         dialMute = _matrixWindowController.muteAll;
         dialValue = dialMute ? 0 : 104;
