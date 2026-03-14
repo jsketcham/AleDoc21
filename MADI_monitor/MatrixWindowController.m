@@ -137,7 +137,7 @@
 
 @property (weak) IBOutlet FileDropButton *fileDropButton;
 //@property BoomRecorderMIDI *boomRecorderMIDI;
-@property NSString *actorDirectMic;
+//@property NSString *actorDirectMic;
 
 @end
 
@@ -200,7 +200,7 @@ NSArray *sampleRateKeys = @[@"48K",@"96K",@"192K"];
 @synthesize delayedAheadInPast = _delayedAheadInPast;
 @synthesize boomRecorderMIDI =  _boomRecorderMIDI;
 
-@synthesize actorDirectMic = _actorDirectMic;
+//@synthesize actorDirectMic = _actorDirectMic;
 //@synthesize motionZoneByte = _motionZoneByte;
 
 //@synthesize muteControlRoom = _muteControlRoom;
@@ -239,8 +239,8 @@ NSArray *sampleRateKeys = @[@"48K",@"96K",@"192K"];
                                               [NSNumber numberWithInteger:-7],@"trimFrames",
                                               @"0",@"numRecTracks",
                                               [NSNumber numberWithBool:false],@"show16Tracks",
-                                              @"1",@"actorDirectMic",
-                                              @"1",@"lastActorDirectMic", // change detector for turning off previous output
+//                                              @"1",@"actorDirectMic",
+//                                              @"1",@"lastActorDirectMic", // change detector for turning off previous output
                                               nil];
         
         [[NSUserDefaults standardUserDefaults] registerDefaults:registrationDefaults];
@@ -1815,13 +1815,11 @@ int ctr = 0;
 }
 - (IBAction)onDirectMic:(id)sender {
     
-    NSString *str = [[NSUserDefaults standardUserDefaults]boolForKey:@"mic1"] ? @"Mic 1\t" : @"";
+    [_aleDelegate actorDirect:@"94"];
+}
+- (IBAction)onEdDirectMic:(id)sender {
     
-    str =[[NSUserDefaults standardUserDefaults]boolForKey:@"mic2"] ? [str stringByAppendingString:@"Mic 2\t"] : str;
-    str =[[NSUserDefaults standardUserDefaults]boolForKey:@"mic3"] ? [str stringByAppendingString:@"Mic 3\t"] : str;
-    str =[[NSUserDefaults standardUserDefaults]boolForKey:@"mic4"] ? [str stringByAppendingString:@"Mic 4"] : str;
-
-    [self setActorDirectMic:[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    [_aleDelegate editorDirect:@"107"];
 }
 
 #pragma mark
@@ -1913,20 +1911,6 @@ int ctr = 0;
     return (unsigned char)i;
 }
 
--(void)setActorDirectMic:(NSString *)actorDirectMic{
-    
-    NSLog(@"setActorDirectMic %@",actorDirectMic);
-    
-    // keep track of the previous one so that we can turn it off
-    [[NSUserDefaults standardUserDefaults]setObject:self.actorDirectMic forKey:@"lastActorDirectMic"];
-
-    [[NSUserDefaults standardUserDefaults]setObject:actorDirectMic forKey:@"actorDirectMic"];
-    
-    [_aleDelegate actorDirect:@"94"];  // set the new UFX output
-}
--(NSString*)actorDirectMic{
-    return [NSUserDefaults.standardUserDefaults objectForKey:@"actorDirectMic"];
-}
 -(void)setVideoScreenSelector:(NSInteger)videoScreenSelector{
     
     _videoScreenSelector = videoScreenSelector;

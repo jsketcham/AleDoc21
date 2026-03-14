@@ -307,6 +307,7 @@ enum{
 -(void)triggerStreamer;
 -(void)midiToOsc:(NSData*)data :(NSString*)title;
 -(void)actorDirect:(NSString*)key;
+-(void)editorDirect:(NSString*)key;
 -(void)dialAccessoryRefresh;
 -(void)foleyClipCapture;
 -(void)sendTrack:(NSInteger)track;

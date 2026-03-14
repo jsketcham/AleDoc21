@@ -1214,7 +1214,7 @@ NSTimer *motionZoneTimer;
     [[NSUserDefaults standardUserDefaults] setBool:![[NSUserDefaults standardUserDefaults]boolForKey:@"aipFontSize"] forKey:@"aipFontSize"];
     
     [self setLEDForUnitID:9 :126 :[[NSUserDefaults standardUserDefaults]boolForKey:@"aipFontSize"]];
-
+    
 }
 //
 //-(void)toggleUseAltGuideInRecord{
@@ -1539,11 +1539,15 @@ NSDictionary *dialDictionary = @{@"92" : @{DIAL_CLIENT_KEY : @"accClient"
                                              ,@"Routine" : @"dialMuteDim:"
                                              ,@"Name" : @"Editor" // the name of the matrix to mute
                                  }
-                                 ,@"107" : @{@"Text" : @"Remote\\nEditor HP"
+                                 ,@"107" : @{@"Text" : @"Editor\\nDirect"
                                              ,@"Taper" : @"ufx"
-                                             //                                             ,@"Routine" : @"dialMuteDim:"
-                                             ,@"Name" : @"Remote Editor" // the name of the matrix to mute
+                                             ,@"Routine" : @"editorDirect:"
                                  }
+//                                 ,@"107" : @{@"Text" : @"Remote\\nEditor HP"
+//                                             ,@"Taper" : @"ufx"
+//                                             //                                             ,@"Routine" : @"dialMuteDim:"
+//                                             ,@"Name" : @"Remote Editor" // the name of the matrix to mute
+//                                 }
                                  
 };
 
@@ -1869,22 +1873,10 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     
     [_matrixWindowController refreshCrosspoints];
 }
--(void)actorDirect:(NSString*)key{
+-(void)commonDirect:(NSString*)dial :(NSString*)title :(NSDictionary *) dict{
     
-    // routing an input not in the matrix to the actor HP, add unity gain crosspoint send MIDI
-    // Actor Direct mic is assigned in a combo box 2.10.02
-    // 12/6/23 multi selection, string is tab separated like 'Mic 1/tMic 2'
-    
-    NSString *actorDirectMic = [[NSUserDefaults standardUserDefaults] objectForKey:@"actorDirectMic"];  // 'Mic 1' - 'Mic 4', multi, tab separator
-    // change detector for turning off the previous output
-    NSString *lastActorDirectMic = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastActorDirectMic"];  // 'Mic 1' - 'Mic 4', multi, tab separator
-    
-    // multiple selection
-    NSArray *actorDirectOutputArray = [actorDirectMic componentsSeparatedByString:@"\t"];
-    NSArray *lastActorDirectOutputArray = [lastActorDirectMic componentsSeparatedByString:@"\t"];
-    
-    NSString *valueKey = [NSString stringWithFormat:@"%@_%@",DIAL_VALUE_KEY,key];
-    NSString *muteKey = [NSString stringWithFormat:@"%@_%@",DIAL_MUTE_KEY,key];
+    NSString *valueKey = [NSString stringWithFormat:@"%@_%@",DIAL_VALUE_KEY,dial];
+    NSString *muteKey = [NSString stringWithFormat:@"%@_%@",DIAL_MUTE_KEY,dial];
     
     NSInteger dialMute = [[NSUserDefaults standardUserDefaults] boolForKey:muteKey];
     NSInteger dialValue = dialMute ? 0 : [[NSUserDefaults standardUserDefaults] integerForKey:valueKey];
@@ -1893,7 +1885,7 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
     for(NSDictionary *colDict in _matrixWindowController.matrixView.colTitles){
         
         NSString *colTitle = colDict[@"Title"];
-        NSRange range = [colTitle rangeOfString:@"Actor"];
+        NSRange range = [colTitle rangeOfString:title];
         
         if(range.location == 0){
             
@@ -1902,35 +1894,56 @@ NSDictionary *dialToMuteDictionary = @{  @"104" : @"87"     // control room mute
             
             NSString *str;
             
-            // output change detect
-            if(![actorDirectMic isEqualToString:lastActorDirectMic]){
+            for(NSString *key in [dict allKeys]){
                 
-                // turn off last outputs
-                for(NSString *item in lastActorDirectOutputArray){
-                    
-                    NSString *lastActorDirectOutput = [NSString stringWithFormat:@"%d",([[item componentsSeparatedByString:@" "]lastObject]).intValue + 101];
-                    
-                    str = [NSString stringWithFormat:@"%@ %@ 0 176 %@ 0",channel,controlChange,lastActorDirectOutput];
-                    
-                    [self sendUfxString:str];
-                }
+                bool offOn = [[NSUserDefaults standardUserDefaults]boolForKey:key];
+                NSString *output = dict[key];
+                NSInteger gain = offOn ? dialValue : 0;
                 
-                // turn off change detector
-                [[NSUserDefaults standardUserDefaults] setObject:actorDirectMic forKey:@"lastActorDirectMic"];
-            }
-            
-            // turn on outputs
-            for(NSString *item in actorDirectOutputArray){
-                
-                NSString *actorDirectOutput = [NSString stringWithFormat:@"%d",([[item componentsSeparatedByString:@" "]lastObject]).intValue + 101];
-                
-                str = [NSString stringWithFormat:@"%@ %@ 0 176 %@ %ld",channel,controlChange,actorDirectOutput,dialValue];
-                
+                str = [NSString stringWithFormat:@"%@ %@ 0 176 %@ %ld",channel,controlChange,output,gain];
+                 
+                NSLog(@"%@",str);
                 [self sendUfxString:str];
+
             }
         }
     }
 }
+-(void)actorDirect:(NSString*)key{
+    
+    // dict keys are checkbox keys, value is UFX output
+    NSDictionary *dict = @{
+        @"mic1" : @"102",
+        @"mic2" : @"103",
+        @"mic3" : @"104",
+        @"mic4" : @"105",
+        @"mic5" : @"106",
+        @"mic6" : @"107",
+        @"mic7" : @"108",
+        @"mic8" : @"109"
+    };
+    
+    [self commonDirect:@"94" :@"Actor" :dict];
+
+}
+-(void)editorDirect:(NSString*)key{
+    
+    // dict keys are checkbox keys, value is UFX output
+    NSDictionary *dict = @{
+        @"edMic1" : @"102",
+        @"edMic2" : @"103",
+        @"edMic3" : @"104",
+        @"edMic4" : @"105",
+        @"edMic5" : @"106",
+        @"edMic6" : @"107",
+        @"edMic7" : @"108",
+        @"edMic8" : @"109"
+    };
+    
+    [self commonDirect:@"107" :@"Editor" :dict];
+
+}
+
 -(void)dialMuteDim:(NSString*)key{
     
     NSString *valueKey = [NSString stringWithFormat:@"%@_%@",DIAL_VALUE_KEY,key];
